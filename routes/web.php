@@ -13,6 +13,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfilController;
@@ -23,6 +24,7 @@ Route::model('periode', PeriodePenilaian::class);
 Route::pattern('aset', '[0-9]+');
 Route::pattern('kriteria', '[0-9]+');
 Route::pattern('kategori_aset', '[0-9]+');
+Route::pattern('periode', '[0-9]+');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
@@ -68,6 +70,16 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::resource('aset', AsetController::class)->except(['index', 'show']);
         Route::resource('kategori-aset', KategoriAsetController::class)->except(['show']);
         Route::resource('kriteria', KriteriaController::class)->except(['index', 'show'])->parameters(['kriteria' => 'kriteria']);
+
+        // Fase 3: periode & input penilaian
+        Route::get('periode/create', [PeriodeController::class, 'create'])->name('periode.create');
+        Route::post('periode', [PeriodeController::class, 'store'])->name('periode.store');
+        Route::get('periode/{periode}/edit', [PeriodeController::class, 'edit'])->name('periode.edit');
+        Route::put('periode/{periode}', [PeriodeController::class, 'update'])->name('periode.update');
+        Route::post('periode/{periode}/hitung', [PeriodeController::class, 'hitung'])->name('periode.hitung');
+        Route::post('periode/{periode}/buka-kembali', [PeriodeController::class, 'bukaKembali'])->name('periode.buka-kembali');
+        Route::get('periode/{periode}/penilaian/{aset}', [PenilaianController::class, 'edit'])->name('penilaian.edit');
+        Route::put('periode/{periode}/penilaian/{aset}', [PenilaianController::class, 'update'])->name('penilaian.update');
     });
 
     // [LANE-C] Pimpinan only: keputusan.edit/update, periode.finalisasi

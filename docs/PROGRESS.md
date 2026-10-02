@@ -6,8 +6,9 @@
 - [x] Refactoring 3 Role: Admin, Operator, Pimpinan — selesai (2026-10-01)
 - [x] Fase 1 MOORA Core (Calculator, Resolver, CalculatePeriode Action, Unit & Feature Tests) — selesai (2026-10-01)
 - [x] Fase 2 Master Data (Aset + Import/Export Excel, Kriteria, Kategori) — selesai (2026-10-02)
-- [ ] Fase 3 Periode dan Input Penilaian — *Antrean berikutnya*
-- [ ] Fase 4 Peringkat, Keputusan, Finalisasi
+- [x] Perombakan UI + Notifikasi — selesai (2026-10-02)
+- [x] Fase 3 Periode dan Input Penilaian — selesai (2026-10-02)
+- [ ] Fase 4 Peringkat, Keputusan, Finalisasi — *Antrean berikutnya*
 - [ ] Fase 5 Dashboard dan Laporan PDF/Excel
 - [ ] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil)
 - [ ] Fase 7 QA dan Hardening
@@ -15,6 +16,18 @@
 ---
 
 ## Catatan serah-terima (terbaru di atas)
+
+### Fase 3 — Lane C Periode & Input Penilaian — 2026-10-02
+
+**Selesai:**
+- `PeriodeController` (index, create/store, show, edit/update, hitung, buka-kembali) + `PenilaianController` (edit/update) — route `periode.*`, `penilaian.edit|update` di grup `role:operator`; index/show tetap read-only untuk admin & pimpinan.
+- Actions: `CreatePeriode` (cakupan semua / per kategori / perlu perhatian / pilih manual; hanya aset Aktif; minimal 2 aset; hanya satu periode non-final), `SaveNilaiAset` (nilai kosong menghapus nilai lama; foto per periode; deskripsi kondisi di pivot; status otomatis draft ↔ dinilai; bila periode sudah dihitung → hasil & keputusan dihapus), `HitungPeriode` (membungkus `CalculatePeriode` Fase 1 tanpa mengubahnya + notifikasi ke pimpinan & admin), `ReopenPeriode` (alasan wajib min 10 karakter, ditolak bila ada periode aktif lain, notifikasi).
+- `Services\Periode\PeriodeDetail` mengumpulkan query halaman (progres, alasan tombol Hitung nonaktif, filter Belum/Lengkap, aset berikutnya yang belum lengkap).
+- View: daftar periode, form buat periode (kartu cakupan + pencarian aset manual), detail periode (hero progres, tombol Hitung MOORA / alasan nonaktif, peringatan setelah dihitung, kartu buka kembali saat final, daftar aset kartu/tabel), input nilai per aset (`<x-form.scale-radio>` baru: kartu skala 1–5 + rubrik terpilih, tombol Kosongkan; foto kamera/galeri + pratinjau; Sebelumnya/Berikutnya; sticky Simpan / Simpan & Lanjut; konfirmasi SweetAlert bila periode sudah dihitung).
+- `<x-confirm-form>` mendapat prop `when` (konfirmasi kondisional).
+- Test: `PeriodePenilaianTest` (14). Total 89 test / 401 asersi hijau.
+
+**Cara mencoba:** operator → Periode Penilaian → Buat Periode → Input Nilai tiap aset (Simpan & Lanjut) → Hitung MOORA (aktif bila bobot 100% & nilai lengkap) → diarahkan ke halaman peringkat (diisi Fase 4).
 
 ### Perombakan UI + Notifikasi — 2026-10-02 (sebelum Fase 3)
 

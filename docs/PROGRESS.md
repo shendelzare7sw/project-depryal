@@ -16,6 +16,19 @@
 
 ## Catatan serah-terima (terbaru di atas)
 
+### Perombakan UI + Notifikasi — 2026-10-02 (sebelum Fase 3)
+
+**Selesai:**
+- Pedoman UI baru `docs/05-UI-PATTERNS.md` (wajib untuk semua fase berikutnya) + kontrak komponen diperbarui di `02-ARCHITECTURE.md §5`.
+- Identitas visual: petrol (`brand`) + zinc + amber, font Manrope, tema DaisyUI `sikaset`.
+- Shell baru: sidebar `brand-950`, topbar (judul/subjudul halaman, lonceng notifikasi, menu pengguna), bottom-nav ponsel 4 item; konten memenuhi lebar (tanpa `max-w`).
+- Komponen baru: `hero`, `stat-grid`, `btn`, `table-action`, `badge`, `notification-bell`, `user-menu`; `card` (ikon/chip/tautan/flush), input form bergaya baru, `confirm-form` (merah untuk DELETE).
+- Halaman dirombak: login (panel terbagi), dashboard (hero + stat + alur kerja SPK + aset perlu perhatian + bobot kriteria + aset per kategori), Data Aset (index/show/form 2 tahap dengan pratinjau foto/import/pratinjau import), Kategori, Kriteria (index + form rubrik), Profil, Notifikasi; placeholder Fase 3–6 menyesuaikan shell.
+- Fitur notifikasi: tabel `notifications`, `SistemNotification`, service `Notifikasi`, `NotifikasiController` (daftar, buka + tandai dibaca, tandai semua). Import BMD mengirim notifikasi ke admin & operator lain.
+- Test: 75 test hijau (tambah `NotifikasiTest` dan uji notifikasi import).
+
+**Cara mencoba:** login ketiga akun; cek Beranda, Data Aset, dan Kriteria di desktop & ponsel (DevTools 390 px); lakukan import BMD lalu login sebagai admin → lonceng menampilkan notifikasi.
+
 ### Fase 2 — Lane B Master Data (Operator) — 2026-10-02
 
 **Selesai:**

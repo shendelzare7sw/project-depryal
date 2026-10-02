@@ -1,71 +1,95 @@
-<x-layouts.app :title="$aset->nama_barang">
-    <x-ui.page-header :title="$aset->nama_barang" subtitle="Detail Barang Milik Daerah">
-        <x-slot:actions>
-            <a href="{{ route('aset.index') }}" class="btn btn-outline btn-sm gap-1">
-                <x-heroicon-o-arrow-left class="w-4 h-4" /> Kembali
-            </a>
-            @if (auth()->user()->isOperator())
-            <a href="{{ route('aset.edit', $aset) }}" class="btn btn-primary btn-sm gap-1">
-                <x-heroicon-o-pencil-square class="w-4 h-4" /> Ubah
-            </a>
-            <x-confirm-form :action="route('aset.destroy', $aset)" method="DELETE" title="Hapus aset?"
-                text="Aset akan dihapus dari daftar. Aset yang sudah tercatat pada periode final tidak dapat dihapus."
-                confirm="Ya, hapus">
-                <button type="submit" class="btn btn-error btn-outline btn-sm gap-1">
-                    <x-heroicon-o-trash class="w-4 h-4" /> Hapus
-                </button>
-            </x-confirm-form>
+<x-layouts.app :title="$aset->nama_barang" subtitle="Detail Barang Milik Daerah">
+    @php($operator = auth()->user()->isOperator())
+
+    {{-- Ringkasan aset --}}
+    <section class="min-w-0 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm shadow-zinc-900/[0.03]">
+        <div class="flex flex-col gap-4 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+            <div class="flex min-w-0 items-start gap-3">
+                <a href="{{ route('aset.index') }}" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 hover:bg-zinc-200" aria-label="Kembali ke daftar aset">
+                    <x-heroicon-o-arrow-left class="h-5 w-5" />
+                </a>
+                <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <h2 class="text-base font-extrabold text-zinc-900 sm:text-lg">{{ $aset->nama_barang }}</h2>
+                        <x-ui.badge-status :status="$aset->status" />
+                        <x-ui.badge-perhatian :aset="$aset" />
+                    </div>
+                    <p class="mt-1 font-mono text-xs text-zinc-500">{{ $aset->kode_barang }} · NUP {{ $aset->nup }} · {{ $aset->kategori?->nama ?? '-' }}</p>
+                </div>
+            </div>
+            @if ($operator)
+            <div class="grid grid-cols-2 gap-2 sm:flex">
+                <x-ui.btn tone="soft-amber" icon="pencil-square" :href="route('aset.edit', $aset)">Ubah</x-ui.btn>
+                <x-confirm-form :action="route('aset.destroy', $aset)" method="DELETE" title="Hapus aset?"
+                    text="Aset akan dihapus dari daftar. Aset yang sudah tercatat pada periode final tidak dapat dihapus." confirm="Ya, hapus">
+                    <x-ui.btn type="submit" tone="soft-rose" icon="trash" class="w-full">Hapus</x-ui.btn>
+                </x-confirm-form>
+            </div>
             @endif
-        </x-slot:actions>
-    </x-ui.page-header>
+        </div>
+        <div class="grid grid-cols-2 border-t border-zinc-100 bg-zinc-50/60 lg:grid-cols-4">
+            @foreach ([
+                ['Nilai perolehan', \App\Support\Rupiah::format($aset->nilai_perolehan), 'banknotes', 'text-brand-700'],
+                ['Nilai buku', \App\Support\Rupiah::format($aset->nilai_buku), 'wallet', 'text-emerald-600'],
+                ['Sisa UEB', $aset->sisa_ueb.' / '.$aset->umur_ekonomis.' th', 'clock', $aset->perlu_perhatian ? 'text-amber-600' : 'text-sky-600'],
+                ['Luas', $aset->luas !== null ? \App\Support\Rupiah::format($aset->luas, false).' m²' : '—', 'square-3-stack-3d', 'text-violet-600'],
+            ] as [$label, $value, $icon, $tone])
+            <div class="flex min-w-0 items-center gap-3 border-zinc-100 p-4 odd:border-r lg:border-r lg:last:border-r-0">
+                <x-dynamic-component :component="'heroicon-o-'.$icon" class="h-5 w-5 shrink-0 {{ $tone }}" />
+                <div class="min-w-0">
+                    <p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">{{ $label }}</p>
+                    <p class="truncate text-[13px] font-extrabold tabular-nums text-zinc-900 sm:text-sm" title="{{ $value }}">{{ $value }}</p>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </section>
 
     @if ($aset->perlu_perhatian)
-    <div role="alert" class="alert alert-warning mb-4 text-sm">
-        <x-heroicon-o-exclamation-triangle class="w-5 h-5" />
-        <span>Sisa umur ekonomis tinggal <strong>{{ $aset->sisa_ueb }} tahun</strong> — aset ini perlu perhatian.</span>
+    <div role="alert" class="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <x-heroicon-o-exclamation-triangle class="h-5 w-5 shrink-0 text-amber-600" />
+        <p>Sisa umur ekonomis tinggal <strong>{{ $aset->sisa_ueb }} tahun</strong>. Prioritaskan aset ini saat penilaian kelayakan.</p>
     </div>
     @endif
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div class="lg:col-span-2">
-            <x-ui.card title="Data BMD">
-                <dl class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-3">
-                    <x-ui.detail-item label="Kode Barang"><span class="font-mono">{{ $aset->kode_barang }}</span></x-ui.detail-item>
-                    <x-ui.detail-item label="NUP">{{ $aset->nup }}</x-ui.detail-item>
-                    <x-ui.detail-item label="Kategori">{{ $aset->kategori?->nama ?? '-' }}</x-ui.detail-item>
-                    <x-ui.detail-item label="Jumlah">{{ $aset->jumlah }}</x-ui.detail-item>
-                    <x-ui.detail-item label="Luas">{{ $aset->luas !== null ? \App\Support\Rupiah::format($aset->luas, false).' m²' : '-' }}</x-ui.detail-item>
-                    <x-ui.detail-item label="Tanggal Perolehan">{{ $aset->tanggal_perolehan?->format('d/m/Y') }}</x-ui.detail-item>
-                    <x-ui.detail-item label="Harga Satuan"><x-rupiah :value="$aset->harga_satuan" /></x-ui.detail-item>
-                    <x-ui.detail-item label="Nilai Perolehan"><x-rupiah :value="$aset->nilai_perolehan" /></x-ui.detail-item>
-                    <x-ui.detail-item label="Umur Ekonomis (UEB)">{{ $aset->umur_ekonomis }} tahun</x-ui.detail-item>
-                    <x-ui.detail-item label="Akumulasi Penyusutan"><x-rupiah :value="$aset->akumulasi_penyusutan" /></x-ui.detail-item>
-                    <x-ui.detail-item label="Sisa UEB">{{ $aset->sisa_ueb }} tahun</x-ui.detail-item>
-                    <x-ui.detail-item label="Nilai Buku"><x-rupiah :value="$aset->nilai_buku" /></x-ui.detail-item>
-                    <x-ui.detail-item label="Lokasi" class="col-span-2">{{ $aset->lokasi ?? '-' }}</x-ui.detail-item>
-                    <x-ui.detail-item label="Status"><x-ui.badge-status :status="$aset->status" /></x-ui.detail-item>
-                </dl>
-            </x-ui.card>
-        </div>
+    <div class="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
+        <x-ui.card title="Data BMD" icon="document-text">
+            <dl class="grid grid-cols-2 gap-x-4 gap-y-4 md:grid-cols-3">
+                <x-ui.detail-item label="Kode barang"><span class="font-mono">{{ $aset->kode_barang }}</span></x-ui.detail-item>
+                <x-ui.detail-item label="NUP">{{ $aset->nup }}</x-ui.detail-item>
+                <x-ui.detail-item label="Kategori">{{ $aset->kategori?->nama ?? '-' }}</x-ui.detail-item>
+                <x-ui.detail-item label="Jumlah">{{ $aset->jumlah }}</x-ui.detail-item>
+                <x-ui.detail-item label="Tanggal perolehan">{{ $aset->tanggal_perolehan?->translatedFormat('d F Y') }}</x-ui.detail-item>
+                <x-ui.detail-item label="Harga satuan"><x-rupiah :value="$aset->harga_satuan" /></x-ui.detail-item>
+                <x-ui.detail-item label="Nilai perolehan"><x-rupiah :value="$aset->nilai_perolehan" /></x-ui.detail-item>
+                <x-ui.detail-item label="Akumulasi penyusutan"><x-rupiah :value="$aset->akumulasi_penyusutan" /></x-ui.detail-item>
+                <x-ui.detail-item label="Nilai buku"><x-rupiah :value="$aset->nilai_buku" /></x-ui.detail-item>
+                <x-ui.detail-item label="Umur ekonomis (UEB)">{{ $aset->umur_ekonomis }} tahun</x-ui.detail-item>
+                <x-ui.detail-item label="Sisa UEB">{{ $aset->sisa_ueb }} tahun</x-ui.detail-item>
+                <x-ui.detail-item label="Lokasi" class="col-span-2 md:col-span-1">{{ $aset->lokasi ?? '-' }}</x-ui.detail-item>
+            </dl>
+        </x-ui.card>
 
-        <x-ui.card title="Foto Aset">
-            @forelse ($aset->fotos as $foto)
-            <figure class="relative">
-                <a href="{{ $foto->url }}" target="_blank" rel="noopener">
-                    <img src="{{ $foto->url }}" alt="Foto {{ $aset->nama_barang }}" class="w-full aspect-video object-cover rounded-lg" loading="lazy">
-                </a>
-                @if (auth()->user()->isOperator())
-                <x-confirm-form :action="route('aset.foto.destroy', [$aset, $foto])" method="DELETE"
-                    title="Hapus foto?" text="Foto akan dihapus permanen." confirm="Ya, hapus" class="absolute top-2 right-2">
-                    <button type="submit" class="btn btn-circle btn-sm btn-error" aria-label="Hapus foto">
-                        <x-heroicon-o-trash class="w-4 h-4" />
-                    </button>
-                </x-confirm-form>
-                @endif
-            </figure>
-            @empty
-            <x-ui.empty-state icon="camera" title="Belum ada foto" text="Tambahkan foto melalui tombol Ubah." />
-            @endforelse
+        <x-ui.card title="Foto aset" icon="photo" icon-tone="text-violet-500">
+            <x-slot:chip><x-ui.badge>{{ $aset->fotos->count() }}</x-ui.badge></x-slot:chip>
+            @if ($aset->fotos->isNotEmpty())
+            <div class="grid grid-cols-2 gap-2">
+                @foreach ($aset->fotos as $foto)
+                <figure class="group relative overflow-hidden rounded-xl bg-zinc-100">
+                    <a href="{{ $foto->url }}" target="_blank" rel="noopener">
+                        <img src="{{ $foto->url }}" alt="Foto {{ $aset->nama_barang }}" class="aspect-square w-full object-cover transition group-hover:scale-105" loading="lazy">
+                    </a>
+                    @if ($operator)
+                    <x-confirm-form :action="route('aset.foto.destroy', [$aset, $foto])" method="DELETE" title="Hapus foto?" text="Foto akan dihapus permanen." confirm="Ya, hapus" class="absolute right-2 top-2">
+                        <x-ui.table-action type="submit" tone="delete" icon="trash" label="Hapus foto" class="bg-white" />
+                    </x-confirm-form>
+                    @endif
+                </figure>
+                @endforeach
+            </div>
+            @else
+            <x-ui.empty-state icon="camera" title="Belum ada foto" :text="$operator ? 'Tambahkan foto melalui tombol Ubah (kamera atau galeri).' : 'Operator belum menambahkan foto.'" />
+            @endif
         </x-ui.card>
     </div>
 </x-layouts.app>

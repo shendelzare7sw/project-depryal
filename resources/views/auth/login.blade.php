@@ -1,87 +1,78 @@
 <x-layouts.guest title="Masuk">
-    <div x-data="{ login: '{{ old('login', '') }}', password: '' }" class="card bg-base-100 shadow-xl border border-base-300">
-        <div class="card-body p-6 sm:p-8 gap-4">
-            {{-- Brand / Header --}}
-            <div class="text-center">
-                <img src="{{ asset('img/logo.jpeg') }}" alt="Logo Batuceper"
-                    class="w-16 h-16 mx-auto mb-2 object-contain drop-shadow-sm rounded-lg">
-                <h1 class="text-2xl font-black tracking-tight text-primary">SIKASET</h1>
-                <p class="text-xs uppercase tracking-wider font-semibold text-base-content/70 mt-0.5">
-                    SPK Kelayakan Aset BMD
-                </p>
-                <p class="text-xs text-base-content/50">Kecamatan Batuceper, Kota Tangerang</p>
-            </div>
-
-            <x-flash />
-
-            <form method="POST" action="{{ route('login') }}" class="space-y-4 mt-1">
-                @csrf
-                <x-form.input name="login" label="Username atau Email" type="text"
-                    x-model="login"
-                    placeholder="admin, operator, atau email@batuceper.go.id" required />
-                <x-form.input name="password" label="Kata Sandi" type="password"
-                    x-model="password"
-                    placeholder="••••••••" required />
-
-                <div class="flex items-center justify-between">
-                    <label class="label cursor-pointer gap-2 py-0">
-                        <input id="remember" name="remember" type="checkbox"
-                            class="checkbox checkbox-primary checkbox-sm">
-                        <span class="label-text text-sm">Ingat saya</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-full gap-2 text-white font-semibold">
-                    <x-heroicon-o-arrow-right-on-rectangle class="w-5 h-5" />
-                    Masuk ke Sistem
-                </button>
-            </form>
-
-            <div class="divider my-1 text-xs text-base-content/40 font-medium">Akun Demo (Klik untuk Isi Cepat)</div>
-            <div class="grid grid-cols-3 gap-2 text-center text-xs">
-                <button type="button"
-                    @click="login = 'admin'; password = 'password'"
-                    class="bg-base-200 hover:bg-primary/10 hover:border-primary p-2.5 rounded-lg border border-base-300 transition-all text-left flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50">
-                    <div>
-                        <span class="badge badge-primary badge-xs font-bold text-white mb-1">Admin</span>
-                        <p class="font-bold text-base-content text-[11px] truncate">Administrator</p>
-                    </div>
-                    <div class="mt-2 pt-1 border-t border-base-300/60 font-mono text-[10px] text-base-content/70">
-                        <p class="truncate font-semibold text-primary">admin</p>
-                        <p class="text-base-content/50">password</p>
-                    </div>
-                </button>
-
-                <button type="button"
-                    @click="login = 'operator'; password = 'password'"
-                    class="bg-base-200 hover:bg-secondary/10 hover:border-secondary p-2.5 rounded-lg border border-base-300 transition-all text-left flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary/50">
-                    <div>
-                        <span class="badge badge-secondary badge-xs font-bold text-white mb-1">Operator</span>
-                        <p class="font-bold text-base-content text-[11px] truncate">Pengurus Barang</p>
-                    </div>
-                    <div class="mt-2 pt-1 border-t border-base-300/60 font-mono text-[10px] text-base-content/70">
-                        <p class="truncate font-semibold text-secondary">operator</p>
-                        <p class="text-base-content/50">password</p>
-                    </div>
-                </button>
-
-                <button type="button"
-                    @click="login = 'pimpinan'; password = 'password'"
-                    class="bg-base-200 hover:bg-accent/10 hover:border-accent p-2.5 rounded-lg border border-base-300 transition-all text-left flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50">
-                    <div>
-                        <span class="badge badge-accent badge-xs font-bold text-white mb-1">Pimpinan</span>
-                        <p class="font-bold text-base-content text-[11px] truncate">Camat</p>
-                    </div>
-                    <div class="mt-2 pt-1 border-t border-base-300/60 font-mono text-[10px] text-base-content/70">
-                        <p class="truncate font-semibold text-accent-content">pimpinan</p>
-                        <p class="text-base-content/50">password</p>
-                    </div>
-                </button>
+    <div x-data="{ login: @js(old('login', '')), password: '', lihat: false, busy: false }">
+        {{-- Identitas (ponsel) --}}
+        <div class="mb-8 flex items-center gap-3 lg:hidden">
+            <img src="{{ asset('img/logo.jpeg') }}" alt="Logo Kecamatan Batuceper" class="h-12 w-12 rounded-xl bg-white object-contain p-0.5 ring-1 ring-zinc-200">
+            <div>
+                <p class="text-lg font-extrabold tracking-tight text-zinc-900">SIKASET</p>
+                <p class="text-xs text-zinc-500">SPK Kelayakan Aset BMD · Kec. Batuceper</p>
             </div>
         </div>
-    </div>
 
-    <p class="text-center text-xs text-base-content/50 mt-4">
-        © {{ date('Y') }} SIKASET — Pemerintah Kecamatan Batuceper
-    </p>
+        <h2 class="text-2xl font-extrabold tracking-tight text-zinc-900">Masuk ke akun Anda</h2>
+        <p class="mt-1.5 text-sm text-zinc-500">Gunakan username atau email yang terdaftar.</p>
+
+        @if ($errors->any())
+        <div class="mt-5 flex items-start gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-medium text-rose-800">
+            <x-heroicon-o-exclamation-circle class="h-5 w-5 shrink-0 text-rose-500" /> {{ $errors->first() }}
+        </div>
+        @endif
+
+        <form method="POST" action="{{ route('login') }}" class="mt-6 space-y-4" @submit="busy = true">
+            @csrf
+            <div>
+                <label for="login" class="mb-1.5 block text-sm font-semibold text-zinc-700">Username atau email</label>
+                <div class="relative">
+                    <x-heroicon-o-user class="pointer-events-none absolute left-3.5 top-3.5 h-5 w-5 text-zinc-400" />
+                    <input id="login" name="login" type="text" x-model="login" required autofocus autocomplete="username" placeholder="mis. operator"
+                        class="h-12 w-full rounded-xl border border-zinc-300 bg-white pl-11 pr-3 text-sm outline-none placeholder:text-zinc-400 focus:border-brand-600 focus:ring-4 focus:ring-brand-600/10">
+                </div>
+            </div>
+            <div>
+                <label for="password" class="mb-1.5 block text-sm font-semibold text-zinc-700">Kata sandi</label>
+                <div class="relative">
+                    <x-heroicon-o-lock-closed class="pointer-events-none absolute left-3.5 top-3.5 h-5 w-5 text-zinc-400" />
+                    <input id="password" name="password" :type="lihat ? 'text' : 'password'" x-model="password" required autocomplete="current-password" placeholder="••••••••"
+                        class="h-12 w-full rounded-xl border border-zinc-300 bg-white pl-11 pr-12 text-sm outline-none placeholder:text-zinc-400 focus:border-brand-600 focus:ring-4 focus:ring-brand-600/10">
+                    <button type="button" @click="lihat = !lihat" class="absolute right-1.5 top-1.5 flex h-9 w-9 items-center justify-center rounded-lg text-zinc-400 hover:bg-zinc-100 hover:text-zinc-700" :aria-label="lihat ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'">
+                        <x-heroicon-o-eye class="h-5 w-5" x-show="!lihat" />
+                        <x-heroicon-o-eye-slash class="h-5 w-5" x-show="lihat" x-cloak />
+                    </button>
+                </div>
+            </div>
+            <label class="flex cursor-pointer items-center gap-2.5 text-sm text-zinc-600">
+                <input id="remember" name="remember" type="checkbox" class="checkbox checkbox-sm checkbox-primary rounded-md">
+                Ingat saya di perangkat ini
+            </label>
+            <button type="submit" :disabled="busy" class="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand-700 text-sm font-bold text-white shadow-lg shadow-brand-900/20 transition hover:bg-brand-800 disabled:opacity-60">
+                <span class="loading loading-spinner loading-sm" x-show="busy" x-cloak></span>
+                Masuk ke Sistem
+                <x-heroicon-m-arrow-right class="h-4 w-4" x-show="!busy" />
+            </button>
+        </form>
+
+        {{-- Akun demo --}}
+        <div class="mt-8">
+            <p class="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">
+                <span class="h-px flex-1 bg-zinc-200"></span> Akun demo · klik untuk isi <span class="h-px flex-1 bg-zinc-200"></span>
+            </p>
+            <div class="grid grid-cols-3 gap-2">
+                @foreach ([['admin', 'Admin', 'Sistem', 'shield-check', 'bg-violet-50 text-violet-700'], ['operator', 'Operator', 'Pengurus barang', 'building-office-2', 'bg-brand-50 text-brand-700'], ['pimpinan', 'Pimpinan', 'Camat', 'check-badge', 'bg-amber-50 text-amber-700']] as [$u, $label, $ket, $icon, $tone])
+                <button type="button" @click="login = '{{ $u }}'; password = 'password'"
+                    class="group flex flex-col items-start gap-2 rounded-xl border border-zinc-200 bg-white p-3 text-left transition hover:-translate-y-0.5 hover:border-brand-400 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
+                    :class="login === '{{ $u }}' && 'border-brand-600 ring-2 ring-brand-600/15'">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg {{ $tone }}"><x-dynamic-component :component="'heroicon-o-'.$icon" class="h-4 w-4" /></span>
+                    <span class="min-w-0">
+                        <span class="block text-xs font-extrabold text-zinc-900">{{ $label }}</span>
+                        <span class="block truncate text-[10px] text-zinc-500">{{ $ket }}</span>
+                    </span>
+                </button>
+                @endforeach
+            </div>
+            <p class="mt-2 text-center text-[11px] text-zinc-400">Kata sandi semua akun demo: <span class="font-mono font-semibold text-zinc-600">password</span></p>
+        </div>
+
+        <p class="mt-10 text-center text-xs text-zinc-400">© {{ date('Y') }} SIKASET · Pemerintah Kecamatan Batuceper</p>
+    </div>
+    <x-flash />
 </x-layouts.guest>

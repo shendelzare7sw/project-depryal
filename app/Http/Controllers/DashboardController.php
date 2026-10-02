@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Aset;
-use App\Models\PeriodePenilaian;
+use App\Services\Dashboard\DashboardData;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(Request $request, DashboardData $data): View
     {
-        $stats = [
-            'total_aset' => Aset::count(),
-            'periode_aktif' => PeriodePenilaian::aktif()->count(),
-            'total_periode' => PeriodePenilaian::count(),
-        ];
-
-        return view('dashboard', compact('stats'));
+        return view('dashboard', $data->for($request->user()));
     }
 }

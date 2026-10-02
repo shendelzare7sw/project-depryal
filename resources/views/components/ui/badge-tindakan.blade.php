@@ -2,6 +2,4 @@
 @php
 /** @var \App\Enums\TindakanAset $tindakan */
 @endphp
-<span class="badge badge-{{ $tindakan->color() }} badge-sm font-medium">
-    {{ $tindakan->label() }}
-</span>
+<x-ui.badge :tone="$tindakan->color()" {{ $attributes }}>{{ $tindakan->label() }}</x-ui.badge>

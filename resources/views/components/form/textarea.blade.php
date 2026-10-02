@@ -5,5 +5,8 @@
         rows="{{ $rows }}"
         placeholder="{{ $placeholder }}"
         @if ($required) required @endif
-        {{ $attributes->merge(['class' => 'textarea textarea-bordered w-full' . ($errors->has($name) ? ' textarea-error' : '')]) }}>{{ old($name, $value) }}</textarea>
+        {{ $attributes->class([
+            'textarea textarea-bordered w-full border-zinc-300 bg-white text-sm leading-relaxed placeholder:text-zinc-400 focus:border-brand-600 focus:outline-none focus:ring-4 focus:ring-brand-600/10',
+            'border-rose-400' => $errors->has($name),
+        ]) }}>{{ old($name, $value) }}</textarea>
 </x-form.field>

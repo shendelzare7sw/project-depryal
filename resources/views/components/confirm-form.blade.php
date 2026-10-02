@@ -1,5 +1,7 @@
-@props(['title' => 'Yakin?', 'text' => '', 'confirm' => 'Ya, lanjutkan', 'icon' => 'warning', 'method' => 'POST'])
-<form {{ $attributes->merge(['method' => 'POST']) }} x-data="{ busy: false }"
+{{-- Form + konfirmasi SweetAlert2. Tombol konfirmasi merah untuk DELETE/danger, petrol untuk lainnya. --}}
+@props(['title' => 'Yakin?', 'text' => '', 'confirm' => 'Ya, lanjutkan', 'icon' => 'warning', 'method' => 'POST', 'danger' => null])
+@php($isDanger = $danger ?? strtoupper($method) === 'DELETE')
+<form {{ $attributes->merge(['method' => 'POST']) }} x-data="{ busy: false }" :class="busy && 'pointer-events-none opacity-60'"
       @submit.prevent="Swal.fire({
           title: @js($title),
           text: @js($text),
@@ -8,9 +10,10 @@
           confirmButtonText: @js($confirm),
           cancelButtonText: 'Batal',
           reverseButtons: true,
-          confirmButtonColor: '#dc2626',
+          confirmButtonColor: @js($isDanger ? '#e11d48' : '#1f5f59'),
+          cancelButtonColor: '#71717a',
       }).then(r => { if (r.isConfirmed) { busy = true; $el.submit() } })">
     @csrf
     @if (strtoupper($method) !== 'POST') @method($method) @endif
-    <span :class="busy ? 'opacity-50 pointer-events-none' : ''">{{ $slot }}</span>
+    {{ $slot }}
 </form>

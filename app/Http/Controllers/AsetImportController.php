@@ -38,7 +38,7 @@ class AsetImportController extends Controller
 
     public function confirm(Request $request, AsetImportFile $file, ImportAset $import): RedirectResponse
     {
-        $jumlah = $import->execute($file->read($request->user()));
+        $jumlah = $import->execute($file->read($request->user()), $request->user());
         $file->clear($request->user());
 
         return to_route('aset.index')->with('success', "{$jumlah} data aset berhasil diimpor.");

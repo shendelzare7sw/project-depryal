@@ -84,7 +84,7 @@ test('unggah menampilkan pratinjau baris valid dan error tanpa menyimpan data', 
         ->and($result->invalid)->toHaveCount(4)
         ->and(collect($result->invalid)->pluck('baris')->all())->toBe([3, 4, 5, 6]);
 
-    $response->assertSee('Baris 3')->assertSee('nama barang wajib diisi')
+    $response->assertSee('nama barang wajib diisi')
         ->assertSee('Tanggal perolehan tidak valid')->assertSee('sama dengan baris 2')
         ->assertSee(route('aset.import.confirm'));
 
@@ -106,6 +106,22 @@ test('konfirmasi menyimpan baris valid: angka & tanggal format Indonesia, katego
         ->and($aset->kategori->nama)->toBe('Gedung Kantor Pemerintah');
 
     Storage::disk('local')->assertMissing("imports/aset-{$operator->id}.xlsx");
+});
+
+test('import selesai mengirim notifikasi ke admin dan operator lain, bukan ke pengimpor', function () {
+    $operator = userWithRole(UserRole::Operator);
+    $operatorLain = userWithRole(UserRole::Operator);
+    $admin = userWithRole(UserRole::Admin);
+    $pimpinan = userWithRole(UserRole::Pimpinan);
+    unggahBmd($operator, [barisBmd()]);
+
+    $this->actingAs($operator)->post(route('aset.import.confirm'));
+
+    expect($admin->notifications()->count())->toBe(1)
+        ->and($operatorLain->notifications()->count())->toBe(1)
+        ->and($operator->notifications()->count())->toBe(0)
+        ->and($pimpinan->notifications()->count())->toBe(0)
+        ->and($admin->notifications()->first()->data['pesan'])->toContain('1 data aset diimpor oleh');
 });
 
 test('import upsert berdasarkan kode barang + NUP dan memakai kategori yang sudah ada', function () {

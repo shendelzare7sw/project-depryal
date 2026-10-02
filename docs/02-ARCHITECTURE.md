@@ -137,22 +137,30 @@ Nama parameter route-model-binding: `{periode}` → `PeriodePenilaian` (definisi
 
 ## 5. Komponen UI (kontrak antar-lane)
 Semua anonymous component (`resources/views/components`). Props ringkas, **tanpa JS selain atribut Alpine pendek**.
+**Pola pemakaian (layout, daftar, form, gerbang screenshot) wajib mengikuti `docs/05-UI-PATTERNS.md`.**
 
 | Komponen | Props | Fungsi |
 |---|---|---|
-| `<x-ui.page-header title subtitle>` + slot `actions` | | judul halaman + tombol aksi (mobile: tombol penuh lebar) |
-| `<x-ui.card>` | `title?` | pembungkus DaisyUI `card` |
-| `<x-ui.stat label value icon? tone?>` | | kartu statistik dashboard |
+| `<x-layouts.app title subtitle>` | | shell: sidebar `brand-950` (menu dari `App\Support\Navigation`), topbar (judul + notifikasi + menu pengguna), bottom-nav ponsel. Konten tanpa `max-w` |
+| `<x-ui.hero title eyebrow? subtitle?>` + slot `actions`, `aside` | | kartu gradien untuk dashboard/halaman kunci |
+| `<x-ui.stat-grid :items :columns=4>` | items: `label, value, icon, tone, meta?, href?` | 2 kolom ponsel, 3/4/6 desktop; ikon selalu tampil |
+| `<x-ui.card title? subtitle? icon? iconTone? link? linkLabel? flush?>` + slot `actions`, `chip` | | kartu ber-ikon; `flush` untuk tabel/daftar |
+| `<x-ui.btn tone icon? href? type? compact?>` | tone: primary, dark, neutral, white, soft-*, glass, amber | tombol h-10; `compact` = ikon saja di ponsel |
+| `<x-ui.table-action tone icon label href? type?>` | tone: view, edit, delete, success, neutral | tombol ikon 36 px tabel desktop |
+| `<x-ui.badge tone dot?>` | tone: success, warning, error, info, primary, secondary, accent, neutral, ghost | badge lembut |
+| `<x-ui.badge-tindakan :tindakan>` / `<x-ui.badge-status :status>` / `<x-ui.badge-perhatian :aset>` | | badge dari `->color()` & `->label()`; ⚠ sisa UEB ≤ 3 |
 | `<x-ui.empty-state icon title text>` + slot aksi | | keadaan kosong |
-| `<x-ui.badge-tindakan :tindakan>` / `<x-ui.badge-status :status>` | | badge berwarna dari `->color()` & `->label()` |
-| `<x-ui.progress-meter :value :max label>` | | `progress` DaisyUI + teks x/y |
-| `<x-ui.responsive-list :items>` slot `table` & `card` | | tampil tabel di `md:` ke atas, kartu di bawahnya (`hidden md:block` / `md:hidden`) |
-| `<x-form.field name label hint?>` | | label + slot input + pesan error `@error` |
-| `<x-form.input/select/textarea/file>` | `name`, `value`, atribut lain via `$attributes` | kelas DaisyUI konsisten |
+| `<x-ui.progress-meter :value :max label strict?>` | | `progress` + teks x/y; `strict` = hijau hanya bila tepat max |
+| `<x-ui.detail-item label>` / `<x-ui.rubrik-list :kriteria>` | | pasangan label–nilai; rubrik skala lipat |
+| `<x-ui.notification-bell :items :unread>` / `<x-ui.user-menu>` | | lonceng notifikasi & menu pengguna topbar |
+| `<x-form.field name label hint? required?>` | | label + slot input + pesan error `@error` |
+| `<x-form.input/select/textarea/file>` | `name`, `value`, atribut lain via `$attributes` | input bergaya konsisten (fokus `brand`) |
 | `<x-form.scale-radio :kriteria :value>` | | radio besar 1–5 + rubrik (`kriteria_skala`) |
-| `<x-confirm-form :action method title text confirm icon>` | | **form + SweetAlert** (lihat §6) |
+| `<x-confirm-form :action method title text confirm icon danger?>` | | **form + SweetAlert** (merah untuk DELETE) |
 | `<x-flash/>` | | toast SweetAlert dari `session('success'|'error')` |
 | `<x-rupiah :value/>` | | `Rp 1.234.567,89` |
+
+Notifikasi dalam aplikasi: tabel `notifications` (Laravel), `App\Notifications\SistemNotification(judul, pesan, url, icon, tone)`, dikirim via `App\Services\Notifikasi::kirimKeRole(roles, notifikasi, kecuali)`. Route `notifikasi.index|baca|baca-semua`.
 
 ## 6. Referensi implementasi aset CDN & SweetAlert (boleh disalin apa adanya)
 `layouts/partials/assets.blade.php` (pin versi saat Lane 0 — cek versi stabil terbaru; DaisyUI 5 + Tailwind 4 browser build mendukung CDN):

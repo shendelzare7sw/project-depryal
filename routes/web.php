@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriAsetController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PeringkatController;
@@ -35,6 +36,10 @@ Route::middleware(['auth', 'active'])->group(function (): void {
 
     Route::get('/profil', [ProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+
+    Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
+    Route::post('/notifikasi/baca-semua', [NotifikasiController::class, 'bacaSemua'])->name('notifikasi.baca-semua');
+    Route::get('/notifikasi/{id}', [NotifikasiController::class, 'baca'])->name('notifikasi.baca');
 
     // Admin + Operator + Pimpinan (Read-only access)
     Route::middleware('role:admin,operator,pimpinan')->group(function (): void {

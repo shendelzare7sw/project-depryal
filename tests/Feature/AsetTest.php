@@ -106,14 +106,14 @@ test('index dipaginasi 15 per halaman', function () {
     Aset::factory()->count(20)->create();
 
     $this->actingAs(userWithRole(UserRole::Operator))->get(route('aset.index'))
-        ->assertOk()->assertSee('dari 20 aset')->assertViewHas('aset', fn ($p) => $p->count() === 15);
+        ->assertOk()->assertSee('20 aset tercatat')->assertViewHas('aset', fn ($p) => $p->count() === 15);
 });
 
 test('detail aset menampilkan data BMD dan peringatan sisa UEB', function () {
     $aset = Aset::factory()->create(['nama_barang' => 'Pos Jaga Poris', 'sisa_ueb' => 3]);
 
     $this->actingAs(userWithRole(UserRole::Pimpinan))->get(route('aset.show', $aset))
-        ->assertOk()->assertSee('Pos Jaga Poris')->assertSee($aset->kode_barang)->assertSee('perlu perhatian')
+        ->assertOk()->assertSee('Pos Jaga Poris')->assertSee($aset->kode_barang)->assertSee('Perlu perhatian')
         ->assertDontSee(route('aset.edit', $aset));
 });
 

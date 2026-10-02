@@ -41,3 +41,8 @@ Format: - [YYYY-MM-DD] [Lane] Asumsi/keputusan -- alasan
 - [2026-10-02] [Lane C] Periode dapat dibuat dengan cakupan semua/per kategori/perlu perhatian/pilih manual, hanya aset berstatus Aktif, minimal 2 aset; daftar aset tidak dapat diubah setelah dibuat (edit hanya nama & tanggal) -- opsi paling sederhana; ubah cakupan = buat periode baru setelah final
 - [2026-10-02] [Lane C] Otorisasi Fase 3 memakai middleware `role:operator` (tanpa Policy terpisah) -- konsisten dengan Fase 2; aturan state (final, satu periode aktif) dijaga di Action via DomainException
 - [2026-10-02] [Lane C] Nilai kriteria boleh dikosongkan saat simpan (aset dianggap belum lengkap) -- mendukung pengisian bertahap di lapangan
+- [2026-10-03] [Lane D] Aturan #8 mengenali kriteria "Fungsi" (benefit, nama mengandung "fungsi") dan "Biaya" (cost, nama mengandung "biaya") dari namanya -- tidak ada kolom penanda di skema; sesuai nama kriteria di seeder/laporan
+- [2026-10-03] [Lane D] Detail perhitungan memakai `snapshot_kriteria` (bobot saat dihitung); penyebut √Σx² ditampilkan dengan menurunkannya dari hasil tersimpan (x / x*) -- tidak menduplikasi logika MOORA di luar MooraCalculator
+- [2026-10-03] [Lane D] Menu Pimpinan "Keputusan" (`keputusan.index`) mengarah ke peringkat periode berstatus dihitung dengan filter "belum diputuskan" -- tidak ada halaman terpisah di spesifikasi
+- [2026-10-03] [Lane D] Aset yang di-soft-delete tetap tampil di peringkat/keputusan (relasi & route `withTrashed`) -- riwayat penilaian tidak boleh hilang
+- [2026-10-03] [Lane D] Setelah menyimpan keputusan, pimpinan diarahkan ke aset belum diputuskan berikutnya menurut peringkat; bila habis → halaman peringkat (siap finalisasi)

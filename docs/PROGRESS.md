@@ -8,14 +8,26 @@
 - [x] Fase 2 Master Data (Aset + Import/Export Excel, Kriteria, Kategori) — selesai (2026-10-02)
 - [x] Perombakan UI + Notifikasi — selesai (2026-10-02)
 - [x] Fase 3 Periode dan Input Penilaian — selesai (2026-10-02)
-- [ ] Fase 4 Peringkat, Keputusan, Finalisasi — *Antrean berikutnya*
-- [ ] Fase 5 Dashboard dan Laporan PDF/Excel
+- [x] Fase 4 Peringkat, Keputusan, Finalisasi — selesai (2026-10-03)
+- [ ] Fase 5 Dashboard dan Laporan PDF/Excel — *Antrean berikutnya*
 - [ ] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil)
 - [ ] Fase 7 QA dan Hardening
 
 ---
 
 ## Catatan serah-terima (terbaru di atas)
+
+### Fase 4 — Lane D Peringkat, Keputusan, Finalisasi — 2026-10-03
+
+**Selesai:**
+- `PeringkatController` (index, show, detail perhitungan, menu Hasil MOORA → periode terbaru yang dihitung/final) dan `KeputusanController` (menu Keputusan → daftar belum diputuskan, edit/update keputusan, finalisasi) — route `keputusan.*` & `periode.finalisasi` di grup `role:pimpinan`; peringkat read-only untuk semua role.
+- Actions: `SaveKeputusan` (hanya status dihitung; catatan ≥10 karakter bila beda dari rekomendasi), `FinalizePeriode` (semua aset wajib diputuskan; status aset: Pertahankan→aktif, Perbaiki→dalam_perbaikan, Hapus→diusulkan_hapus; notifikasi ke operator & admin).
+- `Services\Peringkat\PeringkatData` (query halaman) + `PeringatanBiayaTinggi` (aturan #8: Fungsi ≥4 & Biaya = skala maks).
+- View `peringkat/` (index: hero + progres keputusan + stat rekomendasi + filter + kartu/tabel; show: nilai tiap kriteria + Yi/skor/rekomendasi/keputusan + kondisi & foto; detail-perhitungan: tab Matriks · Normalisasi · Terbobot · Hasil, penyebut diturunkan dari hasil tersimpan) dan `keputusan/edit` (3 kartu tindakan, rekomendasi ditandai, catatan wajib dinamis, navigasi aset).
+- Komponen baru: `ui/rank`, `ui/skor`, `ui/nilai-kriteria`, `ui/kondisi-foto`. Enum `TindakanAset` + `icon()`, `keterangan()`, `statusAset()`.
+- Test `PeringkatKeputusanTest` (12) memakai golden dataset §6 (urutan A3, A1, A4, A2; Yi 0,4170; penyebut 7,348469 & 5,477226). Total 101 test / 474 asersi hijau.
+
+**Cara mencoba:** operator menyelesaikan periode & Hitung MOORA → login pimpinan → Peringkat Aset → Mulai Putuskan → simpan tiap aset → Finalisasi Periode.
 
 ### Fase 3 — Lane C Periode & Input Penilaian — 2026-10-02
 

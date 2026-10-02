@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $periode_id
+ * @property int $aset_id
+ * @property int $user_id
+ * @property TindakanAset $tindakan
+ * @property TindakanAset $rekomendasi_sistem
+ * @property string|null $catatan
+ */
 class Keputusan extends Model
 {
     use HasFactory;

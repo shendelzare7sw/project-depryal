@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\StatusPeriode;
+use App\Enums\TipeKriteria;
 use App\Enums\UserRole;
 use App\Models\Aset;
 use App\Models\Kriteria;
@@ -71,4 +72,43 @@ function periodeFinalDengan(Aset $aset, ?Kriteria $kriteria = null): PeriodePeni
     }
 
     return $periode;
+}
+
+/**
+ * 3 kriteria aktif (bobot total 100%) beserta rubrik 1–5.
+ *
+ * @return list<Kriteria>
+ */
+function siapkanKriteria(): array
+{
+    return collect([['C1', TipeKriteria::Benefit, 0.40], ['C2', TipeKriteria::Benefit, 0.35], ['C3', TipeKriteria::Cost, 0.25]])
+        ->map(function (array $k, int $i) {
+            $kriteria = Kriteria::factory()->create(['kode' => $k[0], 'tipe' => $k[1], 'bobot' => $k[2], 'urutan' => $i + 1]);
+            foreach (range(1, 5) as $n) {
+                $kriteria->skala()->create(['nilai' => $n, 'label' => "Skala {$n}"]);
+            }
+
+            return $kriteria;
+        })->all();
+}
+
+function periodeDraft(int $jumlahAset = 3): PeriodePenilaian
+{
+    $periode = PeriodePenilaian::factory()->create(['status' => StatusPeriode::Draft]);
+    $periode->aset()->attach(Aset::factory()->count($jumlahAset)->create()->pluck('id'));
+
+    return $periode;
+}
+
+/**
+ * @param  list<Kriteria>  $kriteria
+ */
+function isiSemuaNilai(PeriodePenilaian $periode, array $kriteria): void
+{
+    foreach ($periode->aset as $i => $aset) {
+        foreach ($kriteria as $j => $k) {
+            NilaiKriteriaAset::create(['periode_id' => $periode->id, 'aset_id' => $aset->id, 'kriteria_id' => $k->id, 'nilai' => ($i + $j) % 5 + 1]);
+        }
+    }
+    $periode->update(['status' => StatusPeriode::Dinilai]);
 }

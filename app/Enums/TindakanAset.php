@@ -27,4 +27,34 @@ enum TindakanAset: string
             self::Hapus => 'error',
         };
     }
+
+    public function icon(): string
+    {
+        return match ($this) {
+            self::Pertahankan => 'shield-check',
+            self::Perbaiki => 'wrench-screwdriver',
+            self::Hapus => 'archive-box-x-mark',
+        };
+    }
+
+    public function keterangan(): string
+    {
+        return match ($this) {
+            self::Pertahankan => 'Aset layak dipakai; lanjutkan pemeliharaan rutin.',
+            self::Perbaiki => 'Aset perlu diperbaiki/direhabilitasi agar berfungsi optimal.',
+            self::Hapus => 'Aset diusulkan untuk penghapusan BMD.',
+        };
+    }
+
+    /**
+     * Status aset setelah periode difinalisasi.
+     */
+    public function statusAset(): StatusAset
+    {
+        return match ($this) {
+            self::Pertahankan => StatusAset::Aktif,
+            self::Perbaiki => StatusAset::DalamPerbaikan,
+            self::Hapus => StatusAset::DiusulkanHapus,
+        };
+    }
 }

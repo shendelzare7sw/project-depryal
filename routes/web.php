@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriAsetController;
+use App\Http\Controllers\KeputusanController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\NotifikasiController;
@@ -48,7 +49,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::get('periode', [PeriodeController::class, 'index'])->name('periode.index');
         Route::get('periode/{periode}', [PeriodeController::class, 'show'])->name('periode.show');
         Route::get('periode/{periode}/peringkat', [PeringkatController::class, 'index'])->name('peringkat.index');
-        Route::get('periode/{periode}/peringkat/{aset}', [PeringkatController::class, 'show'])->name('peringkat.show');
+        Route::get('periode/{periode}/peringkat/{aset}', [PeringkatController::class, 'show'])->name('peringkat.show')->withTrashed();
         Route::get('periode/{periode}/detail-perhitungan', [PeringkatController::class, 'detail'])->name('peringkat.detail');
         Route::get('hasil', [PeringkatController::class, 'redirectOrIndex'])->name('hasil.index');
 
@@ -83,6 +84,12 @@ Route::middleware(['auth', 'active'])->group(function (): void {
     });
 
     // [LANE-C] Pimpinan only: keputusan.edit/update, periode.finalisasi
+    Route::middleware('role:pimpinan')->group(function (): void {
+        Route::get('keputusan', [KeputusanController::class, 'index'])->name('keputusan.index');
+        Route::get('periode/{periode}/keputusan/{aset}', [KeputusanController::class, 'edit'])->name('keputusan.edit')->withTrashed();
+        Route::put('periode/{periode}/keputusan/{aset}', [KeputusanController::class, 'update'])->name('keputusan.update')->withTrashed();
+        Route::post('periode/{periode}/finalisasi', [KeputusanController::class, 'finalisasi'])->name('periode.finalisasi');
+    });
 
     // [LANE-E] Admin only: pengguna, pengaturan, audit-log
     Route::middleware('role:admin')->group(function (): void {

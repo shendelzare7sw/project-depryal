@@ -9,6 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $periode_id
+ * @property int $aset_id
+ * @property float $yi
+ * @property float $skor_relatif
+ * @property int $ranking
+ * @property TindakanAset $rekomendasi
+ * @property array{normalized: array<int|string, float>, weighted: array<int|string, float>, benefit_sum: float, cost_sum: float} $detail
+ */
 class HasilMoora extends Model
 {
     use HasFactory;

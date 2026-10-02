@@ -1,0 +1,75 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Support;
+
+use App\Models\Pengaturan;
+use Illuminate\Support\Facades\Cache;
+
+class Setting
+{
+    private const CACHE_KEY = 'sikaset_settings';
+
+    /**
+     * @return array<string, string|null>
+     */
+    public static function all(): array
+    {
+        return Cache::rememberForever(self::CACHE_KEY, function () {
+            try {
+                return Pengaturan::pluck('value', 'key')->toArray();
+            } catch (\Throwable) {
+                return [];
+            }
+        });
+    }
+
+    public static function get(string $key, mixed $default = null): mixed
+    {
+        $all = self::all();
+
+        return $all[$key] ?? $default;
+    }
+
+    public static function set(string $key, ?string $value): void
+    {
+        Pengaturan::updateOrCreate(['key' => $key], ['value' => $value]);
+        self::clearCache();
+    }
+
+    public static function clearCache(): void
+    {
+        Cache::forget(self::CACHE_KEY);
+    }
+
+    public static function ambangPertahankan(): float
+    {
+        return (float) self::get('ambang_pertahankan', 66.67);
+    }
+
+    public static function ambangPerbaiki(): float
+    {
+        return (float) self::get('ambang_perbaiki', 33.33);
+    }
+
+    public static function namaInstansi(): string
+    {
+        return (string) self::get('nama_instansi', 'Kecamatan Batuceper');
+    }
+
+    public static function namaPenandatangan(): string
+    {
+        return (string) self::get('nama_penandatangan', 'Camat Batuceper');
+    }
+
+    public static function nipPenandatangan(): string
+    {
+        return (string) self::get('nip_penandatangan', '-');
+    }
+
+    public static function jabatanPenandatangan(): string
+    {
+        return (string) self::get('jabatan_penandatangan', 'Camat');
+    }
+}

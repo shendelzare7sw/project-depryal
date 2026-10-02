@@ -1,0 +1,79 @@
+# PROGRESS
+
+## Status
+- [x] Fase 0a Foundation Data (migrasi, model, seeder, middleware) — selesai (2026-10-01)
+- [x] Fase 0b Layout, Komponen UI, Auth & Styling — selesai (2026-10-01)
+- [x] Refactoring 3 Role: Admin, Operator, Pimpinan — selesai (2026-10-01)
+- [x] Fase 1 MOORA Core (Calculator, Resolver, CalculatePeriode Action, Unit & Feature Tests) — selesai (2026-10-01)
+- [x] Fase 2 Master Data (Aset + Import/Export Excel, Kriteria, Kategori) — selesai (2026-10-02)
+- [ ] Fase 3 Periode dan Input Penilaian — *Antrean berikutnya*
+- [ ] Fase 4 Peringkat, Keputusan, Finalisasi
+- [ ] Fase 5 Dashboard dan Laporan PDF/Excel
+- [ ] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil)
+- [ ] Fase 7 QA dan Hardening
+
+---
+
+## Catatan serah-terima (terbaru di atas)
+
+### Fase 2 — Lane B Master Data (Operator) — 2026-10-02
+
+**Selesai:**
+- **Data Aset** (`AsetController`, `views/aset/*`): index dengan pencarian nama/kode, filter kategori & status, paginasi 15 (`withQueryString`), tabel ≥md / kartu <md; detail (data BMD 11 kolom + galeri foto + alert sisa UEB); form tambah/ubah **2 tahap** (Data BMD → Kondisi & Foto, Alpine `step`), foto via kamera (`capture="environment"`) atau galeri (maks 5 foto @4 MB, disk `public`); hapus = soft delete via `<x-confirm-form>`, **ditolak** bila aset ada di periode final (`DeleteAset` → `DomainException`); hapus foto per item; badge ⚠ `<x-ui.badge-perhatian>` bila `sisa_ueb ≤ 3`.
+- **Import BMD** (`AsetImportController`, `App\Imports\AsetImport`, `App\Services\Aset\AsetImportFile`, `App\Actions\Aset\ImportAset`): unduh template → unggah (.xlsx/.xls, maks 12 MB, disimpan sementara di disk privat `local/imports/aset-{user}.ext`) → **pratinjau** (total/valid/error + daftar error per baris) → konfirmasi SweetAlert → simpan (upsert `kode_barang`+`nup`, kategori auto-create, transaksi DB). Mendukung angka `1.234.567,89`, tanggal `dd/mm/yyyy`/serial Excel/tahun saja, baris judul di 10 baris teratas, NUP otomatis berurutan per kode barang. 96 baris < 10 detik (diuji).
+- **Export** (`aset.export`, `App\Exports\AsetExport`): seluruh aset ke .xlsx; kolom = template import (+Status) sehingga hasil export bisa diimpor ulang tanpa duplikasi (diuji).
+- **Kategori Aset** (`KategoriAsetController`, `views/kategori-aset/*`): CRUD; hapus ditolak bila masih dipakai aset (termasuk yang soft-deleted). Menu baru "Kategori Aset" di sidebar operator.
+- **Kriteria** (`KriteriaController`, `Actions/Kriteria/*`, `views/kriteria/*`): index + meteran total bobot `<x-ui.progress-meter strict>` (hijau tepat 100%, merah selain itu) + rubrik lipat; CRUD dengan bobot input persen (disimpan desimal 4 digit), urutan, aktif/nonaktif, rubrik skala 1–5 di form; kriteria yang dipakai periode final: badge "Terkunci", tipe & skala dipaksa tetap (`UpdateKriteriaRequest::prepareForValidation`), tombol hapus disembunyikan & ditolak.
+- **Hak akses:** semua CUD + import/export/kategori di grup `role:operator`; admin & pimpinan read-only (index/show aset, index kriteria) — tombol aksi disembunyikan dan route mengembalikan 403 (diuji).
+- Komponen baru: `ui/badge-perhatian`, `ui/detail-item`, `ui/rubrik-list`; `ui/progress-meter` mendapat prop opsional `strict` (kompatibel mundur). Enum `StatusAset`/`TipeKriteria` mendapat `options()` untuk dropdown.
+- Test baru: `AsetTest` (16), `AsetImportTest` (14), `KriteriaTest` (10).
+
+**Status kualitas:** `composer check` hijau — Pint passed, Larastan level 5 0 error, Pest 70 tests / 316 assertions. Aturan Emas: grep `<style|<script` di luar `assets.blade.php` = 0; tidak ada `confirm()/alert()`. `migrate:fresh --seed` (MySQL) OK.
+
+**Cara mencoba:** login `operator`/`password` → menu Data Aset (Tambah / Import BMD / Export), Kategori Aset, Kriteria. Login `pimpinan` atau `admin` → Data Aset & Kriteria tampil tanpa tombol aksi.
+
+**Utang teknis / catatan:**
+- Audit log (spatie activitylog) untuk Aset/Kriteria belum dipasang — dijadwalkan bersama Audit Log di Fase 6.
+- Laravel Boost **sudah dipasang** (dev) atas izin user: MCP server `laravel-boost` (`.mcp.json`), skills di `.claude/skills`, guideline ditambahkan di AGENTS.md/CLAUDE.md. Jalankan ulang `php artisan boost:update` bila paket diperbarui. Panduan Boost yang menyebut Vite/npm diabaikan (lihat pengantar CLAUDE.md).
+- Cek visual manual 360px di browser belum dilakukan oleh agent (hanya struktur kelas mobile-first + smoke test HTTP); mohon dicek sekilas.
+- Subtitle `laporan/index.blade.php` (Lane E) masih ter-escape ganda `&amp;amp;` — perbaiki saat Fase 5.
+- Commit Git masih ditunda sesuai permintaan user (belum ada branch `phase/2-master-data`).
+
+### Titik Aman Berhenti: Fase 0 + Refactoring Role + Fase 1 MOORA Core Selesai — 2026-10-01
+
+**Kondisi Sistem Saat Ini (Titik Aman):**
+1. **Refactoring Role (Sesuai Kesepakatan User):**
+   - Role disederhanakan dan disesuaikan menjadi 3 role yang tepat sasaran:
+     - **Admin** (`admin` / `password`): Administrator Sistem (kelola pengguna, pengaturan ambang batas, audit log).
+     - **Operator** (`operator` / `password`): Pengurus Barang (kelola aset & import BMD, kriteria & bobot, periode penilaian, input nilai, hitung MOORA).
+     - **Pimpinan** (`pimpinan` / `password`): Camat / Pimpinan (lihat peringkat & detail, penentuan tindakan aset, finalisasi periode, cetak laporan).
+   - Role lama `super_admin` dihapus sepenuhnya dari kode, enum, seeder, form login, route, dan dokumentasi.
+   - Halaman login (`/login`) telah diperbarui dengan kartu akun demo interaktif ber-Alpine.js: klik satu tombol (Admin, Operator, atau Pimpinan) langsung mengisi otomatis username dan kata sandi tanpa perlu mengetik manual.
+
+2. **Fase 1 MOORA Core (Selesai Penuh & Terverifikasi):**
+   - `app/Services/Moora/MooraInput.php`: DTO input kriteria dan matriks alternatif.
+   - `app/Services/Moora/MooraResult.php` & `MooraRow.php`: DTO output hasil perhitungan.
+   - `app/Services/Moora/MooraCalculator.php`: Algoritma MOORA murni PHP tanpa dependensi DB (penyebut nol ditangani aman, skor relatif ternormalisasi 0–100, ranking competition).
+   - `app/Services/Recommendation/RecommendationResolver.php`: Penentu rekomendasi tindakan (Pertahankan, Perbaiki, Hapus) berdasarkan skor relatif dan ambang batas setting dinamis.
+   - `app/Actions/Periode/CalculatePeriode.php`: Orchestrator transaksi database lengkap dengan snapshot kriteria dan snapshot ambang batas, serta validasi integritas (bobot = 1,00, minimal kriteria & aset, penolakan periode final).
+   - Seluruh unit test golden dataset dan edge-cases lulus dengan toleransi presisi 1e-4.
+
+3. **Status Kualitas Kode (Composer Check):**
+   - **Pest Tests:** 30 tests, 104 assertions — 0 failures (100% green).
+   - **Laravel Pint:** 100% PSR-12 compliant (0 lint errors).
+   - **Larastan (PHPStan Level 5):** 0 errors (`{"tool":"phpstan","result":"passed","errors":0}`).
+   - **Aturan Emas:** 0 custom CSS, 0 script asing di view (`grep -rn "<style\|<script" resources/views | grep -v assets.blade` bernilai 0/bersih).
+
+4. **Cara Mencoba di Browser:**
+   - Akses: `http://127.0.0.1:8000/login`
+   - Klik salah satu kotak Akun Demo:
+     - **Admin** (Administrator Sistem): login `admin`, password `password`.
+     - **Operator** (Pengurus Barang): login `operator`, password `password`.
+     - **Pimpinan** (Camat Batuceper): login `pimpinan`, password `password`.
+   - Klik "Masuk ke Sistem" → masuk ke dashboard sesuai role masing-masing.
+
+5. **Langkah Berikutnya (Untuk Sesi Esok Hari):**
+   - Mulai **Fase 2: Master Data (Lane B)**:
+     - Pengelolaan Aset (CRUD, foto aset kamera/upload, filter kategori/status).
+     - Import Data BMD dari Excel sesuai format Permendagri/data aset Kecamatan Batuceper.
+     - Pengelolaan Kategori Aset & Kriteria Penilaian (meter bobot total 100% + rubrik skala 1–5).

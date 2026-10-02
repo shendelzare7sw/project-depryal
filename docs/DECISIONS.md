@@ -1,0 +1,30 @@
+# DECISIONS (append only)
+
+Format: - [YYYY-MM-DD] [Lane] Asumsi/keputusan -- alasan
+
+- [2026-10-01] [Pre-flight] spatie/laravel-activitylog v5.x membutuhkan PHP ^8.4; diinstall versi 4.x (^4.12) yang kompatibel dengan PHP 8.3 -- tidak downgrade Laravel sesuai aturan AGENTS.md
+- [2026-10-01] [Pre-flight] pestphp/pest v5.x membutuhkan PHP ^8.4; diinstall versi 4.x dengan flag --with-all-dependencies -- phpunit minor downgrade dari 12.5.37 ke 12.5.33 aman
+- [2026-10-01] [Pre-flight] DB_USERNAME=root, DB_PASSWORD kosong -- konfigurasi default Laragon lokal, cukup untuk development
+- [2026-10-01] [Pre-flight] Logo aplikasi public/img/logo.jpeg (Batuceper Cakep); favicon menggunakan file yang sama -- disediakan langsung oleh user
+- [2026-10-01] [Pre-flight] Batas upload file: foto aset maks 4096 KB (4 MB); dokumen (Excel BMD, PDF, dan lainnya) maks 12288 KB (12 MB) -- permintaan user; divalidasi di FormRequest & komponen form/file
+- [2026-10-01] [Pre-flight] Commit Git ke GitHub ditunda -- user meminta fokus progress lokal dulu
+- [2026-10-01] [Lane 0] Login mendukung username ATAU email -- memudahkan akses pengguna sesuai spec seeder akun (admin/superadmin/pimpinan) tanpa mengharuskan input email panjang
+- [2026-10-01] [Lane 0] Rate limiting 5 percobaan pada login -- keamanan aplikasi dari brute force sesuai 04-TASKS §2 item 6
+- [2026-10-01] [Lane 0] Komponen Layout App dan Guest dibuat via App\View\Components\Layouts\* -- integrasi Blade standar tanpa script/style kustom
+- [2026-10-01] [Lane 0] Menggunakan DaisyUI 4.12.24 dist/full.min.css + Tailwind Play CDN + tema corporate -- URL CDN DaisyUI 5 standalone CSS mengalami 404 pada file dist; versi 4.12 bundle lengkap menyertakan seluruh tema (corporate, light, emerald), komponen form, kartu, dan warna resmi tanpa kompilasi/build nodejs
+- [2026-10-01] [Core/Role] Simplifikasi & penyesuaian penamaan 3 role pengguna -- Role `super_admin` lama dihapus dan disederhanakan menjadi `admin` (Administrator Sistem: pengguna, pengaturan ambang, audit); role `admin` lama diubah namanya menjadi `operator` (Pengurus Barang: aset, kriteria, periode, input nilai, hitung MOORA); role `pimpinan` tetap (Camat/Sekcam: penentuan tindakan, finalisasi periode). Akun seeder: admin, operator, pimpinan (password: password). Seluruh dokumen spesifikasi, arsitektur, tasks, UI login, middleware, model, factory, dan test diperbarui konsisten.
+- [2026-10-02] [Lane B] Laravel Boost tidak dipasang meski diminta CLAUDE.md -- `boost:install` menimpa AGENTS.md proyek dan paket di luar daftar AGENTS.md §2; menunggu keputusan user
+- [2026-10-02] [Lane B] Import BMD: berkas sementara disimpan per pengguna di disk privat `local` (`imports/aset-{user_id}.xlsx|xls`), dibaca ulang saat pratinjau & konfirmasi -- tanpa session besar/tabel staging, file lama otomatis tertimpa
+- [2026-10-02] [Lane B] Import BMD: kolom wajib = kategori, kode barang, nama barang, tanggal perolehan, nilai perolehan, UEB, sisa UEB; opsional diisi otomatis: NUP (berurutan per kode barang, melewati NUP yang tertulis), jumlah=1, akumulasi penyusutan=0, harga satuan=nilai perolehan/jumlah, nilai buku=nilai perolehan−akumulasi -- data BMD lapangan sering tidak lengkap
+- [2026-10-02] [Lane B] Import BMD: tanggal berupa tahun saja (mis. 2005) dibaca 01/01/tahun; angka berisi koma dibaca format Indonesia, angka berpola 1.234.567 dibaca ribuan -- format umum laporan BMD
+- [2026-10-02] [Lane B] Import BMD: baris dengan kode barang + NUP yang sama dengan aset soft-deleted akan memulihkan aset tsb -- unique index (kode_barang, nup) mencakup baris terhapus; upsert konsisten
+- [2026-10-02] [Lane B] Import BMD: kategori dicocokkan dengan nama (tanpa beda huruf besar/kecil) atau kode; bila belum ada dibuat dengan kode dari slug nama (huruf besar, maks 16 karakter, sufiks -2, -3 bila bentrok)
+- [2026-10-02] [Lane B] Validasi aset: `sisa_ueb ≤ umur_ekonomis`, tanggal perolehan ≤ hari ini, maks 5 foto per simpan -- konsistensi data BMD
+- [2026-10-02] [Lane B] Form aset 2 tahap memakai satu `<form>` + Alpine `step`; tombol "Lanjut" memanggil `reportValidity()` -- validasi HTML tahap 1 tetap jalan tanpa JS custom; `[&[x-cloak]]:hidden` (varian Tailwind) menggantikan CSS x-cloak
+- [2026-10-02] [Lane B] Foto aset dapat diambil dari kamera (`capture="environment"`) atau galeri (dua input `fotos[]`) -- `capture` saja memaksa kamera di sebagian Android; hapus foto dilakukan dari halaman detail (form bersarang tidak valid HTML)
+- [2026-10-02] [Lane B] Kriteria tidak boleh dihapus bila sudah punya nilai penilaian (periode apa pun), bukan hanya periode final -- FK `nilai_kriteria_aset.kriteria_id` cascade akan menghapus nilai diam-diam; cukup dinonaktifkan
+- [2026-10-02] [Lane B] Rentang skala kriteria dibatasi 1–5 (min 1–4, maks ≤5, maks > min); rubrik label wajib untuk tiap nilai dalam rentang, rubrik di luar rentang dihapus -- sesuai spesifikasi rubrik 5 baris
+- [2026-10-02] [Lane B] `<x-ui.progress-meter>` mendapat prop opsional `strict` (hijau hanya bila tepat = max, merah selain itu) -- meteran bobot harus merah bila >100%; perilaku lama tidak berubah
+- [2026-10-02] [Lane B] `Route::pattern` numerik untuk `{aset}`, `{kriteria}`, `{kategori_aset}`; parameter resource kriteria dipaksa `kriteria` (bukan singular otomatis) -- mencegah `aset/create`/`aset/import` tertangkap route show grup read-only
+- [2026-10-02] [Lane B] REVISI: Laravel Boost (laravel/boost ^2.10, dev) DIPASANG atas izin user -- terverifikasi Boost hanya menambah/mengganti blok `<laravel-boost-guidelines>` (isi AGENTS.md/GEMINI.md utuh), composer hanya menambah 4 paket dev (boost, mcp, roster, symfony/yaml) tanpa mengubah versi paket lain; `composer check` tetap hijau. Keputusan sebelumnya ("tidak dipasang") dibatalkan
+- [2026-10-02] [Lane B] CLAUDE.md diberi pengantar di luar blok Boost yang meng-import @AGENTS.md dan menyatakan AGENTS.md menang bila konflik (Boost menyarankan Vite/npm build; proyek wajib CDN) -- Claude Code hanya membaca CLAUDE.md; konten di luar tag tidak disentuh `boost:install`

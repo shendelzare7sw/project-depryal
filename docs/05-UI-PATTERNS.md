@@ -59,7 +59,7 @@ Satu `<section>` kartu berisi semuanya:
 - Ringkasan error di atas form bila ada error, dan error di bawah field.
 - Kelompokkan field per maksud (identitas, nilai, kondisi, lampiran) dalam kartu/fieldset ber-ikon.
 - Grid 1 kolom di ponsel; 2–3 kolom hanya untuk nilai pendek.
-- Footer aksi konsisten (Batal · Simpan), sticky di ponsel di atas bottom-nav.
+- Footer aksi konsisten (Batal · Simpan) **wajib memakai `<x-ui.action-bar>`** (`sticky-desktop` bila perlu menempel juga di desktop) — posisinya tepat di atas bottom-nav (3.75rem + safe area) sehingga tidak ada celah. Jangan menulis ulang kelas sticky manual.
 - Hindari utility spacing ganda untuk properti yang sama (mis. `p-4` + `px-6`); tulis sumbu eksplisit.
 - Dropdown/popover di ponsel: jangan `absolute right-0 w-64`; gunakan `fixed inset-x-4` lalu `sm:absolute sm:w-*`.
 

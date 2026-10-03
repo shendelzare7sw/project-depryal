@@ -126,7 +126,7 @@
     </div>
 
     {{-- Footer aksi (sticky di ponsel, di atas bottom-nav) --}}
-    <div class="sticky bottom-[4.25rem] z-20 -mx-3 border-t border-zinc-200/80 bg-white/95 px-3 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:rounded-2xl lg:border lg:px-5">
+    <x-ui.action-bar>
         <div class="flex items-center justify-between gap-2">
             <p class="hidden text-xs text-zinc-500 sm:block" x-text="step === 1 ? 'Langkah 1 dari 2 — Data BMD' : 'Langkah 2 dari 2 — Kondisi & Foto'"></p>
             <div class="flex flex-1 gap-2 sm:flex-none">
@@ -140,5 +140,5 @@
                 </x-ui.btn>
             </div>
         </div>
-    </div>
+    </x-ui.action-bar>
 </form>

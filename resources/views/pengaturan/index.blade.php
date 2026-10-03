@@ -51,11 +51,11 @@
             </x-ui.card>
         </div>
 
-        <div class="sticky bottom-[4.25rem] z-20 -mx-3 border-t border-zinc-200/80 bg-white/95 px-3 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:rounded-2xl lg:border lg:px-5">
+        <x-ui.action-bar>
             <div class="flex items-center justify-between gap-2">
                 <p class="hidden text-xs text-zinc-500 md:block">Setiap perubahan tercatat di Audit Log (nilai sebelum & sesudah).</p>
                 <x-ui.btn type="submit" tone="primary" icon="check" class="w-full md:w-auto" ::disabled="busy || atas <= bawah">Simpan Pengaturan</x-ui.btn>
             </div>
-        </div>
+        </x-ui.action-bar>
     </form>
 </x-layouts.app>

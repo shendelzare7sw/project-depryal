@@ -73,10 +73,10 @@
         </x-ui.card>
     </div>
 
-    <div class="sticky bottom-[4.25rem] z-20 -mx-3 border-t border-zinc-200/80 bg-white/95 px-3 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:rounded-2xl lg:border lg:px-5">
+    <x-ui.action-bar>
         <div class="flex items-center justify-end gap-2">
             <x-ui.btn tone="white" :href="route('kriteria.index')">Batal</x-ui.btn>
             <x-ui.btn type="submit" tone="primary" icon="check" class="flex-1 sm:flex-none" ::disabled="busy">Simpan Kriteria</x-ui.btn>
         </div>
-    </div>
+    </x-ui.action-bar>
 </form>

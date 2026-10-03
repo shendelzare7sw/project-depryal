@@ -95,7 +95,7 @@
         </div>
 
         {{-- Aksi sticky --}}
-        <div class="sticky bottom-[4.25rem] z-20 -mx-3 border-t border-zinc-200/80 bg-white/95 px-3 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:bottom-0 lg:mx-0 lg:rounded-2xl lg:border lg:px-5">
+        <x-ui.action-bar sticky-desktop>
             <div class="flex items-center justify-between gap-2">
                 <p class="hidden text-xs text-zinc-500 md:block">Nilai kosong boleh disimpan; aset dianggap lengkap bila semua kriteria terisi.</p>
                 <div class="grid flex-1 grid-cols-2 gap-2 md:flex md:flex-none">
@@ -103,7 +103,7 @@
                     <x-ui.btn type="submit" tone="primary" icon="arrow-right" @click="lanjut = 1" ::disabled="busy">Simpan &amp; Lanjut</x-ui.btn>
                 </div>
             </div>
-        </div>
+        </x-ui.action-bar>
     </div>
     </x-confirm-form>
 </x-layouts.app>

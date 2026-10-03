@@ -8,7 +8,7 @@ app/
 │   ├── Penilaian/ SaveNilaiAset
 │   └── Keputusan/ SaveKeputusan
 ├── Enums/                        # UserRole, TipeKriteria, TindakanAset, StatusPeriode, StatusAset, JenisLaporan
-├── Exports/                      # AsetExport, PeringkatExport (maatwebsite)
+├── Exports/                      # AsetExport, AsetTemplateExport, LaporanExport (multi-sheet) + LaporanSheet
 ├── Imports/                      # AsetImport (maatwebsite)
 ├── Http/
 │   ├── Controllers/              # TIPIS. satu controller per resource
@@ -25,7 +25,7 @@ app/
 ├── Services/
 │   ├── Moora/ MooraCalculator, MooraInput, MooraResult   # PURE PHP, tanpa DB
 │   ├── Recommendation/ RecommendationResolver
-│   ├── Dashboard/ AdminDashboardStats, PimpinanDashboardStats, SuperAdminDashboardStats
+│   ├── Dashboard/ AdminDashboard, OperatorDashboard, PimpinanDashboard   # ->data(): array untuk view dashboard/{role}
 │   └── Laporan/ LaporanGenerator
 ├── Support/ Rupiah.php (format helper), Setting.php (akses tabel pengaturan ber-cache)
 └── View/Components/              # hanya jika komponen butuh logika PHP (mis. SidebarMenu); selain itu anonymous
@@ -85,7 +85,7 @@ Konvensi: `id` bigIncrements, `timestamps()`, FK `constrained()->restrictOnDelet
 | 10 | `hasil_moora` | periode_id (cascade), aset_id, yi (decimal 12,6), skor_relatif (decimal 6,2), ranking (unsignedInt), rekomendasi (TindakanAset), detail (json); unique (periode_id, aset_id) |
 | 11 | `keputusan` | periode_id (cascade), aset_id, user_id, tindakan (TindakanAset), rekomendasi_sistem (TindakanAset), catatan (text null); unique (periode_id, aset_id) |
 | 12 | `laporan` | user_id, periode_id (null), jenis (JenisLaporan), format (pdf/xlsx), nama_file, path |
-| 13 | `pengaturan` | key (unique), value (text); kunci: `ambang_pertahankan`=66.67, `ambang_perbaiki`=33.33, `nama_instansi`, `nama_penandatangan`, `nip_penandatangan`, `jabatan_penandatangan` |
+| 13 | `pengaturan` | key (unique), value (text); kunci: `ambang_pertahankan`=66.67, `ambang_perbaiki`=33.33, `nama_instansi`, `alamat_instansi`, `nama_penandatangan`, `nip_penandatangan`, `jabatan_penandatangan` |
 | 14 | `activity_log` | dari `spatie/laravel-activitylog` |
 
 > Perbedaan terhadap laporan Bab III (dokumentasikan di Bab III revisi): `foto`/`deskripsi_kondisi` dipindah ke `aset_foto` & `periode_aset` agar punya histori per periode; ditambah `kategori_aset`, `periode_penilaian`, `periode_aset`, `kriteria_skala`, `pengaturan`.
@@ -104,6 +104,7 @@ TindakanAset:  Pertahankan='pertahankan', Perbaiki='perbaiki', Hapus='hapus'   /
 StatusPeriode: Draft='draft', Dinilai='dinilai', Dihitung='dihitung', Final='final'
 StatusAset:    Aktif='aktif', DalamPerbaikan='dalam_perbaikan', DiusulkanHapus='diusulkan_hapus'
 JenisLaporan:  Peringkat='peringkat', Keputusan='keputusan', Lengkap='lengkap'
+FormatLaporan: Pdf='pdf', Xlsx='xlsx'
 ```
 Setiap Enum punya `label(): string` (Bahasa Indonesia) dan, bila relevan, `color(): string` (nama varian DaisyUI: success/warning/error/info/ghost).
 
@@ -219,7 +220,7 @@ SaveNilaiAset::execute(PeriodePenilaian $p, Aset $a, array $nilai, ?string $kond
 SaveKeputusan::execute(PeriodePenilaian $p, Aset $a, User $by, TindakanAset $t, ?string $catatan): Keputusan
 
 // Services/Laporan
-LaporanGenerator::generate(JenisLaporan $j, string $format, ?PeriodePenilaian $p, User $by): Laporan
+LaporanGenerator::generate(JenisLaporan $j, FormatLaporan $f, PeriodePenilaian $p, User $by): Laporan  // berkas di disk privat local/laporan, riwayat di tabel laporan
 ```
 Aksi yang melanggar state machine melempar `DomainException` → ditangkap handler global → redirect back + toast error (satu tempat di `bootstrap/app.php`).
 

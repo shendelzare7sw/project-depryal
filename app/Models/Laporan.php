@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\FormatLaporan;
 use App\Enums\JenisLaporan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int|null $periode_id
+ * @property JenisLaporan $jenis
+ * @property FormatLaporan $format
+ * @property string $nama_file
+ * @property string $path
+ */
 class Laporan extends Model
 {
     use HasFactory;
@@ -34,6 +44,7 @@ class Laporan extends Model
     {
         return [
             'jenis' => JenisLaporan::class,
+            'format' => FormatLaporan::class,
         ];
     }
 

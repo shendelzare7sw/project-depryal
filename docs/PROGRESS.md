@@ -9,13 +9,26 @@
 - [x] Perombakan UI + Notifikasi — selesai (2026-10-02)
 - [x] Fase 3 Periode dan Input Penilaian — selesai (2026-10-02)
 - [x] Fase 4 Peringkat, Keputusan, Finalisasi — selesai (2026-10-03)
-- [ ] Fase 5 Dashboard dan Laporan PDF/Excel — *Antrean berikutnya*
-- [ ] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil)
+- [x] Fase 5 Dashboard dan Laporan PDF/Excel — selesai (2026-10-03)
+- [ ] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil) — *Antrean berikutnya*
 - [ ] Fase 7 QA dan Hardening
 
 ---
 
 ## Catatan serah-terima (terbaru di atas)
+
+### Fase 5 — Lane E Dashboard & Laporan — 2026-10-03
+
+**Selesai:**
+- Dashboard per role (`Services\Dashboard\{Operator,Pimpinan,Admin}Dashboard`, view `dashboard/{role}`):
+  - Operator: hero + tombol utama kontekstual (Buat Periode / Lanjutkan Penilaian / Hitung MOORA / Lihat Peringkat) + progres nilai periode aktif, stat, alur kerja, aset perlu perhatian, bobot kriteria, aset per kategori.
+  - Pimpinan: "N aset menunggu keputusan" + Mulai Putuskan, bar distribusi rekomendasi bertumpuk (tanpa library chart), 5 aset prioritas (skor terendah belum diputuskan), periode final, laporan terbaru.
+  - Admin: stat sistem, pengguna per role, ambang rekomendasi, aktivitas terbaru (terisi setelah audit log Fase 6), daftar periode.
+- Laporan: `LaporanGenerator` (PDF A4 dompdf / Excel multi-sheet), `LaporanController` (index + riwayat, store, download), `StoreLaporanRequest` (hanya periode dihitung/final). PDF: kop + logo + alamat instansi, ringkasan, tabel kriteria/matriks/peringkat/keputusan (header berulang tiap halaman), ⚠ biaya tinggi, blok tanda tangan + NIP, nomor halaman. Riwayat di tabel `laporan`, berkas di disk privat.
+- Enum `FormatLaporan`, pengaturan `alamat_instansi` (seeder diperbarui — jalankan `php artisan db:seed --class=PengaturanSeeder` pada DB yang sudah ada).
+- Test `LaporanDashboardTest` (12): PDF & Excel tiap jenis, 96 aset multi-halaman, validasi periode, hak akses, berkas hilang, dashboard 3 role, **jumlah query tidak bertambah seiring jumlah aset (tanpa N+1)**. Total 113 test / 525 asersi hijau.
+
+**Cara mencoba:** setelah periode dihitung → menu Laporan → pilih periode, jenis, format → Buat & Unduh; riwayat dapat diunduh ulang (admin hanya unduh).
 
 ### Fase 4 — Lane D Peringkat, Keputusan, Finalisasi — 2026-10-03
 

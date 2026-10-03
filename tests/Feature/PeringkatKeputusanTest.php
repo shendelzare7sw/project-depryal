@@ -2,60 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Actions\Periode\HitungPeriode;
 use App\Enums\StatusAset;
 use App\Enums\StatusPeriode;
 use App\Enums\TindakanAset;
-use App\Enums\TipeKriteria;
 use App\Enums\UserRole;
-use App\Models\Aset;
 use App\Models\Keputusan;
 use App\Models\Kriteria;
 use App\Models\NilaiKriteriaAset;
-use App\Models\PeriodePenilaian;
-
-/**
- * Golden dataset 01-PRODUCT-SPEC §6 yang sudah dihitung.
- *
- * @return array{periode: PeriodePenilaian, aset: array<string, Aset>}
- */
-function periodeGolden(): array
-{
-    $kriteria = collect([['C1', 'Fungsi Aset', TipeKriteria::Benefit, 0.40], ['C2', 'Efektivitas Pemanfaatan', TipeKriteria::Benefit, 0.35], ['C3', 'Biaya Pemeliharaan', TipeKriteria::Cost, 0.25]])
-        ->map(function (array $k, int $i) {
-            $model = Kriteria::factory()->create(['kode' => $k[0], 'nama' => $k[1], 'tipe' => $k[2], 'bobot' => $k[3], 'urutan' => $i + 1]);
-            foreach (range(1, 5) as $n) {
-                $model->skala()->create(['nilai' => $n, 'label' => "{$k[0]}-label-{$n}"]);
-            }
-
-            return $model;
-        });
-    $nilai = ['A1' => [4, 3, 2], 'A2' => [2, 2, 4], 'A3' => [5, 4, 1], 'A4' => [3, 5, 3]];
-    $periode = PeriodePenilaian::factory()->create(['status' => StatusPeriode::Dinilai]);
-    $aset = [];
-
-    foreach ($nilai as $nama => $baris) {
-        $aset[$nama] = Aset::factory()->create(['nama_barang' => "Aset {$nama}"]);
-        $periode->aset()->attach($aset[$nama]->id);
-        foreach ($baris as $j => $v) {
-            NilaiKriteriaAset::create(['periode_id' => $periode->id, 'aset_id' => $aset[$nama]->id, 'kriteria_id' => $kriteria[$j]->id, 'nilai' => $v]);
-        }
-    }
-
-    app(HitungPeriode::class)->execute($periode, userWithRole(UserRole::Operator));
-
-    return ['periode' => $periode->refresh(), 'aset' => $aset];
-}
-
-function putuskanSemua(PeriodePenilaian $periode, ?TindakanAset $paksa = null): void
-{
-    foreach ($periode->hasilMoora as $h) {
-        Keputusan::create([
-            'periode_id' => $periode->id, 'aset_id' => $h->aset_id, 'user_id' => userWithRole(UserRole::Pimpinan)->id,
-            'tindakan' => $paksa ?? $h->rekomendasi, 'rekomendasi_sistem' => $h->rekomendasi, 'catatan' => $paksa ? 'Keputusan berbeda untuk pengujian.' : null,
-        ]);
-    }
-}
 
 test('peringkat mengikuti golden dataset dan dapat dilihat semua role', function () {
     ['periode' => $periode] = periodeGolden();

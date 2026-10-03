@@ -58,6 +58,11 @@ class Setting
         return (string) self::get('nama_instansi', 'Kecamatan Batuceper');
     }
 
+    public static function alamatInstansi(): string
+    {
+        return (string) self::get('alamat_instansi', 'Jl. Raya Batuceper No. 1, Kota Tangerang, Banten');
+    }
+
     public static function namaPenandatangan(): string
     {
         return (string) self::get('nama_penandatangan', 'Camat Batuceper');

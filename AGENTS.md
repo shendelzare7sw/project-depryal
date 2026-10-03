@@ -46,7 +46,7 @@ Pin versi CDN (jangan `@latest`) dan kumpulkan di SATU file: `resources/views/la
 - [ ] Fitur sesuai acceptance criteria di `docs/04-TASKS.md`
 - [ ] Mobile 360px tidak overflow horizontal (selain tabel di dalam `overflow-x-auto`)
 - [ ] Pint + Larastan lolos; Pest hijau (`php artisan test`)
-- [ ] Tidak melanggar Aturan Emas (cek: `grep -rn "<style\|<script" resources/views | grep -v assets.blade` hanya boleh muncul di `assets.blade.php`/komponen resmi)
+- [ ] Tidak melanggar Aturan Emas (cek: `grep -rn "<style\|<script" resources/views | grep -v "assets.blade\|laporan/pdf"` harus kosong; `<style>` hanya di `assets.blade.php` dan template cetak dompdf `laporan/pdf/*`)
 - [ ] Migrasi + seeder dapat dijalankan ulang: `php artisan migrate:fresh --seed`
 
 ## 6. Protokol Kerja Bertahap (Satu Agent)

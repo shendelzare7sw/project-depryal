@@ -65,6 +65,17 @@ final class PeriodeDetail
     }
 
     /**
+     * Aset pertama (urut kode/NUP) yang nilainya belum lengkap; null bila semua lengkap.
+     */
+    public function asetBelumLengkapPertama(PeriodePenilaian $periode): ?int
+    {
+        $jumlahKriteria = Kriteria::where('is_active', true)->count();
+
+        return $this->asetPeriode($periode, Kriteria::where('is_active', true)->pluck('id')->all())
+            ->first(fn (Aset $a) => $a->getAttribute('nilai_terisi') < $jumlahKriteria)?->id;
+    }
+
+    /**
      * Aset berikutnya (setelah aset ini, berputar) yang nilainya belum lengkap; null bila semua lengkap.
      */
     public function asetBelumLengkapBerikutnya(PeriodePenilaian $periode, Aset $aset): ?int

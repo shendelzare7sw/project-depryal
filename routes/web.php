@@ -56,6 +56,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::resource('aset', AsetController::class)->only(['index', 'show']);
         Route::resource('kriteria', KriteriaController::class)->only(['index'])->parameters(['kriteria' => 'kriteria']);
         Route::get('laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('laporan/{laporan}/unduh', [LaporanController::class, 'download'])->name('laporan.download')->whereNumber('laporan');
     });
 
     // [LANE-B] Operator only: aset CUD, import/export, kategori, kriteria CUD, periode create, penilaian, hitung
@@ -89,6 +90,11 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::get('periode/{periode}/keputusan/{aset}', [KeputusanController::class, 'edit'])->name('keputusan.edit')->withTrashed();
         Route::put('periode/{periode}/keputusan/{aset}', [KeputusanController::class, 'update'])->name('keputusan.update')->withTrashed();
         Route::post('periode/{periode}/finalisasi', [KeputusanController::class, 'finalisasi'])->name('periode.finalisasi');
+    });
+
+    // Laporan: dibuat oleh Operator & Pimpinan (Admin hanya melihat/mengunduh)
+    Route::middleware('role:operator,pimpinan')->group(function (): void {
+        Route::post('laporan', [LaporanController::class, 'store'])->name('laporan.store');
     });
 
     // [LANE-E] Admin only: pengguna, pengaturan, audit-log

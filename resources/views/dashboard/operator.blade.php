@@ -2,29 +2,28 @@
     @php
         $user = auth()->user();
         $selesai = collect($langkah)->where('done', true)->count();
-        $pesanRole = [
-            'operator' => 'Kelola data aset, kriteria, dan penilaian hingga peringkat MOORA siap diputuskan.',
-            'pimpinan' => 'Tinjau peringkat dan rekomendasi sistem, lalu tetapkan tindakan untuk setiap aset.',
-            'admin' => 'Pantau pengguna, pengaturan ambang rekomendasi, dan jejak aktivitas sistem.',
-        ][$user->role->value];
     @endphp
 
-    <x-ui.hero :eyebrow="'SIKASET · '.now()->translatedFormat('l, d F Y')" :title="'Halo, '.$user->name.'!'" :subtitle="$pesanRole">
+    <x-ui.hero :eyebrow="'SIKASET · '.now()->translatedFormat('l, d F Y')" :title="'Halo, '.$user->name.'!'"
+        subtitle="Kelola data aset, kriteria, dan penilaian hingga peringkat MOORA siap diputuskan pimpinan.">
         <x-slot:actions>
-            @if ($user->isOperator())
-            <x-ui.btn tone="amber" icon="plus" :href="route('aset.create')">Tambah Aset</x-ui.btn>
+            <x-ui.btn tone="amber" :icon="$aksiUtama['icon']" :href="$aksiUtama['href']">{{ $aksiUtama['label'] }}</x-ui.btn>
+            <x-ui.btn tone="glass" icon="plus" :href="route('aset.create')">Tambah Aset</x-ui.btn>
             <x-ui.btn tone="glass" icon="arrow-up-tray" :href="route('aset.import')">Import BMD</x-ui.btn>
-            @else
-            <x-ui.btn tone="amber" icon="building-office-2" :href="route('aset.index')">Lihat Data Aset</x-ui.btn>
-            @endif
-            <x-ui.btn tone="glass" icon="scale" :href="route('kriteria.index')">Kriteria</x-ui.btn>
         </x-slot:actions>
         <x-slot:aside>
-            <div class="hidden w-56 rounded-2xl bg-white/10 p-4 ring-1 ring-inset ring-white/20 lg:block">
+            <div class="w-full rounded-2xl bg-white/10 p-4 ring-1 ring-inset ring-white/20 lg:w-64">
+                @if ($periode)
+                <p class="truncate text-[11px] font-bold uppercase tracking-wide text-brand-100">Periode aktif · {{ $periode->status->label() }}</p>
+                <p class="mt-1 text-3xl font-extrabold !text-white">{{ $progres['persen'] }}<span class="text-base font-bold text-brand-100">% nilai</span></p>
+                <progress class="progress mt-3 h-2 w-full bg-white/20 [&::-webkit-progress-value]:bg-amber-300 [&::-moz-progress-bar]:bg-amber-300" value="{{ $progres['terisi'] }}" max="{{ max(1, $progres['diperlukan']) }}"></progress>
+                <p class="mt-2 truncate text-xs text-brand-50/90">{{ $progres['terisi'] }}/{{ $progres['diperlukan'] }} nilai · {{ $periode->nama }}</p>
+                @else
                 <p class="text-[11px] font-bold uppercase tracking-wide text-brand-100">Progres alur SPK</p>
                 <p class="mt-1 text-3xl font-extrabold !text-white">{{ $selesai }}<span class="text-base font-bold text-brand-100">/{{ count($langkah) }}</span></p>
                 <progress class="progress mt-3 h-2 w-full bg-white/20 [&::-webkit-progress-value]:bg-amber-300 [&::-moz-progress-bar]:bg-amber-300" value="{{ $selesai }}" max="{{ count($langkah) }}"></progress>
-                <p class="mt-2 text-xs text-brand-50/90">langkah selesai</p>
+                <p class="mt-2 text-xs text-brand-50/90">Belum ada periode aktif</p>
+                @endif
             </div>
         </x-slot:aside>
     </x-ui.hero>

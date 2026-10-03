@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
 use App\Enums\TindakanAset;
+use App\Models\Concerns\TercatatAudit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Keputusan extends Model
 {
-    use HasFactory;
+    use HasFactory, TercatatAudit;
 
     protected $table = 'keputusan';
 
@@ -69,5 +71,15 @@ class Keputusan extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::Keputusan;
+    }
+
+    public function labelAudit(): string
+    {
+        return 'periode #'.$this->periode_id.', aset #'.$this->aset_id.' → '.$this->tindakan->label();
     }
 }

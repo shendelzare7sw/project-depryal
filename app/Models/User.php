@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
 use App\Enums\UserRole;
+use App\Models\Concerns\TercatatAudit;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +23,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, TercatatAudit;
 
     protected $table = 'users';
 
@@ -93,6 +95,25 @@ class User extends Authenticatable
     }
 
     /**
+     * Filter daftar pengguna: q (nama/username/email), role, status (aktif|nonaktif).
+     *
+     * @param  Builder<User>  $query
+     * @param  array<string, mixed>  $filters
+     */
+    public function scopeFilter(Builder $query, array $filters): void
+    {
+        $q = trim((string) ($filters['q'] ?? ''));
+        $role = UserRole::tryFrom((string) ($filters['role'] ?? ''));
+        $status = $filters['status'] ?? null;
+
+        $query
+            ->when($q !== '', fn (Builder $b) => $b->where(fn (Builder $w) => $w
+                ->where('name', 'like', "%{$q}%")->orWhere('username', 'like', "%{$q}%")->orWhere('email', 'like', "%{$q}%")))
+            ->when($role, fn (Builder $b) => $b->where('role', $role?->value))
+            ->when(in_array($status, ['aktif', 'nonaktif'], true), fn (Builder $b) => $b->where('is_active', $status === 'aktif'));
+    }
+
+    /**
      * @return HasMany<Keputusan, $this>
      */
     public function keputusan(): HasMany
@@ -106,5 +127,23 @@ class User extends Authenticatable
     public function laporan(): HasMany
     {
         return $this->hasMany(Laporan::class, 'user_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::Pengguna;
+    }
+
+    public function labelAudit(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @return list<string>
+     */
+    protected function atributTanpaAudit(): array
+    {
+        return ['password', 'remember_token', 'created_at', 'updated_at'];
     }
 }

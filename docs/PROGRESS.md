@@ -10,12 +10,31 @@
 - [x] Fase 3 Periode dan Input Penilaian — selesai (2026-10-02)
 - [x] Fase 4 Peringkat, Keputusan, Finalisasi — selesai (2026-10-03)
 - [x] Fase 5 Dashboard dan Laporan PDF/Excel — selesai (2026-10-03)
-- [ ] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil) — *Antrean berikutnya*
-- [ ] Fase 7 QA dan Hardening
+- [x] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil) — selesai (2026-10-03)
+- [ ] Fase 7 QA dan Hardening — *Antrean berikutnya (belum diminta)*
 
 ---
 
 ## Catatan serah-terima (terbaru di atas)
+
+### Fase 6 — Lane F Admin (Pengguna, Pengaturan, Audit Log, Profil) — 2026-10-03 · TITIK AMAN UNTUK BLACKBOX TESTING
+
+**Selesai:**
+- **Pengguna** (`PenggunaController`, `StorePenggunaRequest`/`UpdatePenggunaRequest`, `Actions\Pengguna\KelolaAkunPengguna`): daftar + filter (nama/username/email, peran, status), tambah, ubah, aktif/nonaktif (SweetAlert), reset password acak yang ditampilkan sekali (tombol Salin). Admin tidak bisa menurunkan peran / menonaktifkan / mereset dirinya sendiri.
+- **Pengaturan** (`PengaturanController`, `UpdatePengaturanRequest`, `Actions\Pengaturan\SimpanPengaturan`): ambang Pertahankan > Perbaiki (0–100) dengan pratinjau rentang langsung, data instansi (nama, alamat) & penandatangan (nama, jabatan, NIP) untuk laporan.
+- **Audit Log** (`AuditLogController`, `Services\AuditLogQuery`, trait `TercatatAudit`, enum `ModulAudit`): filter pengguna/modul/tanggal, paginasi, detail sebelum/sesudah per kolom (lipat).
+- **Profil**: validasi dipindah ke `UpdateProfilRequest` (email opsional, ganti password wajib password lama).
+- Test `AdminTest` (12). **Total 125 test / 598 asersi hijau**, Pint & Larastan level 5 bersih, `migrate:fresh --seed` lulus.
+
+**Panduan blackbox testing (akun: `admin` / `operator` / `pimpinan`, password `password`):**
+1. Operator: Data Aset (tambah 2 tahap + foto, import BMD → pratinjau → simpan, export), Kategori, Kriteria (bobot 100%, rubrik).
+2. Operator: Periode Penilaian → Buat Periode → Input Nilai tiap aset (Simpan & Lanjut) → Hitung MOORA.
+3. Pimpinan: lonceng notifikasi → Peringkat → Mulai Putuskan (catatan wajib bila beda rekomendasi) → Finalisasi → status aset berubah.
+4. Operator/Pimpinan: Laporan PDF/Excel (Peringkat/Keputusan/Lengkap) + riwayat; Admin hanya unduh.
+5. Admin: Pengguna, Pengaturan, Audit Log (cek jejak langkah 1–4), dashboard statistik.
+6. Operator: buka kembali periode final (alasan wajib) → notifikasi ke pimpinan.
+
+**Belum dikerjakan (Fase 7 — QA & Hardening, belum diminta):** dokumen uji Bab IV, README akun demo, audit aksesibilitas, uji perangkat nyata.
 
 ### Fase 5 — Lane E Dashboard & Laporan — 2026-10-03
 

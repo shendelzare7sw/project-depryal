@@ -53,3 +53,11 @@ Format: - [YYYY-MM-DD] [Lane] Asumsi/keputusan -- alasan
 - [2026-10-03] [Lane E] Workbook Excel memakai `LaporanExport` (WithMultipleSheets + marker Export di maatwebsite v4) dengan sheet generik `LaporanSheet`; jenis Lengkap = Kriteria + Matriks Nilai + Peringkat + Keputusan -- menggantikan nama `PeringkatExport` di rencana
 - [2026-10-03] [Lane E] Enum baru `FormatLaporan` (pdf/xlsx) dan pengaturan `alamat_instansi` untuk kop laporan -- Aturan Emas #7 (tanpa magic string); alamat dapat diubah di Pengaturan (Fase 6)
 - [2026-10-03] [Lane E] Bar distribusi rekomendasi & ambang memakai atribut `style="width: …%"` -- nilai persentase dinamis tidak dapat dinyatakan sebagai kelas utilitas statis (diizinkan 05-UI-PATTERNS §8)
+- [2026-10-03] [Lane F] Audit log memakai trait `App\Models\Concerns\TercatatAudit` (spatie LogsActivity: logFillable + logOnlyDirty, deskripsi Indonesia) pada Aset, KategoriAset, Kriteria, PeriodePenilaian, NilaiKriteriaAset, Keputusan, User; nama log = enum `ModulAudit`; password & remember_token tidak pernah dicatat -- satu konfigurasi untuk semua model, tanpa magic string
+- [2026-10-03] [Lane F] `FinalizePeriode` memperbarui status aset per model (bukan mass update) -- agar perubahan status tercatat di audit log
+- [2026-10-03] [Lane F] Perubahan pengaturan dicatat manual ke audit (log `pengaturan`, properti sebelum/sesudah); reset password dicatat tanpa nilai password
+- [2026-10-03] [Lane F] Reset password oleh admin membuat password acak 10 karakter (huruf+angka) yang ditampilkan sekali via flash session; admin tidak dapat menonaktifkan, menurunkan peran, atau mereset password akunnya sendiri (validasi FormRequest + Action)
+- [2026-10-03] [Lane F] Pengguna tidak dihapus (hanya dinonaktifkan) -- FK keputusan/laporan bersifat restrict dan riwayat audit harus tetap utuh; sesuai spesifikasi (tambah, ubah role, reset password, nonaktifkan)
+- [2026-10-03] [Lane F] Username boleh berisi huruf, angka, titik, strip, garis bawah -- akun lama dari factory/seeder dapat memakai titik
+- [2026-10-03] [Lane F] Halaman Pengaturan hanya untuk Admin (operator tidak diberi akses baca terpisah) -- ambang yang berlaku tampil di detail perhitungan & laporan; opsi paling sederhana
+- [2026-10-03] [Lane F] Email pengguna & profil opsional (kolom nullable); profil memakai `UpdateProfilRequest` dengan verifikasi password lama

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\AsetImportController;
+use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
@@ -99,7 +100,11 @@ Route::middleware(['auth', 'active'])->group(function (): void {
 
     // [LANE-E] Admin only: pengguna, pengaturan, audit-log
     Route::middleware('role:admin')->group(function (): void {
-        Route::get('pengguna', [PenggunaController::class, 'index'])->name('pengguna.index');
+        Route::resource('pengguna', PenggunaController::class)->except(['show', 'destroy'])->parameters(['pengguna' => 'user'])->whereNumber('user');
+        Route::post('pengguna/{user}/status', [PenggunaController::class, 'status'])->name('pengguna.status')->whereNumber('user');
+        Route::post('pengguna/{user}/reset-password', [PenggunaController::class, 'resetPassword'])->name('pengguna.reset-password')->whereNumber('user');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
+        Route::put('pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+        Route::get('audit-log', [AuditLogController::class, 'index'])->name('audit-log.index');
     });
 });

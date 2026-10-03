@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
 use App\Enums\StatusAset;
 use App\Enums\StatusPeriode;
+use App\Models\Concerns\TercatatAudit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +29,7 @@ use Illuminate\Support\Carbon;
  */
 class Aset extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TercatatAudit;
 
     protected $table = 'aset';
 
@@ -165,5 +167,15 @@ class Aset extends Model
     public function keputusan(): HasMany
     {
         return $this->hasMany(Keputusan::class, 'aset_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::Aset;
+    }
+
+    public function labelAudit(): string
+    {
+        return $this->nama_barang.' ('.$this->kode_barang.' / '.$this->nup.')';
     }
 }

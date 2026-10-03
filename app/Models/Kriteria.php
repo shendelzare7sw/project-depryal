@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
 use App\Enums\StatusPeriode;
 use App\Enums\TipeKriteria;
+use App\Models\Concerns\TercatatAudit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Kriteria extends Model
 {
-    use HasFactory;
+    use HasFactory, TercatatAudit;
 
     protected $table = 'kriteria';
 
@@ -122,5 +124,15 @@ class Kriteria extends Model
     public function nilaiAset(): HasMany
     {
         return $this->hasMany(NilaiKriteriaAset::class, 'kriteria_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::Kriteria;
+    }
+
+    public function labelAudit(): string
+    {
+        return $this->kode.' — '.$this->nama;
     }
 }

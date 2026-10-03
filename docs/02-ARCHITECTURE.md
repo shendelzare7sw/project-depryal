@@ -161,6 +161,8 @@ Semua anonymous component (`resources/views/components`). Props ringkas, **tanpa
 | `<x-flash/>` | | toast SweetAlert dari `session('success'|'error')` |
 | `<x-rupiah :value/>` | | `Rp 1.234.567,89` |
 
+Audit: trait `App\Models\Concerns\TercatatAudit` (spatie LogsActivity, log_name = enum `ModulAudit`) pada Aset, KategoriAset, Kriteria, PeriodePenilaian, NilaiKriteriaAset, Keputusan, User; dibaca di `audit-log.index` via `Services\AuditLogQuery`. Otorisasi memakai middleware `role:` per grup route (Policy terpisah tidak dipakai — lihat DECISIONS).
+
 Notifikasi dalam aplikasi: tabel `notifications` (Laravel), `App\Notifications\SistemNotification(judul, pesan, url, icon, tone)`, dikirim via `App\Services\Notifikasi::kirimKeRole(roles, notifikasi, kecuali)`. Route `notifikasi.index|baca|baca-semua`.
 
 ## 6. Referensi implementasi aset CDN & SweetAlert (boleh disalin apa adanya)

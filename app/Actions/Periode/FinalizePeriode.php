@@ -36,8 +36,9 @@ final class FinalizePeriode
         }
 
         DB::transaction(function () use ($periode, $by, $keputusan): void {
-            foreach ($keputusan as $k) {
-                Aset::whereKey($k->aset_id)->update(['status' => $k->tindakan->statusAset()->value]);
+            // Update per model (bukan mass update) agar perubahan status tercatat di audit log.
+            foreach (Aset::withTrashed()->whereIn('id', $keputusan->pluck('aset_id'))->get()->keyBy('id') as $id => $aset) {
+                $aset->update(['status' => $keputusan->firstWhere('aset_id', $id)?->tindakan->statusAset()]);
             }
 
             $periode->update([

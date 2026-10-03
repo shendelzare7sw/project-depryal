@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
+use App\Models\Concerns\TercatatAudit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class NilaiKriteriaAset extends Model
 {
-    use HasFactory;
+    use HasFactory, TercatatAudit;
 
     protected $table = 'nilai_kriteria_aset';
 
@@ -56,5 +58,15 @@ class NilaiKriteriaAset extends Model
     public function kriteria(): BelongsTo
     {
         return $this->belongsTo(Kriteria::class, 'kriteria_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::Nilai;
+    }
+
+    public function labelAudit(): string
+    {
+        return 'periode #'.$this->periode_id.', aset #'.$this->aset_id.', kriteria #'.$this->kriteria_id.' = '.$this->nilai;
     }
 }

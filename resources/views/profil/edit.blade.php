@@ -16,7 +16,7 @@
         <div class="grid min-w-0 gap-5 xl:grid-cols-2">
             <x-ui.card title="Informasi akun" icon="user-circle">
                 <x-form.input name="name" label="Nama lengkap" :value="$user->name" required />
-                <x-form.input name="email" label="Alamat email" type="email" :value="$user->email" required />
+                <x-form.input name="email" label="Alamat email" type="email" :value="$user->email" hint="Opsional" />
             </x-ui.card>
             <x-ui.card title="Ganti kata sandi" icon="key" icon-tone="text-amber-500" subtitle="Kosongkan bila tidak ingin mengubah">
                 <x-form.input name="current_password" label="Kata sandi saat ini" type="password" autocomplete="current-password" />

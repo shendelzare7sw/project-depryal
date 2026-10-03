@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
+use App\Models\Concerns\TercatatAudit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class KategoriAset extends Model
 {
-    use HasFactory;
+    use HasFactory, TercatatAudit;
 
     protected $table = 'kategori_aset';
 
@@ -34,5 +36,15 @@ class KategoriAset extends Model
     public function aset(): HasMany
     {
         return $this->hasMany(Aset::class, 'kategori_aset_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::KategoriAset;
+    }
+
+    public function labelAudit(): string
+    {
+        return $this->nama;
     }
 }

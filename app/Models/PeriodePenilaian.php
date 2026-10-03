@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ModulAudit;
 use App\Enums\StatusPeriode;
+use App\Models\Concerns\TercatatAudit;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +28,7 @@ use Illuminate\Support\Carbon;
  */
 class PeriodePenilaian extends Model
 {
-    use HasFactory;
+    use HasFactory, TercatatAudit;
 
     protected $table = 'periode_penilaian';
 
@@ -171,5 +173,15 @@ class PeriodePenilaian extends Model
     public function laporan(): HasMany
     {
         return $this->hasMany(Laporan::class, 'periode_id');
+    }
+
+    public function modulAudit(): ModulAudit
+    {
+        return ModulAudit::Periode;
+    }
+
+    public function labelAudit(): string
+    {
+        return $this->nama;
     }
 }

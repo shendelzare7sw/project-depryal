@@ -40,6 +40,7 @@ Tema DaisyUI `data-theme="sikaset"` (variabel warna saja) didefinisikan sekali d
 | `<x-ui.table-action tone icon label>` | tombol ikon 36 px: `view` (sky), `edit` (amber), `delete` (rose), `success` (emerald) |
 | `<x-ui.badge tone dot>` | badge lembut `bg-*-50 text-*-700 ring-1` |
 | `<x-ui.empty-state>` | ikon dalam kotak `brand-50`, judul, teks, aksi |
+| `<x-ui.panduan>` | panduan singkat halaman (otomatis dari `App\Support\Panduan` per route & peran); **setiap halaman/menu baru wajib menambahkan entri panduan** |
 | `<x-ui.notification-bell>` | dropdown Alpine; panel `fixed inset-x-4` di ponsel, `sm:absolute sm:right-0 sm:w-96` di desktop |
 
 Komponen baru hanya bila polanya dipakai ≥2 modul. Halaman satu-pemakai tetap satu view.

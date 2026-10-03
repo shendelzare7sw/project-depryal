@@ -36,6 +36,7 @@
         {{-- Konten: memenuhi lebar shell (tanpa max-w) --}}
         <main class="w-full min-w-0 flex-1 overflow-x-clip px-3 pb-28 pt-4 sm:px-6 sm:pt-5 lg:px-8 lg:pb-8">
             <div class="w-full min-w-0 space-y-5">
+                @if ($panduan)<x-ui.panduan :panduan="$panduan" :kunci="$kunciPanduan" />@endif
                 {{ $slot }}
             </div>
         </main>

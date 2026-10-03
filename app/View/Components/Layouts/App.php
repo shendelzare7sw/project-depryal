@@ -6,6 +6,7 @@ namespace App\View\Components\Layouts;
 
 use App\Models\User;
 use App\Support\Navigation;
+use App\Support\Panduan;
 use Illuminate\Contracts\View\View;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
@@ -28,6 +29,11 @@ class App extends Component
 
     public int $notifikasiBelumDibaca = 0;
 
+    /** @var array<string, mixed>|null */
+    public ?array $panduan = null;
+
+    public string $kunciPanduan = '';
+
     public function __construct(
         public ?string $title = null,
         public ?string $subtitle = null,
@@ -40,6 +46,8 @@ class App extends Component
             $this->mobileNavigation = Navigation::mobile($user);
             $this->notifikasi = $user->notifications()->limit(6)->get();
             $this->notifikasiBelumDibaca = $user->unreadNotifications()->count();
+            $this->kunciPanduan = (string) request()->route()?->getName();
+            $this->panduan = Panduan::untuk($this->kunciPanduan, $user->role);
         }
     }
 

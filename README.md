@@ -2,7 +2,7 @@
 
 Sistem Pendukung Keputusan berbasis web untuk menilai kelayakan Barang Milik Daerah (BMD) gedung & bangunan di **Kecamatan Batuceper, Kota Tangerang** dengan metode **MOORA** (*Multi-Objective Optimization on the basis of Ratio Analysis*). Sistem menghasilkan peringkat aset dan rekomendasi tindakan (**Pertahankan / Perbaiki / Hapus**); keputusan akhir tetap di tangan Pimpinan.
 
-## Akun demo
+## Akun awal (dari seeder — segera ganti kata sandinya)
 
 | Peran | Username | Password | Tugas |
 |---|---|---|---|
@@ -32,6 +32,8 @@ Dokumen uji black-box & perbandingan perhitungan manual (bahan Bab IV): [docs/06
 
 ## Checklist produksi
 - `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL` sesuai domain (HTTPS).
+- **Cloudflare Turnstile:** buat widget di dash.cloudflare.com → Turnstile (domain aplikasi), lalu isi `TURNSTILE_SITE_KEY` & `TURNSTILE_SECRET_KEY` (jangan pakai test key). Kosongkan keduanya untuk menonaktifkan.
+- Ganti kata sandi akun awal (`admin`, `operator`, `pimpinan`) atau buat akun baru lalu nonaktifkan akun awal.
 - `SESSION_SECURE_COOKIE=true`, pertimbangkan `SESSION_ENCRYPT=true`.
 - `composer install --no-dev --optimize-autoloader` (debugbar tidak ikut), lalu `php artisan config:cache route:cache view:cache`.
 - `php artisan storage:link`; pastikan `storage/` & `bootstrap/cache` dapat ditulis web server.

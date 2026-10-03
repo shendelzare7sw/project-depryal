@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Models\User;
+use App\Rules\TurnstileValid;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -26,10 +27,25 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'login' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string'],
         ];
+
+        // Turnstile aktif hanya bila kunci rahasia dikonfigurasi (.env TURNSTILE_SECRET_KEY).
+        if (filled(config('services.turnstile.secret_key'))) {
+            $rules['cf-turnstile-response'] = ['required', 'string', new TurnstileValid($this->ip())];
+        }
+
+        return $rules;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return ['cf-turnstile-response.required' => 'Selesaikan verifikasi keamanan (centang kotak "Saya bukan robot") terlebih dahulu.'];
     }
 
     public function authenticate(): void

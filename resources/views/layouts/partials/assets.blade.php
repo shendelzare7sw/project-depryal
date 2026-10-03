@@ -53,5 +53,10 @@
 {{-- Alpine.js v3 --}}
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
 
+{{-- Cloudflare Turnstile (hanya di halaman login & bila dikonfigurasi) --}}
+@if (request()->routeIs('login') && config('services.turnstile.site_key'))
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+@endif
+
 {{-- SweetAlert2 v11 --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.all.min.js"></script>

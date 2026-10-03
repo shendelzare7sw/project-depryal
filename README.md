@@ -26,13 +26,14 @@ php artisan serve                                   # buka http://127.0.0.1:8000
 
 ## Kualitas & pengujian
 ```bash
-composer check   # Pint + Larastan level 5 + Pest (134 test)
+composer check   # Pint + Larastan level 5 + Pest (142 test)
 ```
 Dokumen uji black-box & perbandingan perhitungan manual (bahan Bab IV): [docs/06-PENGUJIAN-BAB-IV.md](docs/06-PENGUJIAN-BAB-IV.md).
 
 ## Checklist produksi
 - `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL` sesuai domain (HTTPS).
 - **Cloudflare Turnstile:** buat widget di dash.cloudflare.com → Turnstile (domain aplikasi), lalu isi `TURNSTILE_SITE_KEY` & `TURNSTILE_SECRET_KEY` (jangan pakai test key). Kosongkan keduanya untuk menonaktifkan.
+- Pastikan `DEBUGBAR_ENABLED=false` dan `BOOST_BROWSER_LOGS_WATCHER=false`; dengan `APP_DEBUG=false` halaman galat tidak menampilkan detail teknis. *Kode HTML/CSS/JS yang tampil di "View page source" memang publik & tidak berisi rahasia — semua rahasia (APP_KEY, kata sandi DB, secret Turnstile) hanya ada di `.env` server.*
 - Ganti kata sandi akun awal (`admin`, `operator`, `pimpinan`) atau buat akun baru lalu nonaktifkan akun awal.
 - `SESSION_SECURE_COOKIE=true`, pertimbangkan `SESSION_ENCRYPT=true`.
 - `composer install --no-dev --optimize-autoloader` (debugbar tidak ikut), lalu `php artisan config:cache route:cache view:cache`.

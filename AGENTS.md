@@ -66,6 +66,8 @@ Pin versi CDN (jangan `@latest`) dan kumpulkan di SATU file: `resources/views/la
 | `docs/03-SETUP.md` | Instalasi dari nol (composer, nginx, mysql), `.env`, CDN |
 | `docs/04-TASKS.md` | Rencana fase berurutan (satu agent) + prompt siap tempel |
 | `docs/05-UI-PATTERNS.md` | **Pola UI wajib** (shell, stat-grid, daftar kartu/tabel, form, notifikasi, gerbang screenshot 390/1440) |
+| `docs/06-PENGUJIAN-BAB-IV.md` | Kasus uji black-box + perbandingan perhitungan manual (bahan Bab IV) |
+| `docs/07-ALUR-APLIKASI.md` | Alur kerja aplikasi per peran (Operator → Pimpinan → Admin) |
 | `docs/PROGRESS.md` | Status fase & catatan serah-terima antar sesi (dibuat Fase 0) |
 
 ===

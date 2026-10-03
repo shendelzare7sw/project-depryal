@@ -131,10 +131,13 @@ test('operator dan admin tidak dapat memutuskan atau memfinalisasi', function (U
 test('menu Hasil MOORA dan Keputusan mengarah ke periode yang tepat', function () {
     $pimpinan = userWithRole(UserRole::Pimpinan);
     $this->actingAs($pimpinan)->get(route('hasil.index'))->assertOk()->assertSee('Belum ada periode penilaian');
+    $this->actingAs($pimpinan)->get(route('keputusan.index'))->assertOk()->assertSee('Belum ada aset yang menunggu keputusan');
 
-    ['periode' => $periode] = periodeGolden();
+    ['periode' => $periode, 'aset' => $aset] = periodeGolden();
+    Keputusan::create(['periode_id' => $periode->id, 'aset_id' => $aset['A3']->id, 'user_id' => $pimpinan->id, 'tindakan' => TindakanAset::Pertahankan, 'rekomendasi_sistem' => TindakanAset::Pertahankan]);
 
     $this->actingAs($pimpinan)->get(route('hasil.index'))->assertRedirect(route('peringkat.index', $periode));
-    $this->actingAs($pimpinan)->get(route('keputusan.index'))->assertRedirect(route('peringkat.index', [$periode, 'keputusan' => 'belum']));
-    $this->actingAs($pimpinan)->get(route('peringkat.index', [$periode, 'keputusan' => 'belum']))->assertViewHas('baris', fn ($b) => $b->count() === 4);
+    $this->actingAs($pimpinan)->get(route('keputusan.index'))
+        ->assertOk()->assertSee('3 aset menunggu keputusan Anda')->assertSee('Menunggu keputusan')->assertSee('Sudah diputuskan')
+        ->assertSee(route('keputusan.edit', [$periode, $aset['A1']]));
 });

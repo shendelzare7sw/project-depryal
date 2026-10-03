@@ -11,11 +11,30 @@
 - [x] Fase 4 Peringkat, Keputusan, Finalisasi — selesai (2026-10-03)
 - [x] Fase 5 Dashboard dan Laporan PDF/Excel — selesai (2026-10-03)
 - [x] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil) — selesai (2026-10-03)
-- [ ] Fase 7 QA dan Hardening — *Antrean berikutnya (belum diminta)*
+- [x] Fase 7 QA dan Hardening — selesai (2026-10-03)
 
 ---
 
 ## Catatan serah-terima (terbaru di atas)
+
+### Fase 7 — Lane Z QA & Hardening — 2026-10-03
+
+**Temuan & perbaikan:**
+- Bug: progres periode > 100% (nilai aset yang sudah dihapus ikut terhitung) → diperbaiki.
+- Keamanan: formula injection pada export Excel → value binder `TeksAmanFormula`.
+- Keamanan: header keamanan HTTP + `Cache-Control: no-store` untuk halaman login (tombol Back setelah logout tidak menampilkan data).
+- Keamanan: rate limit endpoint berat; login tetap 5 percobaan / menit.
+- Integritas: foto bukti periode final tidak dapat dihapus.
+- UX: menu Keputusan (pimpinan) kini halaman sendiri; halaman galat bermerek.
+- Kode: LoginController ditipiskan (LoginRequest).
+
+**Diaudit tanpa temuan:** XSS (tidak ada output `{!! !!}`), CSRF (semua form POST + @csrf), mass assignment (fillable eksplisit + FormRequest), IDOR (aset di luar periode, notifikasi orang lain, keputusan tanpa hasil → 404/ditolak), upload (gambar ≤4 MB tanpa SVG, Excel ≤12 MB di disk privat), session (regenerasi saat login, invalidasi saat logout, akun nonaktif dikeluarkan).
+
+**Dokumen:** `docs/06-PENGUJIAN-BAB-IV.md` (46 kasus uji + perbandingan manual), `docs/07-ALUR-APLIKASI.md` (alur per peran), README diperbarui (cara jalan, akun demo, checklist produksi).
+
+**Test:** `HardeningTest` (8), `AlurLengkapTest` (alur end-to-end 3 peran). **Total 134 test / 693 asersi hijau.**
+
+**Saran lanjutan (opsional):** build Tailwind/Vite agar CSP bisa dipasang; uji di perangkat HP nyata; backup otomatis.
 
 ### Fase 6 — Lane F Admin (Pengguna, Pengaturan, Audit Log, Profil) — 2026-10-03 · TITIK AMAN UNTUK BLACKBOX TESTING
 

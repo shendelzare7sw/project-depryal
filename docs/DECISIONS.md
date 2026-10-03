@@ -61,3 +61,11 @@ Format: - [YYYY-MM-DD] [Lane] Asumsi/keputusan -- alasan
 - [2026-10-03] [Lane F] Username boleh berisi huruf, angka, titik, strip, garis bawah -- akun lama dari factory/seeder dapat memakai titik
 - [2026-10-03] [Lane F] Halaman Pengaturan hanya untuk Admin (operator tidak diberi akses baca terpisah) -- ambang yang berlaku tampil di detail perhitungan & laporan; opsi paling sederhana
 - [2026-10-03] [Lane F] Email pengguna & profil opsional (kolom nullable); profil memakai `UpdateProfilRequest` dengan verifikasi password lama
+- [2026-10-03] [Lane Z] Export Excel memakai value binder `TeksAmanFormula` (teks berawalan = + - @ ditulis sebagai string) -- mencegah formula/CSV injection dari isian pengguna
+- [2026-10-03] [Lane Z] Progres periode hanya menghitung nilai milik aset yang masih ada di periode -- sebelumnya aset yang dihapus membuat progres > 100% dan status lengkap keliru
+- [2026-10-03] [Lane Z] Middleware `SecurityHeaders` (X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy, Cache-Control no-store untuk halaman login) tanpa CSP -- Tailwind Play CDN & Alpine butuh skrip inline/eval; CSP ditunda sampai migrasi ke build
+- [2026-10-03] [Lane Z] Rate limiter `berat` (20/menit/pengguna) untuk import, export, hitung MOORA, buat laporan, reset password -- mencegah beban berlebih
+- [2026-10-03] [Lane Z] Foto aset yang terkait periode final tidak dapat dihapus -- bukti penilaian harus utuh
+- [2026-10-03] [Lane Z] Logika login dipindah ke `LoginRequest::authenticate()` -- controller tipis (Aturan Emas #4), perilaku tidak berubah
+- [2026-10-03] [Lane Z] Menu Pimpinan "Keputusan" menjadi halaman sendiri (daftar menunggu/sudah diputuskan + panduan saat kosong), tidak lagi redirect ke Hasil -- masukan user: redirect membingungkan saat belum ada periode dihitung
+- [2026-10-03] [Lane Z] Halaman galat 403/404/419/429/500/503 bermerek berbahasa Indonesia

@@ -79,7 +79,12 @@
                     <a href="{{ $foto->url }}" target="_blank" rel="noopener">
                         <img src="{{ $foto->url }}" alt="Foto {{ $aset->nama_barang }}" class="aspect-square w-full object-cover transition group-hover:scale-105" loading="lazy">
                     </a>
-                    @if ($operator)
+                    @if ($foto->periode)
+                    <figcaption class="absolute inset-x-0 bottom-0 truncate bg-gradient-to-t from-black/70 to-transparent px-2 pb-1.5 pt-4 text-[10px] font-semibold text-white">
+                        @if ($foto->periode->isFinal())<x-heroicon-s-lock-closed class="mr-0.5 inline h-3 w-3" />@endif{{ $foto->periode->nama }}
+                    </figcaption>
+                    @endif
+                    @if ($operator && ! $foto->periode?->isFinal())
                     <x-confirm-form :action="route('aset.foto.destroy', [$aset, $foto])" method="DELETE" title="Hapus foto?" text="Foto akan dihapus permanen." confirm="Ya, hapus" class="absolute right-2 top-2">
                         <x-ui.table-action type="submit" tone="delete" icon="trash" label="Hapus foto" class="bg-white" />
                     </x-confirm-form>

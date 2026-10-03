@@ -79,8 +79,10 @@ class PeriodePenilaian extends Model
     public function progres(): array
     {
         $kriteriaIds = Kriteria::where('is_active', true)->pluck('id');
-        $totalAset = $this->aset()->count();
-        $perAset = $this->nilaiKriteria()->whereIn('kriteria_id', $kriteriaIds)
+        $asetIds = $this->aset()->pluck('aset.id');
+        $totalAset = $asetIds->count();
+        // Hanya nilai milik aset yang masih ada di periode (aset terhapus tidak ikut dihitung).
+        $perAset = $this->nilaiKriteria()->whereIn('kriteria_id', $kriteriaIds)->whereIn('aset_id', $asetIds)
             ->selectRaw('aset_id, COUNT(*) as jumlah')->groupBy('aset_id')->pluck('jumlah', 'aset_id');
         $diperlukan = $totalAset * $kriteriaIds->count();
         $terisi = (int) $perAset->sum();

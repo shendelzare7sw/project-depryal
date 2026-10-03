@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Exports;
 
+use App\Exports\Concerns\TeksAmanFormula;
 use App\Imports\AsetImport;
 use App\Models\Aset;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 /**
  * Ekspor seluruh daftar aset. Kolom = template import (+ status) agar berkas hasil ekspor bisa diimpor ulang.
  */
-final class AsetExport implements FromQuery, ShouldAutoSize, WithHeadings, WithMapping
+final class AsetExport implements FromQuery, ShouldAutoSize, WithCustomValueBinder, WithHeadings, WithMapping
 {
+    use TeksAmanFormula;
+
     /**
      * @return Builder<Aset>
      */

@@ -62,12 +62,12 @@ Route::middleware(['auth', 'active'])->group(function (): void {
 
     // [LANE-B] Operator only: aset CUD, import/export, kategori, kriteria CUD, periode create, penilaian, hitung
     Route::middleware('role:operator')->group(function (): void {
-        Route::get('aset/export', [AsetController::class, 'export'])->name('aset.export');
+        Route::get('aset/export', [AsetController::class, 'export'])->name('aset.export')->middleware('throttle:berat');
         Route::get('aset/import', [AsetImportController::class, 'create'])->name('aset.import');
-        Route::post('aset/import', [AsetImportController::class, 'store'])->name('aset.import.store');
+        Route::post('aset/import', [AsetImportController::class, 'store'])->name('aset.import.store')->middleware('throttle:berat');
         Route::get('aset/import/template', [AsetImportController::class, 'template'])->name('aset.import.template');
         Route::get('aset/import/pratinjau', [AsetImportController::class, 'preview'])->name('aset.import.preview');
-        Route::post('aset/import/simpan', [AsetImportController::class, 'confirm'])->name('aset.import.confirm');
+        Route::post('aset/import/simpan', [AsetImportController::class, 'confirm'])->name('aset.import.confirm')->middleware('throttle:berat');
         Route::delete('aset/{aset}/foto/{foto}', [AsetController::class, 'destroyFoto'])->name('aset.foto.destroy')->scopeBindings();
 
         Route::resource('aset', AsetController::class)->except(['index', 'show']);
@@ -79,7 +79,7 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::post('periode', [PeriodeController::class, 'store'])->name('periode.store');
         Route::get('periode/{periode}/edit', [PeriodeController::class, 'edit'])->name('periode.edit');
         Route::put('periode/{periode}', [PeriodeController::class, 'update'])->name('periode.update');
-        Route::post('periode/{periode}/hitung', [PeriodeController::class, 'hitung'])->name('periode.hitung');
+        Route::post('periode/{periode}/hitung', [PeriodeController::class, 'hitung'])->name('periode.hitung')->middleware('throttle:berat');
         Route::post('periode/{periode}/buka-kembali', [PeriodeController::class, 'bukaKembali'])->name('periode.buka-kembali');
         Route::get('periode/{periode}/penilaian/{aset}', [PenilaianController::class, 'edit'])->name('penilaian.edit');
         Route::put('periode/{periode}/penilaian/{aset}', [PenilaianController::class, 'update'])->name('penilaian.update');
@@ -95,14 +95,14 @@ Route::middleware(['auth', 'active'])->group(function (): void {
 
     // Laporan: dibuat oleh Operator & Pimpinan (Admin hanya melihat/mengunduh)
     Route::middleware('role:operator,pimpinan')->group(function (): void {
-        Route::post('laporan', [LaporanController::class, 'store'])->name('laporan.store');
+        Route::post('laporan', [LaporanController::class, 'store'])->name('laporan.store')->middleware('throttle:berat');
     });
 
     // [LANE-E] Admin only: pengguna, pengaturan, audit-log
     Route::middleware('role:admin')->group(function (): void {
         Route::resource('pengguna', PenggunaController::class)->except(['show', 'destroy'])->parameters(['pengguna' => 'user'])->whereNumber('user');
         Route::post('pengguna/{user}/status', [PenggunaController::class, 'status'])->name('pengguna.status')->whereNumber('user');
-        Route::post('pengguna/{user}/reset-password', [PenggunaController::class, 'resetPassword'])->name('pengguna.reset-password')->whereNumber('user');
+        Route::post('pengguna/{user}/reset-password', [PenggunaController::class, 'resetPassword'])->name('pengguna.reset-password')->whereNumber('user')->middleware('throttle:berat');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::put('pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
         Route::get('audit-log', [AuditLogController::class, 'index'])->name('audit-log.index');

@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Exports;
 
+use App\Exports\Concerns\TeksAmanFormula;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithTitle;
 
 /**
  * Satu sheet laporan (judul sheet, judul kolom, baris data).
  */
-final class LaporanSheet implements FromArray, ShouldAutoSize, WithHeadings, WithTitle
+final class LaporanSheet implements FromArray, ShouldAutoSize, WithCustomValueBinder, WithHeadings, WithTitle
 {
+    use TeksAmanFormula;
+
     /**
      * @param  list<string>  $headings
      * @param  list<list<mixed>>  $rows

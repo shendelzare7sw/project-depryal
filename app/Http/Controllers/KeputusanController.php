@@ -22,13 +22,15 @@ use Illuminate\View\View;
 class KeputusanController extends Controller
 {
     /**
-     * Menu "Keputusan": daftar aset yang belum diputuskan pada periode yang sedang dihitung.
+     * Menu "Keputusan": aset menunggu & sudah diputuskan pada periode berstatus dihitung,
+     * atau penjelasan alur bila belum ada periode yang siap diputuskan.
      */
-    public function index(): RedirectResponse
+    public function index(PeringkatData $data): View
     {
         $periode = PeriodePenilaian::where('status', StatusPeriode::Dihitung->value)->latest('id')->first();
+        $terakhir = PeriodePenilaian::latest('id')->first();
 
-        return $periode ? to_route('peringkat.index', [$periode, 'keputusan' => 'belum']) : to_route('hasil.index');
+        return view('keputusan.index', ($periode ? $data->index($periode) : ['periode' => null]) + ['terakhir' => $terakhir]);
     }
 
     public function edit(PeriodePenilaian $periode, Aset $aset, PeringkatData $data): View

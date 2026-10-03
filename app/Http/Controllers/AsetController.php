@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateAsetRequest;
 use App\Models\Aset;
 use App\Models\AsetFoto;
 use App\Models\KategoriAset;
+use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -48,7 +49,7 @@ class AsetController extends Controller
 
     public function show(Aset $aset): View
     {
-        $aset->load(['kategori', 'fotos']);
+        $aset->load(['kategori', 'fotos.periode']);
 
         return view('aset.show', compact('aset'));
     }
@@ -77,6 +78,7 @@ class AsetController extends Controller
 
     public function destroyFoto(Aset $aset, AsetFoto $foto): RedirectResponse
     {
+        throw_if($foto->periode?->isFinal(), DomainException::class, 'Foto ini bukti penilaian periode final dan tidak dapat dihapus.');
         Storage::disk('public')->delete($foto->path);
         $foto->delete();
 

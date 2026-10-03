@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Exports;
 
+use App\Exports\Concerns\TeksAmanFormula;
 use App\Imports\AsetImport;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 /**
  * Template Excel import BMD (judul kolom + satu baris contoh).
  * Konstruktor menerima baris lain agar test dapat membuat berkas import dengan format yang sama.
  */
-final class AsetTemplateExport implements FromArray, ShouldAutoSize, WithHeadings
+final class AsetTemplateExport implements FromArray, ShouldAutoSize, WithCustomValueBinder, WithHeadings
 {
+    use TeksAmanFormula;
+
     /**
      * @param  list<list<mixed>>|null  $rows
      */

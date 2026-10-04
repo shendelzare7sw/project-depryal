@@ -20,6 +20,7 @@ class PengaturanSeeder extends Seeder
             'nama_penandatangan' => 'H. Mulyadi, S.Sos., M.Si.',
             'nip_penandatangan' => '197105021992031004',
             'jabatan_penandatangan' => 'Camat Batuceper',
+            'batas_idle_menit' => '30',
         ];
 
         foreach ($settings as $key => $value) {

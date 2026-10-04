@@ -62,6 +62,14 @@ class Setting
         return (float) self::get('ambang_perbaiki', 33.33);
     }
 
+    /**
+     * Menit tanpa aktivitas sebelum pengguna dikeluarkan otomatis (0 = nonaktif).
+     */
+    public static function batasIdleMenit(): int
+    {
+        return max(0, (int) self::get('batas_idle_menit', 30));
+    }
+
     public static function namaInstansi(): string
     {
         return (string) self::get('nama_instansi', 'Kecamatan Batuceper');

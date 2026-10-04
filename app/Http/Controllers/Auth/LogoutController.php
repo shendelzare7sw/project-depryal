@@ -18,6 +18,8 @@ class LogoutController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return $request->input('alasan') === 'tidak-aktif'
+            ? redirect()->route('login')->with('error', 'Anda keluar otomatis karena tidak ada aktivitas. Silakan masuk kembali.')
+            : redirect()->route('login');
     }
 }

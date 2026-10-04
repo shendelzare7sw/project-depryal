@@ -49,6 +49,11 @@
                     <x-form.input name="nip_penandatangan" label="NIP" :value="$nilai('nip_penandatangan')" maxlength="30" hint="Opsional" />
                 </div>
             </x-ui.card>
+
+            <x-ui.card title="Keamanan sesi" icon="clock" icon-tone="text-sky-600" subtitle="Komputer kantor sering dipakai bergantian">
+                <x-form.select name="batas_idle_menit" label="Logout otomatis bila tidak ada aktivitas" required :placeholder="null"
+                    :options="['15' => '15 menit', '30' => '30 menit (disarankan)', '60' => '1 jam', '120' => '2 jam', '0' => 'Nonaktif']" :value="(string) $nilai('batas_idle_menit', 30)" />
+            </x-ui.card>
         </div>
 
         <x-ui.action-bar>

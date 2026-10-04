@@ -46,7 +46,8 @@
         </aside>
 
         {{-- Form --}}
-        <main class="flex items-center justify-center bg-base-200 px-5 py-10 sm:px-10 lg:bg-white">
+        <main class="relative flex items-center justify-center bg-base-200 px-5 py-10 sm:px-10 lg:bg-white">
+            <x-ui.ukuran-teks class="absolute right-4 top-4" />
             <div class="w-full max-w-sm">
                 {{ $slot }}
             </div>

@@ -27,15 +27,15 @@ Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila
 
 🟡 Pengalaman pengguna
 - [x] Kompres foto saat upload (GD, maks 1600 px, JPEG 80) — `FotoAsetTest` · commit `1f98ffb`
-- [x] Riwayat penilaian per aset (peringkat, skor, rekomendasi, keputusan per periode) di Detail Aset — `RiwayatPerbandinganTest`
-- [ ] Tombol "Perbesar teks" (diingat per perangkat)
-- [ ] Logout otomatis saat tidak aktif
+- [x] Riwayat penilaian per aset (peringkat, skor, rekomendasi, keputusan per periode) di Detail Aset — `RiwayatPerbandinganTest` · commit `f20885a`
+- [x] Tombol "Perbesar teks" (112,5%, diingat per perangkat, juga di halaman masuk) — `SesiTampilanTest`
+- [x] Logout otomatis saat tidak aktif — batas diatur Admin di Pengaturan (15/30/60/120 menit/nonaktif), aktivitas dibagi antar-tab; sesi server = batas + 5 menit — `SesiTampilanTest`
 - [ ] Uji langsung dengan 1–2 staf kecamatan — *dilakukan user/tim, bukan kode*
 
 🟢 Nilai tambah
 - [x] QR verifikasi keaslian laporan PDF + halaman `/verifikasi/{kode}` — `VerifikasiLaporanTest` · commit `be6eea2`
 - [x] Notifikasi Telegram (gratis, pengganti WhatsApp) & email; kunci diatur di menu **Integrasi** (Admin), bukan `.env` — `IntegrasiTest` (7 test) · commit `e8d113d`
-- [x] Perbandingan antar periode `/hasil/perbandingan` (naik/turun, Δ skor, rekomendasi berubah) — `RiwayatPerbandinganTest`
+- [x] Perbandingan antar periode `/hasil/perbandingan` (naik/turun, Δ skor, rekomendasi berubah) — `RiwayatPerbandinganTest` · commit `f20885a`
 - [ ] CI GitHub Actions (`composer check` tiap push)
 - [ ] Sinkronisasi dokumen Bab III (use case, ERD, matriks akses)
 

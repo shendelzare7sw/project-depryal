@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Support\Integrasi;
+use App\Support\Setting;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -36,6 +37,11 @@ class AppServiceProvider extends ServiceProvider
 
         // SMTP dari menu Integrasi (database) menimpa konfigurasi bawaan.
         Integrasi::terapkan();
+
+        // Sesi server berakhir sedikit setelah batas logout otomatis di browser (menu Pengaturan).
+        if (Setting::batasIdleMenit() > 0) {
+            config(['session.lifetime' => Setting::batasIdleMenit() + 5]);
+        }
 
         ResetPassword::toMailUsing(fn (object $notifiable, string $token) => (new MailMessage)
             ->subject('Atur Ulang Kata Sandi SIKASET')

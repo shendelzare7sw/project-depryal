@@ -48,7 +48,10 @@
         --animation-btn: 0.18s; --animation-input: 0.18s; --btn-focus-scale: 0.98; --border-btn: 1px;
     }
     [x-cloak] { display: none !important; }
+    html.teks-besar { font-size: 112.5%; }
 </style>
+{{-- Pilihan "Perbesar teks" diterapkan sebelum halaman tampil (diingat per perangkat). --}}
+<script>try { if (localStorage.getItem('sikaset-teks') === 'besar') document.documentElement.classList.add('teks-besar'); } catch (e) {}</script>
 
 {{-- Alpine.js v3 --}}
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>

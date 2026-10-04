@@ -158,3 +158,17 @@ function putuskanSemua(PeriodePenilaian $periode, ?TindakanAset $paksa = null): 
         ]);
     }
 }
+
+/**
+ * Data lengkap form Pengaturan (Admin) dengan nilai yang bisa ditimpa.
+ *
+ * @param  array<string, string>  $override
+ * @return array<string, string>
+ */
+function dataPengaturan(array $override = []): array
+{
+    return array_merge([
+        'ambang_pertahankan' => '70', 'ambang_perbaiki' => '40', 'nama_instansi' => 'Kecamatan Batuceper',
+        'alamat_instansi' => 'Jl. Raya Batuceper No. 1', 'nama_penandatangan' => 'Camat Uji', 'nip_penandatangan' => '1970', 'jabatan_penandatangan' => 'Camat Batuceper', 'batas_idle_menit' => '30',
+    ], $override);
+}

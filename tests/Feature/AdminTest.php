@@ -20,14 +20,6 @@ function dataPengguna(array $override = []): array
     ], $override);
 }
 
-function dataPengaturan(array $override = []): array
-{
-    return array_merge([
-        'ambang_pertahankan' => '70', 'ambang_perbaiki' => '40', 'nama_instansi' => 'Kecamatan Batuceper',
-        'alamat_instansi' => 'Jl. Raya Batuceper No. 1', 'nama_penandatangan' => 'Camat Uji', 'nip_penandatangan' => '1970', 'jabatan_penandatangan' => 'Camat Batuceper',
-    ], $override);
-}
-
 test('admin membuat pengguna baru yang bisa login', function () {
     $this->actingAs(userWithRole(UserRole::Admin))->post(route('pengguna.store'), dataPengguna())
         ->assertRedirect(route('pengguna.index'))->assertSessionHas('success');

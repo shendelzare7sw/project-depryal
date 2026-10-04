@@ -27,6 +27,7 @@
                     <p class="mt-0.5 hidden truncate text-xs text-zinc-500 sm:block">{{ $subtitle ?? 'Kecamatan Batuceper · '.now()->translatedFormat('l, d F Y') }}</p>
                 </div>
                 <div class="ml-auto flex items-center gap-2">
+                    <x-ui.ukuran-teks />
                     <x-ui.notification-bell :items="$notifikasi" :unread="$notifikasiBelumDibaca" />
                     <x-ui.user-menu />
                 </div>
@@ -120,5 +121,6 @@
 </div>
 
 <x-flash />
+@if (\App\Support\Setting::batasIdleMenit() > 0)<x-logout-otomatis :menit="\App\Support\Setting::batasIdleMenit()" />@endif
 </body>
 </html>

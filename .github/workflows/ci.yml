@@ -32,8 +32,23 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: composer check (Pint, Larastan, Pest)
-        run: composer check
+      - name: Pint (gaya kode)
+        run: vendor/bin/pint --test
+
+      - name: Larastan (analisis statis)
+        run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress --error-format=github
+
+      - name: Pest (test otomatis)
+        shell: bash
+        run: |
+          php artisan test --compact 2>&1 | tee pest.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            # Ringkasan kegagalan sebagai anotasi (log job hanya bisa dibaca setelah login).
+            ringkas=$(grep -E "FAIL|FAILED|Tests\|Failed asserting|Exception|Error|at tests/|\.php:[0-9]+" pest.log | head -40 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+            echo "::error title=Pest gagal::${ringkas}"
+          fi
+          exit $status
 
       - name: CSS hasil build mutakhir (php artisan sikaset:css)
         run: |

@@ -97,4 +97,24 @@
             @endif
         </x-ui.card>
     </div>
+
+    <x-ui.card title="Riwayat penilaian" icon="clock" icon-tone="text-sky-600" subtitle="Hasil MOORA & keputusan pimpinan pada setiap periode" flush>
+        @forelse ($riwayat as $r)
+        <div class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2 border-t border-zinc-100 p-4 first:border-t-0 sm:px-5 lg:grid-cols-[auto_minmax(0,1fr)_16rem_22rem]">
+            <x-ui.rank :ranking="$r['hasil']->ranking" />
+            <div class="min-w-0">
+                <a href="{{ route('peringkat.show', [$r['periode'], $aset]) }}" class="block truncate text-sm font-extrabold text-zinc-900 hover:text-brand-700">{{ $r['periode']->nama }}</a>
+                <p class="text-[11px] text-zinc-500">Peringkat {{ $r['hasil']->ranking }} dari {{ $r['total'] }} aset · {{ $r['periode']->status->label() }}</p>
+            </div>
+            <x-ui.skor :value="$r['hasil']->skor_relatif" :tindakan="$r['hasil']->rekomendasi" class="col-span-2 lg:col-span-1" />
+            <div class="col-span-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 lg:col-span-1 lg:justify-end">
+                <span class="inline-flex items-center gap-1.5"><span class="text-[11px] text-zinc-500">Rekomendasi</span> <x-ui.badge-tindakan :tindakan="$r['hasil']->rekomendasi" /></span>
+                <span class="inline-flex items-center gap-1.5"><span class="text-[11px] text-zinc-500">Keputusan</span>
+                @if ($r['keputusan'])<x-ui.badge-tindakan :tindakan="$r['keputusan']->tindakan" />@else<x-ui.badge tone="ghost">Belum</x-ui.badge>@endif</span>
+            </div>
+        </div>
+        @empty
+        <x-ui.empty-state icon="clock" title="Belum ada riwayat" text="Aset ini belum pernah masuk periode yang sudah dihitung MOORA." />
+        @endforelse
+    </x-ui.card>
 </x-layouts.app>

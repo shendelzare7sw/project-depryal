@@ -55,6 +55,7 @@ final class Panduan
                 'langkah' => $role === UserRole::Pimpinan ? ['Tinjau peringkat dan rekomendasinya.', 'Tekan "Mulai Putuskan" untuk memberi keputusan per aset.', 'Setelah semua diputuskan, tekan "Finalisasi Periode".'] : null,
                 'istilah' => self::ISTILAH_MOORA + ['⚠ Biaya tinggi' => 'Aset masih berfungsi baik tetapi biaya pemeliharaannya sangat tinggi — layak dipertimbangkan untuk dihapus.']],
             'hasil.index' => ['judul' => 'Hasil MOORA', 'isi' => 'Hasil muncul setelah operator menjalankan Hitung MOORA pada sebuah periode.', 'istilah' => self::ISTILAH_MOORA],
+            'hasil.perbandingan' => ['judul' => 'Perbandingan Periode', 'isi' => 'Melihat perubahan peringkat setiap aset dari satu periode ke periode berikutnya. Panah hijau = peringkat membaik, merah = memburuk. Baris kuning = rekomendasi berubah.'],
             'peringkat.show' => ['judul' => 'Detail Hasil Aset', 'isi' => 'Nilai setiap kriteria yang membentuk skor aset ini, serta rekomendasi sistem dan keputusan pimpinan.', 'istilah' => self::ISTILAH_MOORA],
             'peringkat.detail' => ['judul' => 'Detail Perhitungan MOORA', 'isi' => 'Langkah hitung lengkap untuk pemeriksaan/laporan. Tidak perlu diubah — cukup dibaca.',
                 'langkah' => ['Matriks: nilai asli setiap aset.', 'Normalisasi: nilai disetarakan agar kriteria berbeda bisa dibandingkan.', 'Terbobot: nilai dikalikan bobot kriteria.', 'Hasil: jumlah benefit dikurangi cost (Yi), lalu diurutkan.']],

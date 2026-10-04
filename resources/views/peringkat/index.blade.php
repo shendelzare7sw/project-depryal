@@ -20,6 +20,7 @@
             @if ($adaHasil)
             <x-ui.btn tone="glass" icon="calculator" :href="route('peringkat.detail', $periode)">Detail Perhitungan</x-ui.btn>
             @endif
+            <x-ui.btn tone="glass" icon="arrows-right-left" :href="route('hasil.perbandingan', ['baru' => $periode->id])">Bandingkan Periode</x-ui.btn>
             @if ($bisaPutus && $belumPertama)
             <x-ui.btn tone="amber" icon="check-badge" :href="route('keputusan.edit', [$periode, $belumPertama])">Mulai Putuskan</x-ui.btn>
             @endif

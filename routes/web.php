@@ -19,6 +19,7 @@ use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\PerbandinganPeriodeController;
 use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\PeriodeAsetController;
 use App\Http\Controllers\PeriodeController;
@@ -74,6 +75,7 @@ Route::middleware(['auth', 'active', 'wajib-ganti-password'])->group(function ()
         Route::get('periode/{periode}/peringkat/{aset}', [PeringkatController::class, 'show'])->name('peringkat.show')->withTrashed();
         Route::get('periode/{periode}/detail-perhitungan', [PeringkatController::class, 'detail'])->name('peringkat.detail');
         Route::get('hasil', [PeringkatController::class, 'redirectOrIndex'])->name('hasil.index');
+        Route::get('hasil/perbandingan', PerbandinganPeriodeController::class)->name('hasil.perbandingan');
 
         Route::resource('aset', AsetController::class)->only(['index', 'show']);
         Route::resource('kriteria', KriteriaController::class)->only(['index'])->parameters(['kriteria' => 'kriteria']);

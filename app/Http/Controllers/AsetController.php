@@ -14,6 +14,7 @@ use App\Models\Aset;
 use App\Models\AsetFoto;
 use App\Models\KategoriAset;
 use App\Models\PeriodePenilaian;
+use App\Services\Peringkat\RiwayatPenilaian;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -49,11 +50,11 @@ class AsetController extends Controller
         return to_route('aset.show', $aset)->with('success', 'Aset berhasil ditambahkan.');
     }
 
-    public function show(Aset $aset): View
+    public function show(Aset $aset, RiwayatPenilaian $riwayat): View
     {
         $aset->load(['kategori', 'fotos.periode']);
 
-        return view('aset.show', compact('aset'));
+        return view('aset.show', ['aset' => $aset, 'riwayat' => $riwayat->perAset($aset)]);
     }
 
     public function edit(Aset $aset): View

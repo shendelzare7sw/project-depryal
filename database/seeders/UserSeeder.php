@@ -49,7 +49,8 @@ class UserSeeder extends Seeder
         foreach ($users as $userData) {
             User::updateOrCreate(
                 ['username' => $userData['username']],
-                $userData
+                // Produksi: kata sandi awal "password" wajib diganti saat login pertama.
+                $userData + ['must_change_password' => app()->isProduction()]
             );
         }
     }

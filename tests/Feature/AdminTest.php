@@ -96,7 +96,7 @@ test('reset password menampilkan password baru sekali dan tidak mencatat passwor
     $baru = session('password_baru')['password'];
 
     expect(Hash::check($baru, $target->refresh()->password))->toBeTrue()
-        ->and(Activity::where('log_name', 'pengguna')->get()->contains(fn ($a) => str_contains(json_encode($a->properties), 'password')))->toBeFalse();
+        ->and(Activity::where('log_name', 'pengguna')->get()->contains(fn ($a) => str_contains(json_encode($a->properties), '"password"')))->toBeFalse();
 
     $this->actingAs($admin)->get(route('pengguna.index'))->assertSee($baru);
     $this->actingAs($admin)->get(route('pengguna.index'))->assertDontSee($baru);

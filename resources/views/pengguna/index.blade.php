@@ -11,7 +11,7 @@
             <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-400 text-amber-950"><x-heroicon-o-key class="h-5 w-5" /></span>
             <div>
                 <p class="text-sm font-extrabold text-amber-950">Password baru untuk {{ '@'.$baru['username'] }}</p>
-                <p class="mt-0.5 text-xs text-amber-900">Ditampilkan <strong>sekali saja</strong>. Sampaikan kepada pengguna dan minta ia menggantinya di menu Profil.</p>
+                <p class="mt-0.5 text-xs text-amber-900">Ditampilkan <strong>sekali saja</strong>. Sampaikan kepada pengguna — sistem akan memintanya mengganti kata sandi saat masuk berikutnya.</p>
             </div>
         </div>
         <div class="flex items-center gap-2">

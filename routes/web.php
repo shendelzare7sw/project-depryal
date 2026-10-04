@@ -5,8 +5,10 @@ declare(strict_types=1);
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\AsetImportController;
 use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\Auth\GantiPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\LupaPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriAsetController;
 use App\Http\Controllers\KeputusanController;
@@ -32,9 +34,15 @@ Route::pattern('periode', '[0-9]+');
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
+    Route::get('/lupa-password', [LupaPasswordController::class, 'create'])->name('password.request');
+    Route::post('/lupa-password', [LupaPasswordController::class, 'store'])->name('password.email')->middleware('throttle:tamu');
+    Route::get('/reset-password/{token}', [LupaPasswordController::class, 'edit'])->name('password.reset');
+    Route::post('/reset-password', [LupaPasswordController::class, 'update'])->name('password.update')->middleware('throttle:tamu');
 });
 
-Route::middleware(['auth', 'active'])->group(function (): void {
+Route::middleware(['auth', 'active', 'wajib-ganti-password'])->group(function (): void {
+    Route::get('/ganti-password', [GantiPasswordController::class, 'edit'])->name('password.ganti');
+    Route::put('/ganti-password', [GantiPasswordController::class, 'update'])->name('password.ganti.update');
     Route::get('/', fn () => redirect()->route('dashboard'));
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::post('/logout', LogoutController::class)->name('logout');

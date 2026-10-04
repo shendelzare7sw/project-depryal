@@ -28,7 +28,7 @@ final class KelolaAkunPengguna
     {
         $this->tolakDiriSendiri($target, $admin, 'Gunakan menu Profil untuk mengganti password Anda sendiri.');
         $password = Str::password(10, symbols: false);
-        $target->update(['password' => $password]);
+        $target->update(['password' => $password, 'must_change_password' => true]);
         activity('pengguna')->performedOn($target)->causedBy($admin)->log("Password pengguna direset: {$target->username}");
 
         return $password;

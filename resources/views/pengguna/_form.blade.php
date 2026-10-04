@@ -56,7 +56,7 @@
 
             @unless ($user->exists)
             <div class="grid grid-cols-1 gap-4 border-t border-zinc-100 pt-3 sm:grid-cols-2">
-                <x-form.input name="password" label="Password awal" type="password" required autocomplete="new-password" placeholder="Minimal 8 karakter" />
+                <x-form.input name="password" label="Password awal" hint="Wajib diganti pengguna saat login pertama" type="password" required autocomplete="new-password" placeholder="Minimal 8 karakter" />
                 <x-form.input name="password_confirmation" label="Ulangi password" type="password" required autocomplete="new-password" />
             </div>
             @endunless

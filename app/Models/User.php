@@ -19,6 +19,7 @@ use Illuminate\Notifications\Notifiable;
  *
  * @property UserRole $role
  * @property bool $is_active
+ * @property bool $must_change_password
  */
 class User extends Authenticatable
 {
@@ -37,6 +38,7 @@ class User extends Authenticatable
         'password',
         'role',
         'is_active',
+        'must_change_password',
         'nip',
         'jabatan',
     ];
@@ -59,6 +61,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => UserRole::class,
             'is_active' => 'boolean',
+            'must_change_password' => 'boolean',
         ];
     }
 

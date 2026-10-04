@@ -45,7 +45,7 @@ class UpdateProfilRequest extends FormRequest
     }
 
     /**
-     * @return array<string, string|null>
+     * @return array<string, string|bool|null>
      */
     public function dataProfil(): array
     {
@@ -53,6 +53,7 @@ class UpdateProfilRequest extends FormRequest
 
         if (filled($this->validated('password'))) {
             $data['password'] = $this->validated('password');
+            $data['must_change_password'] = false;
         }
 
         return $data;

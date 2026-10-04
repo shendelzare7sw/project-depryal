@@ -32,7 +32,7 @@ class PenggunaController extends Controller
 
     public function store(StorePenggunaRequest $request): RedirectResponse
     {
-        $user = User::create($request->validated());
+        $user = User::create($request->validated() + ['must_change_password' => true]);
 
         return to_route('pengguna.index')->with('success', "Akun {$user->username} dibuat.");
     }

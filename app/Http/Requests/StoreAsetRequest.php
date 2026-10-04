@@ -40,6 +40,7 @@ class StoreAsetRequest extends FormRequest
             'status' => ['required', Rule::enum(StatusAset::class)],
             'fotos' => ['nullable', 'array', 'max:5'],
             'fotos.*' => ['image', 'max:4096'],
+            'masuk_periode' => ['nullable', 'boolean'],
         ];
     }
 

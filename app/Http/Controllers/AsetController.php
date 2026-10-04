@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateAsetRequest;
 use App\Models\Aset;
 use App\Models\AsetFoto;
 use App\Models\KategoriAset;
+use App\Models\PeriodePenilaian;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,8 +37,9 @@ class AsetController extends Controller
     {
         $aset = new Aset(['jumlah' => 1, 'status' => StatusAset::Aktif]);
         $kategori = KategoriAset::orderBy('nama')->pluck('nama', 'id');
+        $periodeAktif = PeriodePenilaian::aktif()->first();
 
-        return view('aset.create', compact('aset', 'kategori'));
+        return view('aset.create', compact('aset', 'kategori', 'periodeAktif'));
     }
 
     public function store(StoreAsetRequest $request, SaveAset $save): RedirectResponse

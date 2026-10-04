@@ -87,6 +87,16 @@
                 @endforeach
             </div>
             @error('status')<p class="text-xs font-medium text-rose-600">{{ $message }}</p>@enderror
+            @if (! $aset->exists && ($periodeAktif ?? null))
+            <label class="flex min-h-[3.25rem] cursor-pointer items-center justify-between gap-3 rounded-xl border border-sky-200 bg-sky-50 px-3 py-2.5">
+                <span class="min-w-0">
+                    <span class="block text-sm font-bold text-sky-900">Ikut periode berjalan</span>
+                    <span class="block truncate text-xs text-sky-800">{{ $periodeAktif->nama }} (hanya aset berstatus Aktif)</span>
+                </span>
+                <input type="hidden" name="masuk_periode" value="0">
+                <input type="checkbox" name="masuk_periode" value="1" class="toggle toggle-primary" @checked(old('masuk_periode', true))>
+            </label>
+            @endif
         </x-ui.card>
 
         <x-ui.card title="Foto aset" icon="camera" icon-tone="text-violet-500" subtitle="Maks. 5 foto, masing-masing ≤ 4 MB">

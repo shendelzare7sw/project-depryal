@@ -17,6 +17,7 @@ use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PeringkatController;
+use App\Http\Controllers\PeriodeAsetController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfilController;
 use App\Models\PeriodePenilaian;
@@ -81,6 +82,10 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::put('periode/{periode}', [PeriodeController::class, 'update'])->name('periode.update');
         Route::post('periode/{periode}/hitung', [PeriodeController::class, 'hitung'])->name('periode.hitung')->middleware('throttle:berat');
         Route::post('periode/{periode}/buka-kembali', [PeriodeController::class, 'bukaKembali'])->name('periode.buka-kembali');
+        Route::delete('periode/{periode}', [PeriodeController::class, 'destroy'])->name('periode.destroy');
+        Route::get('periode/{periode}/aset/tambah', [PeriodeAsetController::class, 'create'])->name('periode.aset.create');
+        Route::post('periode/{periode}/aset', [PeriodeAsetController::class, 'store'])->name('periode.aset.store');
+        Route::delete('periode/{periode}/aset/{aset}', [PeriodeAsetController::class, 'destroy'])->name('periode.aset.destroy');
         Route::get('periode/{periode}/penilaian/{aset}', [PenilaianController::class, 'edit'])->name('penilaian.edit');
         Route::put('periode/{periode}/penilaian/{aset}', [PenilaianController::class, 'update'])->name('penilaian.update');
     });

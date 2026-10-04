@@ -4,6 +4,7 @@
         $status = $periode->status->value;
         $bisaHitung = $hambatan === [];
         $sudahHitung = in_array($status, ['dihitung', 'final'], true);
+        $bisaHapus = $operator && in_array($status, ['draft', 'dinilai'], true);
         $filterAktif = request('status');
         $pesan = [
             'draft' => 'Isi nilai semua kriteria untuk setiap aset. Status otomatis menjadi Dinilai saat semua lengkap.',
@@ -30,6 +31,12 @@
                 <x-ui.btn tone="glass" icon="calculator" disabled title="{{ implode(' ', $hambatan) }}">Hitung MOORA</x-ui.btn>
                 @endif
                 <x-ui.btn tone="glass" icon="pencil-square" :href="route('periode.edit', $periode)">Ubah</x-ui.btn>
+            @endif
+            @if ($bisaHapus)
+            <x-confirm-form :action="route('periode.destroy', $periode)" method="DELETE" title="Hapus periode ini?"
+                text="Periode beserta seluruh nilai yang sudah diisi akan dihapus permanen. Data aset dan fotonya tetap tersimpan." confirm="Ya, hapus periode">
+                <x-ui.btn type="submit" tone="glass" icon="trash">Hapus</x-ui.btn>
+            </x-confirm-form>
             @endif
             @if ($sudahHitung)
             <x-ui.btn tone="glass" icon="chart-bar" :href="route('peringkat.index', $periode)">Lihat Peringkat</x-ui.btn>
@@ -92,10 +99,15 @@
                         <p class="mt-0.5 text-xs text-zinc-500">{{ $aset->count() }} dari {{ $totalAset }} aset · {{ $kriteriaAktif }} kriteria aktif per aset</p>
                     </div>
                 </div>
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+                @if ($operator && ! $periode->isFinal())
+                <x-ui.btn tone="soft-brand" icon="plus" :href="route('periode.aset.create', $periode)">Tambah Aset</x-ui.btn>
+                @endif
                 <div class="grid grid-cols-3 gap-1 rounded-xl bg-zinc-100 p-1 text-xs font-bold">
                     @foreach (['' => 'Semua', 'belum' => 'Belum', 'lengkap' => 'Lengkap'] as $val => $label)
                     <a href="{{ route('periode.show', [$periode, 'status' => $val ?: null, 'q' => request('q')]) }}" @class(['flex h-9 items-center justify-center rounded-lg px-3', 'bg-white text-zinc-900 shadow-sm' => (string) $filterAktif === $val, 'text-zinc-500 hover:text-zinc-800' => (string) $filterAktif !== $val])>{{ $label }}</a>
                     @endforeach
+                </div>
                 </div>
             </div>
             <form method="GET" class="mt-3 flex gap-2">
@@ -126,7 +138,10 @@
                     <progress @class(['progress mt-2 h-1.5 w-full bg-zinc-200', 'progress-success' => $lengkap, 'progress-primary' => ! $lengkap]) value="{{ $item->nilai_terisi }}" max="{{ max(1, $kriteriaAktif) }}"></progress>
                 </div>
                 @if ($bisaNilai)
-                <x-ui.btn :tone="$lengkap ? 'soft-brand' : 'primary'" :icon="$lengkap ? 'pencil-square' : 'clipboard-document-check'" :href="route('penilaian.edit', [$periode, $item])" class="mt-3 w-full">{{ $lengkap ? 'Ubah Nilai' : 'Input Nilai' }}</x-ui.btn>
+                <div class="mt-3 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+                    <x-ui.btn :tone="$lengkap ? 'soft-brand' : 'primary'" :icon="$lengkap ? 'pencil-square' : 'clipboard-document-check'" :href="route('penilaian.edit', [$periode, $item])" class="w-full">{{ $lengkap ? 'Ubah Nilai' : 'Input Nilai' }}</x-ui.btn>
+                    @include('periode._keluarkan', ['item' => $item, 'compact' => true])
+                </div>
                 @endif
             </article>
             @empty
@@ -137,7 +152,7 @@
         @if ($aset->isNotEmpty())
         <div class="hidden overflow-x-auto lg:block">
             <table class="w-full min-w-[900px] table-fixed text-left text-sm">
-                <colgroup><col class="w-12"><col><col class="w-[18%]"><col class="w-48"><col class="w-20"><col class="w-28"><col class="w-36"></colgroup>
+                <colgroup><col class="w-12"><col><col class="w-[18%]"><col class="w-48"><col class="w-20"><col class="w-28"><col class="w-40"></colgroup>
                 <thead class="bg-zinc-50 text-[10px] font-bold uppercase tracking-wide text-zinc-500">
                     <tr><th class="px-3 py-3 text-center">No</th><th class="px-3 py-3">Aset</th><th class="px-3 py-3">Kategori</th><th class="px-3 py-3">Nilai terisi</th><th class="px-3 py-3 text-center">Foto</th><th class="px-3 py-3">Status</th><th class="px-3 py-3 text-right">Aksi</th></tr>
                 </thead>
@@ -161,6 +176,7 @@
                                 <x-ui.table-action :href="route('aset.show', $item)" tone="view" icon="eye" label="Detail aset" />
                                 @if ($bisaNilai)
                                 <x-ui.table-action :href="route('penilaian.edit', [$periode, $item])" :tone="$lengkap ? 'edit' : 'success'" :icon="$lengkap ? 'pencil-square' : 'clipboard-document-check'" :label="$lengkap ? 'Ubah nilai' : 'Input nilai'" />
+                                @include('periode._keluarkan', ['item' => $item, 'compact' => false])
                                 @endif
                             </div>
                         </td>

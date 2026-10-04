@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Periode\CreatePeriode;
+use App\Actions\Periode\DeletePeriode;
 use App\Actions\Periode\HitungPeriode;
 use App\Actions\Periode\ReopenPeriode;
 use App\Enums\StatusAset;
@@ -75,5 +76,12 @@ class PeriodeController extends Controller
         $reopen->execute($periode, $request->user(), $request->validated('alasan'));
 
         return to_route('periode.show', $periode)->with('success', 'Periode dibuka kembali. Pimpinan dapat meninjau ulang keputusan.');
+    }
+
+    public function destroy(PeriodePenilaian $periode, DeletePeriode $delete): RedirectResponse
+    {
+        $delete->execute($periode);
+
+        return to_route('periode.index')->with('success', "Periode \"{$periode->nama}\" dihapus.");
     }
 }

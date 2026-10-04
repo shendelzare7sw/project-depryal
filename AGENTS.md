@@ -67,6 +67,7 @@ Pin versi (jangan `@latest`) dan muat semua aset dari SATU file: `resources/view
 | `docs/04-TASKS.md` | Rencana fase berurutan (satu agent) + prompt siap tempel |
 | `docs/05-UI-PATTERNS.md` | **Pola UI wajib** (shell, stat-grid, daftar kartu/tabel, form, notifikasi, gerbang screenshot 390/1440) |
 | `docs/06-PENGUJIAN-BAB-IV.md` | Kasus uji black-box + perbandingan perhitungan manual (bahan Bab IV) |
+| `docs/08-SINKRON-BAB-III.md` | Sinkronisasi Bab III: aktor & 31 use case, matriks akses, ERD, kamus data sistem akhir |
 | `docs/07-ALUR-APLIKASI.md` | Alur kerja aplikasi per peran (Operator → Pimpinan → Admin) |
 | `docs/PROGRESS.md` | Status fase & catatan serah-terima antar sesi (dibuat Fase 0) |
 

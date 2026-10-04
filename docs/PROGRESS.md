@@ -41,7 +41,7 @@ Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila
 - [x] Notifikasi Telegram (gratis, pengganti WhatsApp) & email; kunci diatur di menu **Integrasi** (Admin), bukan `.env` — `IntegrasiTest` (7 test) · commit `e8d113d`
 - [x] Perbandingan antar periode `/hasil/perbandingan` (naik/turun, Δ skor, rekomendasi berubah) — `RiwayatPerbandinganTest` · commit `f20885a`
 - [x] CI GitHub Actions: `composer check` + cek Aturan Emas + CSS build mutakhir — `.github/workflows/ci.yml` · commit `6634bab`
-- [ ] Sinkronisasi dokumen Bab III (use case, ERD, matriks akses)
+- [x] Sinkronisasi dokumen Bab III — `docs/08-SINKRON-BAB-III.md` (3 aktor, 31 use case, matriks akses dari route, ERD mermaid & kamus data dari migrasi, daftar revisi teks Bab II–IV)
 
 ---
 

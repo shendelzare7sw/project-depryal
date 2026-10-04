@@ -3,6 +3,8 @@
 Sumber: Bab I (Pendahuluan), Bab II (Landasan Teori), Bab III (Analisa & Perancangan).
 Status: ✅ dipakai apa adanya · 🔧 diperbaiki/diperluas · ➕ ditambahkan karena laporan belum memuat.
 
+> **Versi akhir sistem (aktor, use case, matriks akses, ERD, kamus data) ada di `08-SINKRON-BAB-III.md`** — dokumen ini mencatat keputusan awal.
+
 ## A. Yang dipertahankan dari laporan
 | # | Isi laporan | Implementasi |
 |---|---|---|
@@ -31,7 +33,7 @@ Status: ✅ dipakai apa adanya · 🔧 diperbaiki/diperluas · ➕ ditambahkan k
 | B9 | `HasilMOORA` hanya skor+ranking | Tidak bisa membuktikan perhitungan / bobot saat itu | 🔧 simpan `skor_yi`, `skor_relatif`, `ranking`, `rekomendasi`, `detail` (JSON matriks normalisasi & terbobot) + **snapshot bobot** di periode |
 | B10 | Rekomendasi Pertahankan/Perbaiki/Hapus disebut, tetapi **aturan ambang tidak ada** | Agent tidak tahu cara memetakan skor → rekomendasi | ➕ Ambang konfigurable di tabel `pengaturan` (default 66,67 / 33,33 dari skor relatif) + keputusan akhir tetap manual |
 | B11 | Foto kondisi: 1 kolom `foto` | Kondisi fisik lazimnya butuh beberapa foto | 🔧 tabel `aset_foto` (multi-foto, caption) |
-| B12 | Role hanya Admin & Pimpinan; tidak ada manajemen user | Siapa yang membuat akun? | ➕ Role **Super Admin** (kelola user, pengaturan, audit log). Admin = Pengurus Barang. Pimpinan. |
+| B12 | Role hanya Admin & Pimpinan; tidak ada manajemen user | Siapa yang membuat akun? | ➕ 3 peran akhir: **Admin** (kelola pengguna, pengaturan, integrasi, cadangan, audit log), **Operator** = Pengurus Barang, **Pimpinan**. (Rancangan awal menyebut "Super Admin" — lihat `08-SINKRON-BAB-III.md`.) |
 | B13 | Tidak ada dashboard/ringkasan "aset perlu perhatian" untuk Admin | Pimpinan saja yang punya ringkasan (Gbr 3.26) | 🔧 Dashboard per role; indikator awal "perlu perhatian" dari `sisa_ueb ≤ 3` (7+8 = 15 aset ≈ 15,6% di data BMD) |
 | B14 | Hapus/ubah kriteria yang sudah dipakai | Merusak hasil lama | ➕ Kriteria yang sudah dipakai periode final → tidak bisa dihapus, hanya dinonaktifkan; bobot lama aman di snapshot |
 | B15 | Hasil MOORA bisa negatif (cost dikurangi) tetapi contoh laporan 0,72 | Bingung membaca skor | 🔧 Tampilkan **Yi (mentah)** dan **skor relatif 0–100** (min-max) berdampingan |

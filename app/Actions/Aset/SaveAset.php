@@ -7,13 +7,17 @@ namespace App\Actions\Aset;
 use App\Actions\Periode\KelolaAsetPeriode;
 use App\Models\Aset;
 use App\Models\PeriodePenilaian;
+use App\Services\Aset\FotoAset;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 final class SaveAset
 {
-    public function __construct(private readonly KelolaAsetPeriode $kelolaPeriode) {}
+    public function __construct(
+        private readonly KelolaAsetPeriode $kelolaPeriode,
+        private readonly FotoAset $fotoAset,
+    ) {}
 
     /**
      * Simpan (tambah/ubah) data BMD aset beserta foto baru (kamera/unggah).
@@ -29,7 +33,7 @@ final class SaveAset
             $aset->fill(Arr::except($data, ['fotos', 'masuk_periode']))->save();
 
             foreach ($fotos as $foto) {
-                $aset->fotos()->create(['path' => $foto->store("aset/{$aset->id}", 'public')]);
+                $aset->fotos()->create(['path' => $this->fotoAset->simpan($foto, "aset/{$aset->id}")]);
             }
 
             $periode = ($data['masuk_periode'] ?? false) ? PeriodePenilaian::aktif()->first() : null;

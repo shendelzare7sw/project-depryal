@@ -99,7 +99,7 @@
             @endif
         </x-ui.card>
 
-        <x-ui.card title="Foto aset" icon="camera" icon-tone="text-violet-500" subtitle="Maks. 5 foto, masing-masing ≤ 4 MB">
+        <x-ui.card title="Foto aset" icon="camera" icon-tone="text-violet-500" subtitle="Maks. 5 foto, masing-masing ≤ 4 MB (otomatis dikompres)">
             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2" x-data="{ kamera: [], galeri: [] }">
                 <label class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-brand-200 bg-brand-50/40 p-5 text-center transition hover:border-brand-400">
                     <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 text-white"><x-heroicon-o-camera class="h-5 w-5" /></span>

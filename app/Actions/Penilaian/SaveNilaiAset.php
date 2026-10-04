@@ -11,12 +11,15 @@ use App\Models\Keputusan;
 use App\Models\Kriteria;
 use App\Models\NilaiKriteriaAset;
 use App\Models\PeriodePenilaian;
+use App\Services\Aset\FotoAset;
 use DomainException;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 final class SaveNilaiAset
 {
+    public function __construct(private readonly FotoAset $fotoAset) {}
+
     /**
      * Simpan nilai kriteria, deskripsi kondisi, dan foto satu aset dalam periode.
      * Nilai kosong (null) menghapus nilai lama. Bila periode sudah dihitung, hasil MOORA & keputusan
@@ -50,7 +53,7 @@ final class SaveNilaiAset
             foreach ($fotos as $foto) {
                 $aset->fotos()->create([
                     'periode_id' => $periode->id,
-                    'path' => $foto->store("aset/{$aset->id}", 'public'),
+                    'path' => $this->fotoAset->simpan($foto, "aset/{$aset->id}"),
                 ]);
             }
 

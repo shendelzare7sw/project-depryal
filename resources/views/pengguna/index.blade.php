@@ -60,7 +60,7 @@
 
         <div class="divide-y divide-zinc-100 lg:hidden">
             @forelse ($users as $u)
-            <article class="p-4">
+            <article id="m-{{ $loop->iteration }}" class="scroll-mt-24 p-4">
                 <div class="flex items-start gap-3">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 text-sm font-bold text-white">{{ strtoupper(mb_substr($u->name, 0, 1)) }}</span>
                     <div class="min-w-0 flex-1">
@@ -88,7 +88,7 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100">
                     @foreach ($users as $u)
-                    <tr class="hover:bg-zinc-50/80">
+                    <tr id="d-{{ $loop->iteration }}" class="scroll-mt-24 hover:bg-zinc-50/80">
                         <td class="px-3 py-3">
                             <div class="flex items-center gap-3">
                                 <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-brand-800 text-xs font-bold text-white">{{ strtoupper(mb_substr($u->name, 0, 1)) }}</span>
@@ -105,6 +105,6 @@
             </table>
         </div>
         @endif
-        @if ($users->hasPages())<footer class="border-t border-zinc-200/80 px-4 py-3">{{ $users->links() }}</footer>@endif
+        <x-ui.muat-lagi :items="$users" />
     </section>
 </x-layouts.app>

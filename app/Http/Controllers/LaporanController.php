@@ -11,6 +11,7 @@ use App\Http\Requests\StoreLaporanRequest;
 use App\Models\Laporan;
 use App\Models\PeriodePenilaian;
 use App\Services\Laporan\LaporanGenerator;
+use App\Support\Tampil;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -20,7 +21,7 @@ class LaporanController extends Controller
 {
     public function index(): View
     {
-        $laporan = Laporan::with(['periode', 'user'])->latest('id')->paginate(15);
+        $laporan = Tampil::ambil(Laporan::with(['periode', 'user'])->latest('id'));
         $periode = PeriodePenilaian::whereIn('status', [StatusPeriode::Dihitung->value, StatusPeriode::Final->value])->latest('id')->get();
 
         return view('laporan.index', compact('laporan', 'periode'));

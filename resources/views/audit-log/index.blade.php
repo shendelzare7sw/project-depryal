@@ -39,7 +39,7 @@
                 $baru = $a->properties['attributes'] ?? [];
                 $lama = $a->properties['old'] ?? [];
             @endphp
-            <details class="group">
+            <details id="m-{{ $loop->iteration }}" class="group scroll-mt-24">
                 <summary class="flex cursor-pointer list-none items-start gap-3 p-4 hover:bg-zinc-50 sm:px-5 [&::-webkit-details-marker]:hidden">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600">
                         <x-dynamic-component :component="'heroicon-o-'.($modul?->icon() ?? 'clipboard-document-list')" class="h-5 w-5" />
@@ -74,6 +74,6 @@
             <x-ui.empty-state icon="clipboard-document-list" title="Belum ada aktivitas" :text="$adaFilter ? 'Tidak ada catatan yang cocok dengan filter.' : 'Perubahan data akan tercatat otomatis di sini.'" />
             @endforelse
         </div>
-        @if ($aktivitas->hasPages())<footer class="border-t border-zinc-200/80 px-4 py-3">{{ $aktivitas->links() }}</footer>@endif
+        <x-ui.muat-lagi :items="$aktivitas" :langkah="20" satu-daftar />
     </section>
 </x-layouts.app>

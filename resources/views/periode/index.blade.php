@@ -29,7 +29,7 @@
         @else
         <div class="divide-y divide-zinc-100 lg:hidden">
             @foreach ($periode as $item)
-            <a href="{{ route('periode.show', $item) }}" class="block p-4 transition active:bg-zinc-50">
+            <a href="{{ route('periode.show', $item) }}" id="m-{{ $loop->iteration }}" class="block scroll-mt-24 p-4 transition active:bg-zinc-50">
                 <div class="flex items-start justify-between gap-2">
                     <div class="min-w-0">
                         <h3 class="truncate text-sm font-extrabold text-zinc-900">{{ $item->nama }}</h3>
@@ -52,7 +52,7 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100">
                     @foreach ($periode as $i => $item)
-                    <tr class="hover:bg-zinc-50/80">
+                    <tr id="d-{{ $loop->iteration }}" class="scroll-mt-24 hover:bg-zinc-50/80">
                         <td class="px-3 py-3 text-center text-xs tabular-nums text-zinc-400">{{ $periode->firstItem() + $i }}</td>
                         <td class="px-3 py-3"><p class="truncate font-bold text-zinc-800" title="{{ $item->nama }}">{{ $item->nama }}</p></td>
                         <td class="whitespace-nowrap px-3 py-3 text-xs text-zinc-600">{{ $item->tanggal_mulai?->translatedFormat('d M Y') }}{{ $item->tanggal_selesai ? ' – '.$item->tanggal_selesai->translatedFormat('d M Y') : '' }}</td>
@@ -76,6 +76,6 @@
             </table>
         </div>
         @endif
-        @if ($periode->hasPages())<footer class="border-t border-zinc-200/80 px-4 py-3">{{ $periode->links() }}</footer>@endif
+        <x-ui.muat-lagi :items="$periode" :langkah="10" />
     </section>
 </x-layouts.app>

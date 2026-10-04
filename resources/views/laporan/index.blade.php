@@ -59,7 +59,7 @@
 
             <div class="divide-y divide-zinc-100 lg:hidden">
                 @forelse ($laporan as $l)
-                <article class="flex items-center gap-3 p-4">
+                <article id="m-{{ $loop->iteration }}" class="flex scroll-mt-24 items-center gap-3 p-4">
                     <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[10px] font-extrabold uppercase {{ $l->format->value === 'pdf' ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600' }}">{{ $l->format->value }}</span>
                     <div class="min-w-0 flex-1">
                         <p class="truncate text-sm font-bold text-zinc-900">{{ $l->jenis->label() }}</p>
@@ -81,7 +81,7 @@
                     </thead>
                     <tbody class="divide-y divide-zinc-100">
                         @foreach ($laporan as $l)
-                        <tr class="hover:bg-zinc-50/80">
+                        <tr id="d-{{ $loop->iteration }}" class="scroll-mt-24 hover:bg-zinc-50/80">
                             <td class="px-3 py-3"><x-ui.badge :tone="$l->format->color()">{{ strtoupper($l->format->value) }}</x-ui.badge></td>
                             <td class="px-3 py-3"><p class="truncate font-bold text-zinc-800" title="{{ $l->nama_file }}">{{ $l->jenis->label() }}</p></td>
                             <td class="px-3 py-3 text-xs text-zinc-600"><p class="truncate">{{ $l->periode?->nama ?? '—' }}</p></td>
@@ -94,7 +94,7 @@
                 </table>
             </div>
             @endif
-            @if ($laporan->hasPages())<footer class="border-t border-zinc-200/80 px-4 py-3">{{ $laporan->links() }}</footer>@endif
+            <x-ui.muat-lagi :items="$laporan" />
         </section>
     </div>
 </x-layouts.app>

@@ -56,7 +56,7 @@
         {{-- Ponsel & tablet: kartu --}}
         <div class="divide-y divide-zinc-100 lg:hidden">
             @forelse ($aset as $item)
-            <article class="p-4">
+            <article id="m-{{ $loop->iteration }}" class="scroll-mt-24 p-4">
                 <div class="flex items-start justify-between gap-2">
                     <div class="min-w-0">
                         <h3 class="truncate text-sm font-extrabold text-zinc-900">{{ $item->nama_barang }}</h3>
@@ -118,7 +118,7 @@
                 </thead>
                 <tbody class="divide-y divide-zinc-100">
                     @foreach ($aset as $i => $item)
-                    <tr class="hover:bg-zinc-50/80">
+                    <tr id="d-{{ $loop->iteration }}" class="scroll-mt-24 hover:bg-zinc-50/80">
                         <td class="px-3 py-3 text-center text-xs tabular-nums text-zinc-400">{{ $aset->firstItem() + $i }}</td>
                         <td class="px-3 py-3"><p class="truncate font-mono text-xs font-semibold text-zinc-700" title="{{ $item->kode_barang }}">{{ $item->kode_barang }}</p><p class="text-[11px] text-zinc-400">NUP {{ $item->nup }}</p></td>
                         <td class="px-3 py-3">
@@ -147,8 +147,6 @@
         </div>
         @endif
 
-        @if ($aset->hasPages())
-        <footer class="border-t border-zinc-200/80 px-4 py-3">{{ $aset->links() }}</footer>
-        @endif
+        <x-ui.muat-lagi :items="$aset" />
     </section>
 </x-layouts.app>

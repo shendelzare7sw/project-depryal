@@ -9,6 +9,7 @@ use App\Enums\UserRole;
 use App\Http\Requests\StorePenggunaRequest;
 use App\Http\Requests\UpdatePenggunaRequest;
 use App\Models\User;
+use App\Support\Tampil;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -20,7 +21,7 @@ class PenggunaController extends Controller
 {
     public function index(Request $request): View
     {
-        $users = User::filter($request->only(['q', 'role', 'status']))->orderBy('role')->orderBy('name')->paginate(15)->withQueryString();
+        $users = Tampil::ambil(User::filter($request->only(['q', 'role', 'status']))->orderBy('role')->orderBy('name'));
 
         return view('pengguna.index', compact('users'));
     }

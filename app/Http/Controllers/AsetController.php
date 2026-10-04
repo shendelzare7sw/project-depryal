@@ -15,6 +15,7 @@ use App\Models\AsetFoto;
 use App\Models\KategoriAset;
 use App\Models\PeriodePenilaian;
 use App\Services\Peringkat\RiwayatPenilaian;
+use App\Support\Tampil;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,8 +28,8 @@ class AsetController extends Controller
 {
     public function index(Request $request): View
     {
-        $aset = Aset::with('kategori')->filter($request->only(['q', 'kategori', 'status']))
-            ->orderBy('kode_barang')->orderBy('nup')->paginate(15)->withQueryString();
+        $aset = Tampil::ambil(Aset::with('kategori')->filter($request->only(['q', 'kategori', 'status']))
+            ->orderBy('kode_barang')->orderBy('nup'));
         $kategori = KategoriAset::orderBy('nama')->pluck('nama', 'id');
 
         return view('aset.index', compact('aset', 'kategori'));

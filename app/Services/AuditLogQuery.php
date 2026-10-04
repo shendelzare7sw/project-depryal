@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Enums\ModulAudit;
+use App\Support\Tampil;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\Models\Activity;
@@ -24,12 +25,12 @@ final class AuditLogQuery
         $dari = $this->tanggal($filter['dari'] ?? null);
         $sampai = $this->tanggal($filter['sampai'] ?? null);
 
-        return Activity::query()->with('causer')
+        return Tampil::ambil(Activity::query()->with('causer')
             ->when(filled($filter['user'] ?? null), fn ($q) => $q->where('causer_id', (int) $filter['user']))
             ->when($modul, fn ($q) => $q->where('log_name', $modul?->value))
             ->when($dari, fn ($q) => $q->where('created_at', '>=', $dari?->startOfDay()))
             ->when($sampai, fn ($q) => $q->where('created_at', '<=', $sampai?->endOfDay()))
-            ->latest('id')->paginate(20)->withQueryString();
+            ->latest('id'), 20);
     }
 
     private function tanggal(mixed $nilai): ?Carbon

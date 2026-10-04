@@ -16,6 +16,7 @@ use App\Models\Aset;
 use App\Models\KategoriAset;
 use App\Models\PeriodePenilaian;
 use App\Services\Periode\PeriodeDetail;
+use App\Support\Tampil;
 use DomainException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class PeriodeController extends Controller
 {
     public function index(): View
     {
-        $periode = PeriodePenilaian::withCount('aset')->latest('id')->paginate(10);
+        $periode = Tampil::ambil(PeriodePenilaian::withCount('aset')->latest('id'), 10);
         $adaAktif = PeriodePenilaian::aktif()->exists();
 
         return view('periode.index', compact('periode', 'adaAktif'));

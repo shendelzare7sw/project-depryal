@@ -16,22 +16,22 @@ class Setting
      */
     public static function all(): array
     {
-        $tersimpan = Cache::get(self::CACHE_KEY);
-
-        if (is_array($tersimpan)) {
-            return $tersimpan;
-        }
-
-        // Tabel belum ada (mis. saat migrasi pertama): kembalikan kosong tanpa menyimpan ke cache.
+        // Database/tabel belum siap (mis. composer install, migrasi pertama; cache store bisa memakai database):
+        // kembalikan kosong tanpa menyimpan ke cache.
         try {
+            $tersimpan = Cache::get(self::CACHE_KEY);
+
+            if (is_array($tersimpan)) {
+                return $tersimpan;
+            }
+
             $semua = Pengaturan::pluck('value', 'key')->toArray();
+            Cache::forever(self::CACHE_KEY, $semua);
+
+            return $semua;
         } catch (\Throwable) {
             return [];
         }
-
-        Cache::forever(self::CACHE_KEY, $semua);
-
-        return $semua;
     }
 
     public static function get(string $key, mixed $default = null): mixed

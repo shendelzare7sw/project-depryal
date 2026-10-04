@@ -24,7 +24,7 @@
         </header>
         <div class="divide-y divide-zinc-100">
             @forelse ($notifikasi as $n)
-            <a href="{{ route('notifikasi.baca', $n->id) }}" @class(['flex gap-3 p-4 transition hover:bg-zinc-50 sm:px-5', 'bg-brand-50/40' => $n->read_at === null])>
+            <a href="{{ route('notifikasi.baca', $n->id) }}" id="m-{{ $loop->iteration }}" @class(['flex scroll-mt-24 gap-3 p-4 transition hover:bg-zinc-50 sm:px-5', 'bg-brand-50/40' => $n->read_at === null])>
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl {{ $tones[$n->data['tone'] ?? 'primary'] ?? $tones['primary'] }}">
                     <x-dynamic-component :component="'heroicon-o-'.($n->data['icon'] ?? 'bell')" class="h-5 w-5" />
                 </span>
@@ -42,8 +42,6 @@
             <x-ui.empty-state icon="bell-slash" title="Belum ada notifikasi" text="Kejadian penting seperti import data, perhitungan MOORA, dan finalisasi periode akan muncul di sini." />
             @endforelse
         </div>
-        @if ($notifikasi->hasPages())
-        <footer class="border-t border-zinc-200/80 px-4 py-3">{{ $notifikasi->links() }}</footer>
-        @endif
+        <x-ui.muat-lagi :items="$notifikasi" :langkah="20" satu-daftar />
     </section>
 </x-layouts.app>

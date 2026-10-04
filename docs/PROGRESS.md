@@ -17,12 +17,16 @@
 ## Checklist `production-ready` (branch terpisah dari `main`)
 Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila ada UI) + commit & push.
 
+🐞 Laporan user (prioritas)
+- [x] Pagination bernomor rusak di ponsel (`pagination.previous/next` tampil mentah, tombol sempit) → diganti **"Tampilkan N lagi"** di semua daftar (Aset, Pengguna, Periode, Laporan, Audit Log, Notifikasi): "Menampilkan X dari Y", setelah dimuat layar lompat ke data baru, filter tetap terbawa, batas 300 — `MuatLagiTest`; `lang/id/pagination.php` ditambahkan
+- [x] CI gagal di `composer install` (cache pengaturan dibaca sebelum database ada) → dibungkus try/catch
+
 🔴 Penting sebelum dipakai sungguhan
 - [x] Hapus periode Draft/Dinilai + tambah/keluarkan aset periode — `KelolaPeriodeTest` (9 test) · commit `fbe4779`
 - [x] Aset baru ikut periode berjalan (sakelar di form tambah aset) — `KelolaPeriodeTest` · commit `fbe4779`
 - [x] Wajib ganti kata sandi login pertama / setelah reset Admin — `KataSandiTest` · commit `c1cd14b`
 - [x] Lupa kata sandi lewat email (SMTP) — `KataSandiTest` · commit `c1cd14b`
-- [x] Tampilan tanpa CDN: Tailwind v3 standalone CLI (`php artisan sikaset:css`, tanpa npm), DaisyUI ramping 156 KB (dari 2,9 MB), Alpine/SweetAlert2/font Manrope di-host sendiri + Content-Security-Policy dengan nonce — `HardeningTest` + uji konsol Chrome (0 pelanggaran CSP)
+- [x] Tampilan tanpa CDN: Tailwind v3 standalone CLI (`php artisan sikaset:css`, tanpa npm), DaisyUI ramping 156 KB (dari 2,9 MB), Alpine/SweetAlert2/font Manrope di-host sendiri + Content-Security-Policy dengan nonce — `HardeningTest` + uji konsol Chrome (0 pelanggaran CSP) · commit `51c1c9c`
 - [x] Backup otomatis harian 01.00 (database.sql murni PHP + foto + laporan dalam ZIP), menu **Cadangan** (buat/unduh/hapus), masa simpan diatur di Pengaturan — `BackupTest` (termasuk uji pemulihan dump) + uji pulih nyata ke MySQL lokal · commit `19d1d65`
 
 🟡 Pengalaman pengguna

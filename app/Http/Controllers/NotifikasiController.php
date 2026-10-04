@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Support\Tampil;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -12,7 +13,7 @@ class NotifikasiController extends Controller
 {
     public function index(Request $request): View
     {
-        $notifikasi = $request->user()->notifications()->paginate(20);
+        $notifikasi = Tampil::ambil($request->user()->notifications(), 20);
 
         return view('notifikasi.index', compact('notifikasi'));
     }

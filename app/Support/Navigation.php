@@ -26,6 +26,7 @@ final class Navigation
                     self::item('Pengguna', 'pengguna.index', 'users', 'pengguna.*', true),
                     self::item('Pengaturan', 'pengaturan.index', 'adjustments-horizontal', 'pengaturan.*'),
                     self::item('Integrasi', 'integrasi.index', 'link', 'integrasi.*'),
+                    self::item('Cadangan', 'backup.index', 'archive-box', 'backup.*'),
                     self::item('Audit Log', 'audit-log.index', 'clipboard-document-list', 'audit-log.*'),
                 ]],
                 ['Data & Penilaian', [

@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\GantiPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\LupaPasswordController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IntegrasiController;
 use App\Http\Controllers\KategoriAsetController;
@@ -135,6 +136,10 @@ Route::middleware(['auth', 'active', 'wajib-ganti-password'])->group(function ()
         Route::get('integrasi', [IntegrasiController::class, 'index'])->name('integrasi.index');
         Route::put('integrasi', [IntegrasiController::class, 'update'])->name('integrasi.update');
         Route::post('integrasi/uji/{kanal}', [IntegrasiController::class, 'uji'])->name('integrasi.uji')->whereIn('kanal', ['telegram', 'email'])->middleware('throttle:berat');
+        Route::get('backup', [BackupController::class, 'index'])->name('backup.index');
+        Route::post('backup', [BackupController::class, 'store'])->name('backup.store')->middleware('throttle:berat');
+        Route::get('backup/{nama}', [BackupController::class, 'download'])->name('backup.download')->where('nama', 'sikaset-[0-9]{8}-[0-9]{6}\.zip');
+        Route::delete('backup/{nama}', [BackupController::class, 'destroy'])->name('backup.destroy')->where('nama', 'sikaset-[0-9]{8}-[0-9]{6}\.zip');
         Route::get('audit-log', [AuditLogController::class, 'index'])->name('audit-log.index');
     });
 });

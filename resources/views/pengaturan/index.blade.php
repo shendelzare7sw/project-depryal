@@ -50,9 +50,13 @@
                 </div>
             </x-ui.card>
 
-            <x-ui.card title="Keamanan sesi" icon="clock" icon-tone="text-sky-600" subtitle="Komputer kantor sering dipakai bergantian">
-                <x-form.select name="batas_idle_menit" label="Logout otomatis bila tidak ada aktivitas" required :placeholder="null"
-                    :options="['15' => '15 menit', '30' => '30 menit (disarankan)', '60' => '1 jam', '120' => '2 jam', '0' => 'Nonaktif']" :value="(string) $nilai('batas_idle_menit', 30)" />
+            <x-ui.card title="Keamanan sesi & cadangan" icon="shield-check" icon-tone="text-sky-600" subtitle="Komputer kantor sering dipakai bergantian">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <x-form.select name="batas_idle_menit" label="Logout otomatis bila tidak aktif" required :placeholder="null"
+                        :options="['15' => '15 menit', '30' => '30 menit (disarankan)', '60' => '1 jam', '120' => '2 jam', '0' => 'Nonaktif']" :value="(string) $nilai('batas_idle_menit', 30)" />
+                    <x-form.select name="backup_simpan_hari" label="Simpan cadangan otomatis selama" required :placeholder="null"
+                        :options="['7' => '7 hari', '14' => '14 hari (disarankan)', '30' => '30 hari', '90' => '90 hari']" :value="(string) $nilai('backup_simpan_hari', 14)" />
+                </div>
             </x-ui.card>
         </div>
 

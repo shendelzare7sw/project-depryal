@@ -69,6 +69,7 @@ final class Panduan
             'pengaturan.index' => ['judul' => 'Pengaturan', 'isi' => 'Batas skor untuk rekomendasi dan identitas yang tercetak di laporan. Perubahan batas skor hanya berlaku untuk perhitungan berikutnya.'],
             'integrasi.index' => ['judul' => 'Integrasi', 'isi' => 'Hubungkan SIKASET dengan Telegram (gratis) dan email agar pengguna menerima pemberitahuan penting di luar aplikasi. Token & kata sandi disimpan terenkripsi.',
                 'langkah' => ['Buat bot di @BotFather, tempel tokennya, lalu Simpan.', 'Isi SMTP bila ingin email (mis. Gmail + App Password).', 'Hubungkan Telegram Anda di menu Profil, lalu tekan "Uji Telegram".']],
+            'backup.index' => ['judul' => 'Cadangan Data', 'isi' => 'Salinan seluruh data aplikasi (database, foto aset, laporan) dibuat otomatis setiap malam. Unduh cadangan secara berkala dan simpan di luar server agar data aman bila komputer server rusak.'],
             'audit-log.index' => ['judul' => 'Audit Log', 'isi' => 'Catatan otomatis setiap perubahan data: siapa, kapan, dan apa yang berubah. Tekan sebuah baris untuk melihat nilai sebelum dan sesudah.'],
             'profil.edit' => ['judul' => 'Profil Saya', 'isi' => 'Ubah nama atau kata sandi Anda. Untuk mengganti kata sandi, isi kata sandi lama terlebih dahulu. Bila tersedia, tekan "Hubungkan Telegram" agar pemberitahuan masuk ke Telegram Anda.'],
             default => null,

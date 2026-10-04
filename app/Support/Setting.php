@@ -70,6 +70,14 @@ class Setting
         return max(0, (int) self::get('batas_idle_menit', 30));
     }
 
+    /**
+     * Lama cadangan otomatis disimpan sebelum dihapus (hari).
+     */
+    public static function backupSimpanHari(): int
+    {
+        return max(1, (int) self::get('backup_simpan_hari', 14));
+    }
+
     public static function namaInstansi(): string
     {
         return (string) self::get('nama_instansi', 'Kecamatan Batuceper');

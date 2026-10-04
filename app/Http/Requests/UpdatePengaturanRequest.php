@@ -27,6 +27,7 @@ class UpdatePengaturanRequest extends FormRequest
             'nip_penandatangan' => ['nullable', 'string', 'max:30'],
             'jabatan_penandatangan' => ['required', 'string', 'max:100'],
             'batas_idle_menit' => ['required', 'integer', 'in:0,15,30,60,120'],
+            'backup_simpan_hari' => ['required', 'integer', 'in:7,14,30,90'],
         ];
     }
 
@@ -46,7 +47,7 @@ class UpdatePengaturanRequest extends FormRequest
         return [
             'ambang_pertahankan' => 'ambang Pertahankan', 'ambang_perbaiki' => 'ambang Perbaiki/Hapus',
             'nama_instansi' => 'nama instansi', 'alamat_instansi' => 'alamat instansi', 'nama_penandatangan' => 'nama penandatangan',
-            'nip_penandatangan' => 'NIP penandatangan', 'jabatan_penandatangan' => 'jabatan penandatangan', 'batas_idle_menit' => 'logout otomatis',
+            'nip_penandatangan' => 'NIP penandatangan', 'jabatan_penandatangan' => 'jabatan penandatangan', 'batas_idle_menit' => 'logout otomatis', 'backup_simpan_hari' => 'masa simpan cadangan',
         ];
     }
 }

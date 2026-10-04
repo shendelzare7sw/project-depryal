@@ -23,13 +23,13 @@ Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila
 - [x] Wajib ganti kata sandi login pertama / setelah reset Admin — `KataSandiTest` · commit `c1cd14b`
 - [x] Lupa kata sandi lewat email (SMTP) — `KataSandiTest` · commit `c1cd14b`
 - [ ] Tampilan tanpa CDN (Tailwind CLI, aset di-host sendiri) + CSP
-- [ ] Backup otomatis harian database + foto/laporan
+- [x] Backup otomatis harian 01.00 (database.sql murni PHP + foto + laporan dalam ZIP), menu **Cadangan** (buat/unduh/hapus), masa simpan diatur di Pengaturan — `BackupTest` (termasuk uji pemulihan dump) + uji pulih nyata ke MySQL lokal
 
 🟡 Pengalaman pengguna
 - [x] Kompres foto saat upload (GD, maks 1600 px, JPEG 80) — `FotoAsetTest` · commit `1f98ffb`
 - [x] Riwayat penilaian per aset (peringkat, skor, rekomendasi, keputusan per periode) di Detail Aset — `RiwayatPerbandinganTest` · commit `f20885a`
-- [x] Tombol "Perbesar teks" (112,5%, diingat per perangkat, juga di halaman masuk) — `SesiTampilanTest`
-- [x] Logout otomatis saat tidak aktif — batas diatur Admin di Pengaturan (15/30/60/120 menit/nonaktif), aktivitas dibagi antar-tab; sesi server = batas + 5 menit — `SesiTampilanTest`
+- [x] Tombol "Perbesar teks" (112,5%, diingat per perangkat, juga di halaman masuk) — `SesiTampilanTest` · commit `76853da`
+- [x] Logout otomatis saat tidak aktif — batas diatur Admin di Pengaturan (15/30/60/120 menit/nonaktif), aktivitas dibagi antar-tab; sesi server = batas + 5 menit — `SesiTampilanTest` · commit `76853da`
 - [ ] Uji langsung dengan 1–2 staf kecamatan — *dilakukan user/tim, bukan kode*
 
 🟢 Nilai tambah

@@ -21,6 +21,7 @@ class PengaturanSeeder extends Seeder
             'nip_penandatangan' => '197105021992031004',
             'jabatan_penandatangan' => 'Camat Batuceper',
             'batas_idle_menit' => '30',
+            'backup_simpan_hari' => '14',
         ];
 
         foreach ($settings as $key => $value) {

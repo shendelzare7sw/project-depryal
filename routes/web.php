@@ -22,6 +22,7 @@ use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\PeriodeAsetController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\VerifikasiLaporanController;
 use App\Models\PeriodePenilaian;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,12 @@ Route::pattern('aset', '[0-9]+');
 Route::pattern('kriteria', '[0-9]+');
 Route::pattern('kategori_aset', '[0-9]+');
 Route::pattern('periode', '[0-9]+');
+
+// Publik: verifikasi keaslian laporan dari kode QR (tanpa login, tanpa unduhan berkas)
+Route::get('/verifikasi/{kode}', [VerifikasiLaporanController::class, 'show'])->name('verifikasi.show')
+    ->where('kode', '[A-Za-z0-9]{1,64}')->middleware('throttle:30,1');
+Route::post('/verifikasi/{kode}', [VerifikasiLaporanController::class, 'cek'])->name('verifikasi.cek')
+    ->where('kode', '[A-Za-z0-9]{1,64}')->middleware('throttle:tamu');
 
 Route::middleware('guest')->group(function (): void {
     Route::get('/login', [LoginController::class, 'create'])->name('login');

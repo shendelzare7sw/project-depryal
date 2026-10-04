@@ -27,11 +27,23 @@ final class LaporanGenerator
 {
     private const DISK = 'local';
 
-    public function __construct(private readonly PeringkatData $peringkat) {}
+    public function __construct(
+        private readonly PeringkatData $peringkat,
+        private readonly QrVerifikasi $qr,
+    ) {}
 
+    /**
+     * Setiap laporan mendapat kode verifikasi unik (QR pada PDF) dan sidik jari SHA-256 berkasnya,
+     * sehingga keaslian cetakan dapat diperiksa di halaman publik /verifikasi/{kode}.
+     */
     public function generate(JenisLaporan $jenis, FormatLaporan $format, PeriodePenilaian $periode, User $by): Laporan
     {
-        $data = $this->data($jenis, $periode, $by);
+        $kode = $this->qr->kodeBaru();
+        $data = $this->data($jenis, $periode, $by) + ['verifikasi' => [
+            'kode' => $kode,
+            'url' => $this->qr->url($kode),
+            'qr' => $format === FormatLaporan::Pdf ? $this->qr->gambar($kode) : null,
+        ]];
         $namaFile = $jenis->value.'-'.Str::slug($periode->nama).'-'.now()->format('Ymd-His').'.'.$format->value;
         $path = 'laporan/'.Str::uuid().'.'.$format->value;
 
@@ -48,6 +60,8 @@ final class LaporanGenerator
             'format' => $format,
             'nama_file' => $namaFile,
             'path' => $path,
+            'kode_verifikasi' => $kode,
+            'sha256' => hash('sha256', $isi),
         ]);
     }
 

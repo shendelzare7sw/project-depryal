@@ -35,6 +35,7 @@ Dokumen uji black-box & perbandingan perhitungan manual (bahan Bab IV): [docs/06
 - **Cloudflare Turnstile:** buat widget di dash.cloudflare.com → Turnstile (domain aplikasi), lalu isi `TURNSTILE_SITE_KEY` & `TURNSTILE_SECRET_KEY` (jangan pakai test key). Kosongkan keduanya untuk menonaktifkan.
 - Pastikan `DEBUGBAR_ENABLED=false` dan `BOOST_BROWSER_LOGS_WATCHER=false`; dengan `APP_DEBUG=false` halaman galat tidak menampilkan detail teknis. *Kode HTML/CSS/JS yang tampil di "View page source" memang publik & tidak berisi rahasia — semua rahasia (APP_KEY, kata sandi DB, secret Turnstile) hanya ada di `.env` server.*
 - Ganti kata sandi akun awal (`admin`, `operator`, `pimpinan`) atau buat akun baru lalu nonaktifkan akun awal. Bila seeder dijalankan dengan `APP_ENV=production`, akun awal otomatis **wajib ganti kata sandi** saat login pertama (begitu pula akun baru/reset dari Admin).
+- Set `APP_URL` ke alamat publik (domain HTTPS resmi) **sebelum** mencetak laporan — QR verifikasi di PDF memakai alamat ini.
 - Isi `MAIL_*` (SMTP) agar fitur **Lupa kata sandi?** benar-benar mengirim email; dengan `MAIL_MAILER=log` tautan hanya ditulis ke `storage/logs/laravel.log`. Pengguna tanpa email tetap direset oleh Admin.
 - `SESSION_SECURE_COOKIE=true`, pertimbangkan `SESSION_ENCRYPT=true`.
 - `composer install --no-dev --optimize-autoloader` (debugbar tidak ikut), lalu `php artisan config:cache route:cache view:cache`.

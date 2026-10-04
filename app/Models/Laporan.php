@@ -9,6 +9,7 @@ use App\Enums\JenisLaporan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -18,6 +19,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property FormatLaporan $format
  * @property string $nama_file
  * @property string $path
+ * @property string|null $kode_verifikasi
+ * @property string|null $sha256
+ * @property Carbon|null $created_at
  */
 class Laporan extends Model
 {
@@ -35,6 +39,8 @@ class Laporan extends Model
         'format',
         'nama_file',
         'path',
+        'kode_verifikasi',
+        'sha256',
     ];
 
     /**

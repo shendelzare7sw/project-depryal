@@ -46,6 +46,9 @@
     .catatan { font-size: 7.5pt; color: #6b7280; margin-top: 8pt; }
     .ttd { width: 100%; margin-top: 18pt; page-break-inside: avoid; }
     .ttd td { vertical-align: top; }
+    .verifikasi { font-size: 7pt; color: #4b5563; line-height: 1.4; }
+    .verifikasi img { width: 62pt; height: 62pt; float: left; margin-right: 6pt; }
+    .verifikasi .kode { font-family: DejaVu Sans Mono, monospace; font-weight: bold; color: #111827; font-size: 8pt; }
 </style>
 </head>
 <body>
@@ -144,7 +147,16 @@
 </p>
 
 <table class="ttd"><tr>
-    <td style="width: 60%"></td>
+    <td style="width: 60%">
+        @if (! empty($verifikasi['qr']))
+        <div class="verifikasi">
+            <img src="{{ $verifikasi['qr'] }}" alt="QR verifikasi">
+            <strong>Verifikasi keaslian dokumen</strong><br>
+            Pindai kode QR atau buka:<br>{{ $verifikasi['url'] }}<br>
+            Kode: <span class="kode">{{ $verifikasi['kode'] }}</span>
+        </div>
+        @endif
+    </td>
     <td>
         Batuceper, {{ now()->translatedFormat('d F Y') }}<br>
         {{ $instansi['jabatan'] }}<br><br><br><br><br>

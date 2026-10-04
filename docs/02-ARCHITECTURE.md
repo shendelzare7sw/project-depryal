@@ -39,7 +39,7 @@ resources/views/
 ├── layouts/
 │   ├── app.blade.php             # shell: appbar + drawer + bottom-nav + slot + <x-flash>
 │   ├── guest.blade.php           # layout login
-│   └── partials/ assets.blade.php (SEMUA CDN), sidebar.blade.php, bottom-nav.blade.php
+│   └── partials/ assets.blade.php (SEMUA aset, di-host sendiri), sidebar.blade.php, bottom-nav.blade.php
 ├── components/                   # anonymous Blade components (lihat §5)
 │   ├── ui/ card, badge-tindakan, badge-status, stat, empty-state, responsive-list, page-header, progress-meter
 │   ├── form/ field, input, select, textarea, file, scale-radio
@@ -165,7 +165,9 @@ Audit: trait `App\Models\Concerns\TercatatAudit` (spatie LogsActivity, log_name 
 
 Notifikasi dalam aplikasi: tabel `notifications` (Laravel), `App\Notifications\SistemNotification(judul, pesan, url, icon, tone)`, dikirim via `App\Services\Notifikasi::kirimKeRole(roles, notifikasi, kecuali)`. Route `notifikasi.index|baca|baca-semua`.
 
-## 6. Referensi implementasi aset CDN & SweetAlert (boleh disalin apa adanya)
+## 6. Referensi implementasi aset & SweetAlert
+
+> **Diperbarui (production-ready):** aset kini di-host sendiri — lihat `resources/views/layouts/partials/assets.blade.php`, `resources/css/app.css`, `tailwind.config.js`, dan perintah `php artisan sikaset:css`. Cuplikan CDN di bawah hanya catatan historis rancangan awal.
 `layouts/partials/assets.blade.php` (pin versi saat Lane 0 — cek versi stabil terbaru; DaisyUI 5 + Tailwind 4 browser build mendukung CDN):
 ```blade
 <meta name="viewport" content="width=device-width, initial-scale=1">

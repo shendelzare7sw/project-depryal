@@ -13,7 +13,7 @@ Sistem Pendukung Keputusan berbasis web untuk menilai kelayakan Barang Milik Dae
 Cara kerja lengkap per peran: **[docs/07-ALUR-APLIKASI.md](docs/07-ALUR-APLIKASI.md)**.
 
 ## Teknologi
-Laravel 13 (PHP 8.3) · MySQL 8 · Blade + Tailwind CSS + DaisyUI + Alpine.js + SweetAlert2 (CDN, tanpa build) · dompdf · Laravel Excel · spatie/activitylog · Pest, Pint, Larastan.
+Laravel 13 (PHP 8.3) · MySQL 8 · Blade + Tailwind CSS + DaisyUI + Alpine.js + SweetAlert2 (di-host sendiri, CSS dibangun tanpa npm) · dompdf · Laravel Excel · spatie/activitylog · Pest, Pint, Larastan.
 
 ## Menjalankan (lokal)
 ```bash
@@ -43,7 +43,7 @@ Dokumen uji black-box & perbandingan perhitungan manual (bahan Bab IV): [docs/06
 - `composer install --no-dev --optimize-autoloader` (debugbar tidak ikut), lalu `php artisan config:cache route:cache view:cache`.
 - `php artisan storage:link`; pastikan `storage/` & `bootstrap/cache` dapat ditulis web server.
 - Cadangkan basis data & folder `storage/app` (foto aset, berkas import, laporan) secara berkala.
-- Tailwind memakai Play CDN (cocok untuk pengembangan); untuk produksi resmi disarankan build — semua aset CDN terpusat di `resources/views/layouts/partials/assets.blade.php`.
+- Tampilan tidak bergantung CDN/internet: CSS & JS ada di `public/` (sudah di-commit, server tidak perlu build). Developer yang mengubah kelas Tailwind di view menjalankan `php artisan sikaset:css` (mengunduh Tailwind standalone CLI sekali, tanpa npm). Content-Security-Policy aktif.
 
 ## Dokumentasi
 | Dokumen | Isi |

@@ -1,9 +1,48 @@
-@import 'tailwindcss';
+/*
+ * Masukan Tailwind CSS v3 (dibangun: `php artisan sikaset:css` → public/css/app.css).
+ * Hanya direktif Tailwind, font lokal, dan token tema DaisyUI — TIDAK ada selector komponen custom
+ * (Aturan Emas #1: tampilan tetap ditulis dengan kelas utility di Blade).
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+/* Font Manrope (variable, SIL OFL) di-host sendiri — tidak bergantung Google Fonts. */
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('../fonts/manrope/manrope-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('../fonts/manrope/manrope-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Token tema DaisyUI "sikaset" (petrol + zinc + aksen amber): hanya variabel warna/radius. */
+[data-theme=sikaset] {
+    color-scheme: light;
+    --p: 44.8% 0.066 186; --pc: 98.5% 0.01 186;
+    --s: 76.9% 0.165 70; --sc: 27% 0.06 60;
+    --a: 64% 0.1 186; --ac: 98% 0.01 186;
+    --n: 26% 0.03 190; --nc: 97% 0.005 190;
+    --b1: 100% 0 0; --b2: 97.6% 0.003 190; --b3: 92.4% 0.006 190; --bc: 27.4% 0.012 220;
+    --in: 58.8% 0.158 242; --inc: 98% 0.01 242;
+    --su: 59.6% 0.127 163; --suc: 98% 0.02 163;
+    --wa: 76.9% 0.165 70; --wac: 27% 0.06 60;
+    --er: 58.6% 0.222 18; --erc: 98% 0.01 18;
+    --rounded-box: 1rem; --rounded-btn: 0.7rem; --rounded-badge: 9999px;
+    --animation-btn: 0.18s; --animation-input: 0.18s; --btn-focus-scale: 0.98; --border-btn: 1px;
+}
+
+[x-cloak] { display: none !important; }
+
+/* "Perbesar teks": seluruh ukuran berbasis rem ikut membesar. */
+html.teks-besar { font-size: 112.5%; }

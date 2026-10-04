@@ -1,4 +1,4 @@
-# 03 — Setup dari Nol (Laravel + Nginx + MySQL, CDN-only frontend)
+# 03 — Setup dari Nol (Laravel + Nginx + MySQL, frontend di-host sendiri tanpa npm)
 
 > Dikerjakan oleh **Lane 0 (Foundation)**. Asumsi: Linux/WSL2 dengan PHP-FPM, Nginx, MySQL 8, Composer, Git. Tidak perlu Node/npm.
 > Jalankan perintah satu per satu; jika ada yang gagal, perbaiki dulu sebelum lanjut.

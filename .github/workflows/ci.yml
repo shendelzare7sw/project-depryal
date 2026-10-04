@@ -35,6 +35,12 @@ jobs:
       - name: composer check (Pint, Larastan, Pest)
         run: composer check
 
+      - name: CSS hasil build mutakhir (php artisan sikaset:css)
+        run: |
+          php artisan sikaset:css
+          git diff --stat --exit-code public/css/app.css public/vendor/daisyui/daisyui.min.css || {
+            echo "::error::Jalankan 'php artisan sikaset:css' lalu commit hasilnya"; exit 1; }
+
       - name: Aturan Emas — tidak ada <style>/<script> di view selain assets & PDF
         run: |
           if grep -rn "<style\|<script" resources/views | grep -v "assets.blade\|laporan/pdf"; then

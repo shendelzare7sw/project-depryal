@@ -102,3 +102,14 @@ test('pengguna tidak dapat menembak ID lain: aset di luar periode, notifikasi or
     $this->actingAs($operator)->post(route('periode.buka-kembali', $periode), ['alasan' => 'Mencoba membuka periode draft.'])->assertSessionHas('error');
     expect($periode->fresh()->status)->toBe(StatusPeriode::Draft);
 });
+
+test('CSP aktif: skrip inline hanya dengan nonce dan aset tidak dimuat dari CDN', function () {
+    $response = $this->actingAs(userWithRole(UserRole::Operator))->get(route('dashboard'))->assertOk();
+    $csp = (string) $response->headers->get('Content-Security-Policy');
+    preg_match("/'nonce-([^']+)'/", $csp, $nonce);
+
+    expect($csp)->toContain("default-src 'self'")->toContain("object-src 'none'")->not->toContain("script-src 'self' 'unsafe-inline'")
+        ->and($nonce[1] ?? '')->not->toBe('')
+        ->and($response->getContent())->toContain('nonce="'.$nonce[1].'"')
+        ->not->toContain('cdn.tailwindcss.com')->not->toContain('cdn.jsdelivr.net')->not->toContain('fonts.googleapis.com');
+});

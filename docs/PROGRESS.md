@@ -22,8 +22,8 @@ Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila
 - [x] Aset baru ikut periode berjalan (sakelar di form tambah aset) — `KelolaPeriodeTest` · commit `fbe4779`
 - [x] Wajib ganti kata sandi login pertama / setelah reset Admin — `KataSandiTest` · commit `c1cd14b`
 - [x] Lupa kata sandi lewat email (SMTP) — `KataSandiTest` · commit `c1cd14b`
-- [ ] Tampilan tanpa CDN (Tailwind CLI, aset di-host sendiri) + CSP
-- [x] Backup otomatis harian 01.00 (database.sql murni PHP + foto + laporan dalam ZIP), menu **Cadangan** (buat/unduh/hapus), masa simpan diatur di Pengaturan — `BackupTest` (termasuk uji pemulihan dump) + uji pulih nyata ke MySQL lokal
+- [x] Tampilan tanpa CDN: Tailwind v3 standalone CLI (`php artisan sikaset:css`, tanpa npm), DaisyUI ramping 156 KB (dari 2,9 MB), Alpine/SweetAlert2/font Manrope di-host sendiri + Content-Security-Policy dengan nonce — `HardeningTest` + uji konsol Chrome (0 pelanggaran CSP)
+- [x] Backup otomatis harian 01.00 (database.sql murni PHP + foto + laporan dalam ZIP), menu **Cadangan** (buat/unduh/hapus), masa simpan diatur di Pengaturan — `BackupTest` (termasuk uji pemulihan dump) + uji pulih nyata ke MySQL lokal · commit `19d1d65`
 
 🟡 Pengalaman pengguna
 - [x] Kompres foto saat upload (GD, maks 1600 px, JPEG 80) — `FotoAsetTest` · commit `1f98ffb`
@@ -36,7 +36,7 @@ Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila
 - [x] QR verifikasi keaslian laporan PDF + halaman `/verifikasi/{kode}` — `VerifikasiLaporanTest` · commit `be6eea2`
 - [x] Notifikasi Telegram (gratis, pengganti WhatsApp) & email; kunci diatur di menu **Integrasi** (Admin), bukan `.env` — `IntegrasiTest` (7 test) · commit `e8d113d`
 - [x] Perbandingan antar periode `/hasil/perbandingan` (naik/turun, Δ skor, rekomendasi berubah) — `RiwayatPerbandinganTest` · commit `f20885a`
-- [ ] CI GitHub Actions (`composer check` tiap push)
+- [x] CI GitHub Actions: `composer check` + cek Aturan Emas + CSS build mutakhir — `.github/workflows/ci.yml` · commit `6634bab`
 - [ ] Sinkronisasi dokumen Bab III (use case, ERD, matriks akses)
 
 ---

@@ -13,17 +13,17 @@ Aplikasi web **Sistem Pendukung Keputusan (SPK)** untuk menilai kelayakan Barang
 | Backend | Laravel (rilis stabil terbaru; cek `composer show laravel/framework`), PHP sesuai syarat Laravel tersebut |
 | Web server | **Nginx + PHP-FPM** |
 | Database | **MySQL 8** (utf8mb4) |
-| Frontend | Blade + **Alpine.js** + **Tailwind CSS** + **DaisyUI** (semua via **CDN**, tanpa Vite/npm) |
-| Konfirmasi/notifikasi | **SweetAlert2** (CDN) |
+| Frontend | Blade + **Alpine.js** + **Tailwind CSS v3** + **DaisyUI 4** — **di-host sendiri** (`public/vendor`, `public/css`), CSS dibangun `php artisan sikaset:css` (Tailwind *standalone CLI*), **tanpa Vite/npm** |
+| Konfirmasi/notifikasi | **SweetAlert2** (di-host sendiri) |
 | Ikon | `blade-ui-kit/blade-heroicons` |
 | PDF / Excel | `barryvdh/laravel-dompdf`, `maatwebsite/excel` |
 | Audit log | `spatie/laravel-activitylog` |
 | Test & kualitas | Pest, Laravel Pint, Larastan |
 
-Pin versi CDN (jangan `@latest`) dan kumpulkan di SATU file: `resources/views/layouts/partials/assets.blade.php`.
+Pin versi (jangan `@latest`) dan muat semua aset dari SATU file: `resources/views/layouts/partials/assets.blade.php`. Setelah menambah/mengubah kelas Tailwind di view, jalankan `php artisan sikaset:css` lalu commit `public/css/app.css` & `public/vendor/daisyui/daisyui.min.css` (CI memeriksa keduanya mutakhir).
 
 ## 3. Aturan Emas (non-negotiable)
-1. **Tidak ada file CSS/JS buatan sendiri.** Tidak ada `public/css/*.css` atau `public/js/*.js` custom, tidak ada `<style>` / `<script>` blok panjang di view. Semua tampilan = kelas utility Tailwind/DaisyUI. Semua interaksi = atribut Alpine inline (`x-data`, `@click`, `x-show`) yang pendek (maks ±3 baris).
+1. **Tidak ada file CSS/JS buatan sendiri.** Tidak ada `public/css/*.css` atau `public/js/*.js` tulisan tangan (pengecualian: `public/css/app.css` adalah *hasil build* Tailwind dari `resources/css/app.css` yang hanya berisi direktif `@tailwind`, font lokal, dan token tema), tidak ada `<style>` / `<script>` blok panjang di view. Semua tampilan = kelas utility Tailwind/DaisyUI. Semua interaksi = atribut Alpine inline (`x-data`, `@click`, `x-show`) yang pendek (maks ±3 baris).
 2. **Pengulangan UI → Blade component.** Jika pola markup muncul ≥2 kali, jadikan komponen di `resources/views/components/`. View halaman hanya merakit komponen.
 3. **Semua dialog konfirmasi & notifikasi pakai SweetAlert2** lewat 2 komponen saja: `<x-confirm-form>` (logout, hapus, hitung ulang, finalisasi, dll.) dan `<x-flash>` (toast dari session). Dilarang `confirm()`, `alert()`, modal DaisyUI untuk konfirmasi.
 4. **Controller tipis** (maks ±7 baris per method): validasi → `FormRequest`, logika bisnis → `Service`/`Action`, otorisasi → `Policy`/middleware. Dilarang query kompleks atau perhitungan di controller/view.
@@ -63,7 +63,7 @@ Pin versi CDN (jangan `@latest`) dan kumpulkan di SATU file: `resources/views/la
 | `docs/00-LAPORAN-MATCHING.md` | Pencocokan laporan ↔ sistem, celah & perbaikan |
 | `docs/01-PRODUCT-SPEC.md` | Role, izin, aturan bisnis, MOORA, alur UX, inventaris halaman |
 | `docs/02-ARCHITECTURE.md` | Struktur folder MVC, skema DB, route, kontrak Service, komponen UI |
-| `docs/03-SETUP.md` | Instalasi dari nol (composer, nginx, mysql), `.env`, CDN |
+| `docs/03-SETUP.md` | Instalasi dari nol (composer, nginx, mysql), `.env`, build CSS tanpa npm |
 | `docs/04-TASKS.md` | Rencana fase berurutan (satu agent) + prompt siap tempel |
 | `docs/05-UI-PATTERNS.md` | **Pola UI wajib** (shell, stat-grid, daftar kartu/tabel, form, notifikasi, gerbang screenshot 390/1440) |
 | `docs/06-PENGUJIAN-BAB-IV.md` | Kasus uji black-box + perbandingan perhitungan manual (bahan Bab IV) |

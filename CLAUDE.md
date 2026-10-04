@@ -1,6 +1,6 @@
 # SIKASET — Aturan Proyek (dibaca lebih dulu)
 
-Aturan proyek lengkap: @AGENTS.md (wajib dipatuhi). Jika panduan Laravel Boost di bawah bertentangan dengan AGENTS.md, **AGENTS.md yang berlaku** — khususnya: frontend memakai CDN (Tailwind/DaisyUI/Alpine.js/SweetAlert2 di `resources/views/layouts/partials/assets.blade.php`), **tanpa Vite / npm build**, tanpa file CSS/JS custom.
+Aturan proyek lengkap: @AGENTS.md (wajib dipatuhi). Jika panduan Laravel Boost di bawah bertentangan dengan AGENTS.md, **AGENTS.md yang berlaku** — khususnya: frontend Tailwind/DaisyUI/Alpine.js/SweetAlert2 **di-host sendiri** dan dimuat dari `resources/views/layouts/partials/assets.blade.php`; CSS dibangun dengan `php artisan sikaset:css` (Tailwind standalone CLI), **tanpa Vite / npm build**, tanpa file CSS/JS tulisan tangan.
 
 <laravel-boost-guidelines>
 === foundation rules ===

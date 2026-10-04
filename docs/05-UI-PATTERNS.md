@@ -1,7 +1,7 @@
 # 05 — Pola UI SIKASET (wajib untuk semua halaman)
 
 > Diadaptasi dari pedoman CleanFlow (`docs/conversation-sipaduhok.md`) untuk stack SIKASET:
-> Blade + Tailwind Play CDN + DaisyUI 4 + Alpine.js + SweetAlert2, **tanpa Vite/npm**.
+> Blade + Tailwind CSS v3 + DaisyUI 4 + Alpine.js + SweetAlert2 — semua di-host sendiri, CSS dibangun `php artisan sikaset:css` (Tailwind standalone CLI), **tanpa Vite/npm**. Content-Security-Policy aktif (lihat `SecurityHeaders`).
 > Identitas visual SIKASET sengaja berbeda dari proyek referensi (lihat §2).
 
 ## 1. Tujuan
@@ -20,7 +20,7 @@
 | Font | **Manrope** 400–800 | `font-extrabold` untuk judul & angka |
 | Radius | kartu `rounded-2xl`, hero `rounded-3xl`, tombol/input `rounded-xl` |
 
-Tema DaisyUI `data-theme="sikaset"` (variabel warna saja) didefinisikan sekali di `assets.blade.php`.
+Tema DaisyUI `data-theme="sikaset"` (variabel warna saja) didefinisikan sekali di `resources/css/app.css`.
 
 ## 3. Shell & layout
 - Shell pascalogin: `<x-layouts.app title="…" subtitle="…">`. **Judul & subjudul halaman tampil di topbar** (bukan diulang di konten).
@@ -77,7 +77,7 @@ Satu `<section>` kartu berisi semuanya:
 
 ## 9. Gerbang selesai per halaman
 1. Semua view modul (index, create, edit, show, import, preview) ikut dimigrasi.
-2. `grep -rn "<style\|<script" resources/views | grep -v assets.blade` kosong.
+2. `grep -rn "<style\|<script" resources/views | grep -v "assets.blade\|laporan/pdf"` kosong; kelas baru → jalankan `php artisan sikaset:css`.
 3. `php artisan view:cache` sukses; `composer check` hijau.
 4. Screenshot **390 × 844** dan **1440 × 900** diperiksa: tidak ada gap samping, tidak ada overflow horizontal, ikon stat tampil, tombol ≥ 40 px.
 5. Interaksi non-destruktif dicek: dropdown, filter, langkah form, notifikasi.

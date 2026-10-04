@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\LupaPasswordController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IntegrasiController;
 use App\Http\Controllers\KategoriAsetController;
 use App\Http\Controllers\KeputusanController;
 use App\Http\Controllers\KriteriaController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\PeringkatController;
 use App\Http\Controllers\PeriodeAsetController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\ProfilTelegramController;
 use App\Http\Controllers\VerifikasiLaporanController;
 use App\Models\PeriodePenilaian;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +58,9 @@ Route::middleware(['auth', 'active', 'wajib-ganti-password'])->group(function ()
 
     Route::get('/profil', [ProfilController::class, 'edit'])->name('profil.edit');
     Route::put('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::post('/profil/telegram', [ProfilTelegramController::class, 'mulai'])->name('profil.telegram.mulai');
+    Route::post('/profil/telegram/cek', [ProfilTelegramController::class, 'cek'])->name('profil.telegram.cek')->middleware('throttle:berat');
+    Route::delete('/profil/telegram', [ProfilTelegramController::class, 'putus'])->name('profil.telegram.putus');
 
     Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
     Route::post('/notifikasi/baca-semua', [NotifikasiController::class, 'bacaSemua'])->name('notifikasi.baca-semua');
@@ -125,6 +130,9 @@ Route::middleware(['auth', 'active', 'wajib-ganti-password'])->group(function ()
         Route::post('pengguna/{user}/reset-password', [PenggunaController::class, 'resetPassword'])->name('pengguna.reset-password')->whereNumber('user')->middleware('throttle:berat');
         Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
         Route::put('pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+        Route::get('integrasi', [IntegrasiController::class, 'index'])->name('integrasi.index');
+        Route::put('integrasi', [IntegrasiController::class, 'update'])->name('integrasi.update');
+        Route::post('integrasi/uji/{kanal}', [IntegrasiController::class, 'uji'])->name('integrasi.uji')->whereIn('kanal', ['telegram', 'email'])->middleware('throttle:berat');
         Route::get('audit-log', [AuditLogController::class, 'index'])->name('audit-log.index');
     });
 });

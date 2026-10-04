@@ -12,6 +12,32 @@
 - [x] Fase 5 Dashboard dan Laporan PDF/Excel — selesai (2026-10-03)
 - [x] Fase 6 Admin (Pengguna, Pengaturan, Audit Log, Profil) — selesai (2026-10-03)
 - [x] Fase 7 QA dan Hardening — selesai (2026-10-03)
+- [ ] Branch `production-ready` — rekomendasi siap produksi (berjalan, lihat checklist di bawah)
+
+## Checklist `production-ready` (branch terpisah dari `main`)
+Setiap butir: kode + test Pest + Pint/Larastan hijau + screenshot 390/1440 (bila ada UI) + commit & push.
+
+🔴 Penting sebelum dipakai sungguhan
+- [x] Hapus periode Draft/Dinilai + tambah/keluarkan aset periode — `KelolaPeriodeTest` (9 test) · commit `fbe4779`
+- [x] Aset baru ikut periode berjalan (sakelar di form tambah aset) — `KelolaPeriodeTest` · commit `fbe4779`
+- [x] Wajib ganti kata sandi login pertama / setelah reset Admin — `KataSandiTest` · commit `c1cd14b`
+- [x] Lupa kata sandi lewat email (SMTP) — `KataSandiTest` · commit `c1cd14b`
+- [ ] Tampilan tanpa CDN (Tailwind CLI, aset di-host sendiri) + CSP
+- [ ] Backup otomatis harian database + foto/laporan
+
+🟡 Pengalaman pengguna
+- [x] Kompres foto saat upload (GD, maks 1600 px, JPEG 80) — `FotoAsetTest` · commit `1f98ffb`
+- [ ] Riwayat penilaian per aset (skor, rekomendasi, keputusan per periode)
+- [ ] Tombol "Perbesar teks" (diingat per perangkat)
+- [ ] Logout otomatis saat tidak aktif
+- [ ] Uji langsung dengan 1–2 staf kecamatan — *dilakukan user/tim, bukan kode*
+
+🟢 Nilai tambah
+- [x] QR verifikasi keaslian laporan PDF + halaman `/verifikasi/{kode}` — `VerifikasiLaporanTest` · commit `be6eea2`
+- [x] Notifikasi Telegram (gratis, pengganti WhatsApp) & email; kunci diatur di menu **Integrasi** (Admin), bukan `.env` — `IntegrasiTest` (7 test)
+- [ ] Perbandingan antar periode (tren peringkat aset)
+- [ ] CI GitHub Actions (`composer check` tiap push)
+- [ ] Sinkronisasi dokumen Bab III (use case, ERD, matriks akses)
 
 ---
 

@@ -20,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
  * @property UserRole $role
  * @property bool $is_active
  * @property bool $must_change_password
+ * @property string|null $telegram_chat_id
  */
 class User extends Authenticatable
 {
@@ -35,6 +36,7 @@ class User extends Authenticatable
         'name',
         'username',
         'email',
+        'telegram_chat_id',
         'password',
         'role',
         'is_active',

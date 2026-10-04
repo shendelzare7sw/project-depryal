@@ -6,11 +6,18 @@ namespace App\Services;
 
 use App\Enums\UserRole;
 use App\Models\User;
+use App\Notifications\NotifikasiLuar;
 use App\Notifications\SistemNotification;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Throwable;
+
+use function Illuminate\Support\defer;
 
 /**
- * Pengirim notifikasi dalam aplikasi ke pengguna aktif per role.
+ * Pengirim notifikasi ke pengguna aktif per role: selalu di dalam aplikasi (lonceng), lalu — bila dikonfigurasi —
+ * email & WhatsApp setelah respons terkirim. Kegagalan kanal luar hanya dicatat di log, tidak menggagalkan proses.
  */
 final class Notifikasi
 {
@@ -26,5 +33,23 @@ final class Notifikasi
             ->get();
 
         Notification::send($penerima, $notifikasi);
+
+        if (NotifikasiLuar::adaKanalAktif()) {
+            defer(fn () => $this->kirimLuar($penerima, $notifikasi));
+        }
+    }
+
+    /**
+     * @param  Collection<int, User>  $penerima
+     */
+    public function kirimLuar(Collection $penerima, SistemNotification $notifikasi): void
+    {
+        foreach ($penerima as $user) {
+            try {
+                $user->notify(new NotifikasiLuar($notifikasi));
+            } catch (Throwable $e) {
+                Log::warning("Notifikasi luar gagal untuk {$user->username}: {$e->getMessage()}");
+            }
+        }
     }
 }

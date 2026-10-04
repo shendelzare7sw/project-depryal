@@ -16,13 +16,22 @@ class Setting
      */
     public static function all(): array
     {
-        return Cache::rememberForever(self::CACHE_KEY, function () {
-            try {
-                return Pengaturan::pluck('value', 'key')->toArray();
-            } catch (\Throwable) {
-                return [];
-            }
-        });
+        $tersimpan = Cache::get(self::CACHE_KEY);
+
+        if (is_array($tersimpan)) {
+            return $tersimpan;
+        }
+
+        // Tabel belum ada (mis. saat migrasi pertama): kembalikan kosong tanpa menyimpan ke cache.
+        try {
+            $semua = Pengaturan::pluck('value', 'key')->toArray();
+        } catch (\Throwable) {
+            return [];
+        }
+
+        Cache::forever(self::CACHE_KEY, $semua);
+
+        return $semua;
     }
 
     public static function get(string $key, mixed $default = null): mixed

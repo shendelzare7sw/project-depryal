@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\Integrasi;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -32,6 +33,9 @@ class AppServiceProvider extends ServiceProvider
         // Halaman tamu yang mengirim email (lupa kata sandi): 5 permintaan/menit per IP.
         RateLimiter::for('tamu', fn (Request $request) => Limit::perMinute(5)->by((string) $request->ip())
             ->response(fn () => back()->withErrors(['email' => 'Terlalu banyak permintaan. Tunggu satu menit lalu coba lagi.'])));
+
+        // SMTP dari menu Integrasi (database) menimpa konfigurasi bawaan.
+        Integrasi::terapkan();
 
         ResetPassword::toMailUsing(fn (object $notifiable, string $token) => (new MailMessage)
             ->subject('Atur Ulang Kata Sandi SIKASET')

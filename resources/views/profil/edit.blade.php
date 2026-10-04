@@ -30,4 +30,36 @@
             <x-ui.btn type="submit" tone="primary" icon="check" class="w-full sm:w-auto" ::disabled="busy">Simpan Perubahan</x-ui.btn>
         </div>
     </form>
+
+    @if (\App\Support\Integrasi::telegramAktif())
+    @php($tautan = session('telegram_tautan'))
+    <x-ui.card title="Notifikasi Telegram" icon="paper-airplane" icon-tone="text-sky-500" subtitle="Terima pemberitahuan penting langsung di Telegram">
+        @if ($user->telegram_chat_id)
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-center gap-2 text-sm font-semibold text-emerald-700"><x-heroicon-o-check-circle class="h-5 w-5" /> Telegram terhubung</p>
+            <x-confirm-form :action="route('profil.telegram.putus')" method="DELETE" title="Putuskan Telegram?" text="Notifikasi tidak lagi dikirim ke Telegram Anda." confirm="Ya, putuskan">
+                <x-ui.btn type="submit" tone="soft-rose" icon="x-mark" class="w-full">Putuskan</x-ui.btn>
+            </x-confirm-form>
+        </div>
+        @elseif ($tautan)
+        <ol class="list-decimal space-y-1 pl-5 text-sm leading-6 text-zinc-700">
+            <li>Tekan <strong>Buka Telegram</strong>, lalu tekan tombol <strong>Start</strong> di percakapan bot.</li>
+            <li>Kembali ke halaman ini dan tekan <strong>Saya sudah menekan Start</strong>.</li>
+        </ol>
+        <div class="grid grid-cols-1 gap-2 sm:flex">
+            <x-ui.btn tone="soft-sky" icon="arrow-top-right-on-square" :href="$tautan['tautan']" target="_blank" rel="noopener">Buka Telegram</x-ui.btn>
+            <x-confirm-form :action="route('profil.telegram.cek')" :when="false">
+                <x-ui.btn type="submit" tone="primary" icon="check" class="w-full">Saya sudah menekan Start</x-ui.btn>
+            </x-confirm-form>
+        </div>
+        @else
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p class="text-sm text-zinc-600">Belum terhubung. Cukup dua langkah, tanpa mengetik nomor apa pun.</p>
+            <x-confirm-form :action="route('profil.telegram.mulai')" :when="false">
+                <x-ui.btn type="submit" tone="primary" icon="link" class="w-full">Hubungkan Telegram</x-ui.btn>
+            </x-confirm-form>
+        </div>
+        @endif
+    </x-ui.card>
+    @endif
 </x-layouts.app>

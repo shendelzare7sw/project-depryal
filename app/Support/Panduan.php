@@ -66,8 +66,10 @@ final class Panduan
             'pengguna.index', 'pengguna.create', 'pengguna.edit' => ['judul' => 'Manajemen Pengguna', 'isi' => 'Kelola akun yang boleh masuk. Bila pengguna lupa kata sandi, tekan ikon kunci (Reset) lalu sampaikan kata sandi sementara yang muncul. Pengguna otomatis diminta menggantinya saat masuk; pengguna yang punya email juga bisa memakai "Lupa kata sandi?" di halaman masuk.',
                 'istilah' => ['Admin' => 'Mengelola akun, pengaturan, dan audit.', 'Operator' => 'Pengurus barang: data aset, penilaian, hitung MOORA.', 'Pimpinan' => 'Camat/Sekcam: memberi keputusan dan finalisasi.']],
             'pengaturan.index' => ['judul' => 'Pengaturan', 'isi' => 'Batas skor untuk rekomendasi dan identitas yang tercetak di laporan. Perubahan batas skor hanya berlaku untuk perhitungan berikutnya.'],
+            'integrasi.index' => ['judul' => 'Integrasi', 'isi' => 'Hubungkan SIKASET dengan Telegram (gratis) dan email agar pengguna menerima pemberitahuan penting di luar aplikasi. Token & kata sandi disimpan terenkripsi.',
+                'langkah' => ['Buat bot di @BotFather, tempel tokennya, lalu Simpan.', 'Isi SMTP bila ingin email (mis. Gmail + App Password).', 'Hubungkan Telegram Anda di menu Profil, lalu tekan "Uji Telegram".']],
             'audit-log.index' => ['judul' => 'Audit Log', 'isi' => 'Catatan otomatis setiap perubahan data: siapa, kapan, dan apa yang berubah. Tekan sebuah baris untuk melihat nilai sebelum dan sesudah.'],
-            'profil.edit' => ['judul' => 'Profil Saya', 'isi' => 'Ubah nama atau kata sandi Anda. Untuk mengganti kata sandi, isi kata sandi lama terlebih dahulu.'],
+            'profil.edit' => ['judul' => 'Profil Saya', 'isi' => 'Ubah nama atau kata sandi Anda. Untuk mengganti kata sandi, isi kata sandi lama terlebih dahulu. Bila tersedia, tekan "Hubungkan Telegram" agar pemberitahuan masuk ke Telegram Anda.'],
             default => null,
         };
     }

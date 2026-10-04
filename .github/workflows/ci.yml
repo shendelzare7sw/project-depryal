@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main, production-ready]
+  pull_request:
+
+jobs:
+  check:
+    name: Pint · Larastan · Pest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo_sqlite, gd, zip, exif, intl, bcmath
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: composer check (Pint, Larastan, Pest)
+        run: composer check
+
+      - name: Aturan Emas — tidak ada <style>/<script> di view selain assets & PDF
+        run: |
+          if grep -rn "<style\|<script" resources/views | grep -v "assets.blade\|laporan/pdf"; then
+            echo "::error::Ditemukan <style>/<script> di luar assets.blade.php / laporan/pdf"; exit 1
+          fi

@@ -33,7 +33,7 @@ final class Navigation
                     self::item('Data Aset', 'aset.index', 'building-office-2', 'aset.*', true),
                     self::item('Kriteria', 'kriteria.index', 'scale', 'kriteria.*'),
                     self::item('Periode Penilaian', 'periode.index', 'calendar-days', 'periode.*|penilaian.*'),
-                    self::item('Hasil MOORA', 'hasil.index', 'chart-bar', 'hasil.*|peringkat.*'),
+                    self::item('Peringkat Aset', 'hasil.index', 'chart-bar', 'hasil.*|peringkat.*'),
                     self::item('Laporan', 'laporan.index', 'document-chart-bar', 'laporan.*'),
                 ]],
             ],
@@ -46,7 +46,7 @@ final class Navigation
                 ]],
                 ['Penilaian', [
                     self::item('Periode Penilaian', 'periode.index', 'calendar-days', 'periode.*|penilaian.*', true),
-                    self::item('Hasil MOORA', 'hasil.index', 'chart-bar', 'hasil.*|peringkat.*'),
+                    self::item('Peringkat Aset', 'hasil.index', 'chart-bar', 'hasil.*|peringkat.*'),
                     self::item('Laporan', 'laporan.index', 'document-chart-bar', 'laporan.*'),
                 ]],
             ],

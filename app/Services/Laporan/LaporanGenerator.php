@@ -73,7 +73,7 @@ final class LaporanGenerator
         $peringkat = $this->peringkat->index($periode);
 
         if ($peringkat['total'] === 0) {
-            throw new DomainException('Periode ini belum memiliki hasil MOORA. Laporan dapat dibuat setelah perhitungan.');
+            throw new DomainException('Periode ini belum memiliki hasil perhitungan. Laporan dapat dibuat setelah perhitungan.');
         }
 
         return $peringkat + $this->peringkat->perhitungan($periode) + [

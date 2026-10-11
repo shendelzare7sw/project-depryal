@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $title ?? 'Masuk' }} — SIKASET</title>
-    <meta name="description" content="Masuk ke SIKASET, Sistem Pendukung Keputusan Kelayakan Aset BMD Kecamatan Batuceper">
+    <meta name="description" content="Masuk ke SIKASET — Penilaian Kelayakan Aset Daerah Kecamatan Batuceper">
     <link rel="icon" type="image/jpeg" href="{{ asset('img/logo.jpeg') }}">
     @include('layouts.partials.assets')
 </head>
@@ -24,7 +24,7 @@
 
             <div class="relative mt-auto max-w-xl">
                 <p class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold text-white/85 ring-1 ring-inset ring-white/15">
-                    <span class="h-1.5 w-1.5 rounded-full bg-amber-300"></span> Sistem Pendukung Keputusan · Metode MOORA
+                    <span class="h-1.5 w-1.5 rounded-full bg-amber-300"></span> Aplikasi Penilaian Kelayakan Aset · Kec. Batuceper
                 </p>
                 <h1 class="mt-5 text-4xl font-extrabold leading-[1.15] tracking-tight !text-white xl:text-5xl">
                     Penilaian kelayakan aset daerah yang <span class="text-amber-300">terukur</span> &amp; transparan.
@@ -34,7 +34,7 @@
                     pertahankan, perbaiki, atau hapus.
                 </p>
                 <div class="mt-10 grid grid-cols-3 gap-3">
-                    @foreach ([['circle-stack', 'Data BMD', 'Import Excel'], ['calculator', 'Hitung MOORA', 'Otomatis'], ['check-badge', 'Keputusan', 'Oleh pimpinan']] as [$icon, $judul, $ket])
+                    @foreach ([['circle-stack', 'Data Aset', 'Import Excel'], ['calculator', 'Hitung Peringkat', 'Otomatis'], ['check-badge', 'Keputusan', 'Oleh pimpinan']] as [$icon, $judul, $ket])
                     <div class="rounded-2xl bg-white/[0.06] p-4 ring-1 ring-inset ring-white/10">
                         <x-dynamic-component :component="'heroicon-o-'.$icon" class="h-6 w-6 text-amber-300" />
                         <p class="mt-3 text-sm font-bold !text-white">{{ $judul }}</p>

@@ -16,7 +16,7 @@
                 <a href="{{ route('periode.index') }}" class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 hover:bg-zinc-200" aria-label="Kembali"><x-heroicon-o-arrow-left class="h-5 w-5" /></a>
                 <div class="min-w-0">
                     <h2 class="text-base font-extrabold text-zinc-900">Periode penilaian baru</h2>
-                    <p class="mt-0.5 text-xs text-zinc-500">Setelah dibuat, isi nilai setiap aset lalu hitung MOORA.</p>
+                    <p class="mt-0.5 text-xs text-zinc-500">Setelah dibuat, isi nilai setiap aset lalu hitung peringkat.</p>
                 </div>
             </header>
             @if ($errors->any())

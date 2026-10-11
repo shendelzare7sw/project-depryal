@@ -98,7 +98,7 @@ final class PeringkatData
         $matriks = NilaiKriteriaAset::where('periode_id', $periode->id)->get()
             ->groupBy('aset_id')->map(fn (Collection $n) => $n->pluck('nilai', 'kriteria_id')->map(fn ($v) => (float) $v));
 
-        // Penyebut √Σx² diturunkan dari hasil tersimpan (x / x*) — tidak menghitung ulang MOORA.
+        // Penyebut √Σx² diturunkan dari hasil tersimpan (x / x*) — tidak menghitung ulang peringkat.
         $penyebut = $kriteria->mapWithKeys(function (array $k) use ($hasil, $matriks) {
             $baris = $hasil->first(fn (HasilMoora $h) => (float) ($h->detail['normalized'][$k['id']] ?? 0) > 0);
 

@@ -20,7 +20,7 @@
     </section>
 
     @if (! $data)
-    <x-ui.empty-state icon="arrows-right-left" title="Belum bisa dibandingkan" text="Perbandingan membutuhkan minimal dua periode yang sudah dihitung MOORA." />
+    <x-ui.empty-state icon="arrows-right-left" title="Belum bisa dibandingkan" text="Perbandingan membutuhkan minimal dua periode yang sudah dihitung peringkat." />
     @else
     <x-ui.stat-grid :items="$stats" />
 

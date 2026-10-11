@@ -12,7 +12,7 @@ use App\Models\PeriodePenilaian;
 use Illuminate\Support\Collection;
 
 /**
- * Riwayat hasil MOORA lintas periode: per aset (detail aset) dan perbandingan dua periode (tren peringkat).
+ * Riwayat hasil perhitungan lintas periode: per aset (detail aset) dan perbandingan dua periode (tren peringkat).
  */
 final class RiwayatPenilaian
 {
@@ -44,7 +44,7 @@ final class RiwayatPenilaian
     }
 
     /**
-     * Periode yang punya hasil MOORA (pilihan perbandingan), terbaru di atas.
+     * Periode yang punya hasil perhitungan (pilihan perbandingan), terbaru di atas.
      *
      * @return Collection<int, PeriodePenilaian>
      */

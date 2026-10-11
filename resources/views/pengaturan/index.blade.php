@@ -15,7 +15,7 @@
         @endif
 
         <div class="grid min-w-0 gap-5 xl:grid-cols-2">
-            <x-ui.card title="Ambang rekomendasi" icon="adjustments-horizontal" icon-tone="text-amber-500" subtitle="Berdasarkan skor relatif MOORA 0–100">
+            <x-ui.card title="Ambang rekomendasi" icon="adjustments-horizontal" icon-tone="text-amber-500" subtitle="Berdasarkan skor kelayakan 0–100">
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <x-form.input name="ambang_pertahankan" label="Pertahankan bila skor ≥" type="number" step="0.01" min="0" max="100" :value="$nilai('ambang_pertahankan', 66.67)" required x-model.number="atas" />
                     <x-form.input name="ambang_perbaiki" label="Hapus bila skor di bawah" type="number" step="0.01" min="0" max="100" :value="$nilai('ambang_perbaiki', 33.33)" required x-model.number="bawah" />

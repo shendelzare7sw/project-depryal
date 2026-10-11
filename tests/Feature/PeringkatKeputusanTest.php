@@ -20,7 +20,7 @@ test('peringkat mengikuti golden dataset dan dapat dilihat semua role', function
         expect($baris->map(fn ($b) => $b['aset']->nama_barang)->all())->toBe(['Aset A3', 'Aset A1', 'Aset A4', 'Aset A2'])
             ->and($baris->map(fn ($b) => $b['hasil']->rekomendasi)->all())->toBe([TindakanAset::Pertahankan, TindakanAset::Perbaiki, TindakanAset::Perbaiki, TindakanAset::Hapus])
             ->and($response->viewData('ringkasan'))->toBe(['pertahankan' => 1, 'perbaiki' => 2, 'hapus' => 1]);
-        $response->assertSee('0,4170');
+        $response->assertDontSee('0,4170');
     }
 });
 
@@ -128,7 +128,7 @@ test('operator dan admin tidak dapat memutuskan atau memfinalisasi', function (U
     $this->actingAs($user)->get(route('peringkat.index', $periode))->assertDontSee('Mulai Putuskan');
 })->with([UserRole::Operator, UserRole::Admin]);
 
-test('menu Hasil MOORA dan Keputusan mengarah ke periode yang tepat', function () {
+test('menu Peringkat Aset dan Keputusan mengarah ke periode yang tepat', function () {
     $pimpinan = userWithRole(UserRole::Pimpinan);
     $this->actingAs($pimpinan)->get(route('hasil.index'))->assertOk()->assertSee('Belum ada periode penilaian');
     $this->actingAs($pimpinan)->get(route('keputusan.index'))->assertOk()->assertSee('Belum ada aset yang menunggu keputusan');

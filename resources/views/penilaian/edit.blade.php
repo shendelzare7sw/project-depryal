@@ -4,7 +4,7 @@
         $dihitung = $periode->status->value === 'dihitung';
     @endphp
     <x-confirm-form :action="route('penilaian.update', [$periode, $aset])" method="PUT" enctype="multipart/form-data" :when="$dihitung"
-        title="Simpan perubahan nilai?" text="Hasil MOORA dan keputusan pimpinan pada periode ini akan dihapus. Hitung MOORA perlu dijalankan ulang."
+        title="Simpan perubahan nilai?" text="Hasil perhitungan dan keputusan pimpinan pada periode ini akan dihapus. Hitung Peringkat perlu dijalankan ulang."
         confirm="Ya, simpan" icon="warning" class="flex min-w-0 flex-col gap-5">
     <div class="contents" x-data="{ kamera: [], galeri: [], lanjut: 0 }">
         <input type="hidden" name="lanjut" :value="lanjut">
@@ -33,7 +33,7 @@
             @if ($dihitung)
             <div class="mx-4 mb-4 flex items-start gap-3 rounded-xl border border-sky-200 bg-sky-50 p-3 text-xs leading-5 text-sky-900 sm:mx-5">
                 <x-heroicon-o-exclamation-triangle class="h-5 w-5 shrink-0 text-sky-600" />
-                <p>Periode sudah dihitung. Menyimpan perubahan akan <strong>menghapus hasil MOORA & keputusan</strong>; Hitung MOORA perlu dijalankan ulang.</p>
+                <p>Periode sudah dihitung. Menyimpan perubahan akan <strong>menghapus hasil perhitungan & keputusan</strong>; Hitung Peringkat perlu dijalankan ulang.</p>
             </div>
             @endif
             @if ($errors->any())

@@ -13,7 +13,7 @@ enum JenisLaporan: string
     public function label(): string
     {
         return match ($this) {
-            self::Peringkat => 'Laporan Peringkat Kelayakan (MOORA)',
+            self::Peringkat => 'Laporan Peringkat Kelayakan',
             self::Keputusan => 'Laporan Keputusan Tindakan Aset',
             self::Lengkap => 'Laporan Lengkap Penilaian & Keputusan',
         };

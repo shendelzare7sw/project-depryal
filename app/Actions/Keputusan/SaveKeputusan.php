@@ -23,11 +23,11 @@ final class SaveKeputusan
         if ($periode->status !== StatusPeriode::Dihitung) {
             throw new DomainException($periode->isFinal()
                 ? 'Periode sudah final; keputusan terkunci.'
-                : 'Periode belum dihitung. Keputusan baru dapat diberikan setelah Hitung MOORA.');
+                : 'Periode belum dihitung. Keputusan baru dapat diberikan setelah Hitung Peringkat.');
         }
 
         $hasil = HasilMoora::where(['periode_id' => $periode->id, 'aset_id' => $aset->id])->first()
-            ?? throw new DomainException('Aset ini tidak memiliki hasil MOORA pada periode tersebut.');
+            ?? throw new DomainException('Aset ini tidak memiliki hasil perhitungan pada periode tersebut.');
 
         if ($tindakan !== $hasil->rekomendasi && mb_strlen(trim((string) $catatan)) < 10) {
             throw new DomainException('Catatan minimal 10 karakter wajib diisi karena keputusan berbeda dari rekomendasi sistem.');

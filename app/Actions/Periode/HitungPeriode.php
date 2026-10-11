@@ -11,7 +11,7 @@ use App\Notifications\SistemNotification;
 use App\Services\Notifikasi;
 
 /**
- * Use case "Hitung MOORA" dari UI: jalankan CalculatePeriode (Fase 1, tidak diubah)
+ * Use case "Hitung Peringkat" dari UI: jalankan CalculatePeriode (Fase 1, tidak diubah)
  * lalu beri tahu Pimpinan bahwa peringkat siap diputuskan.
  */
 final class HitungPeriode
@@ -27,7 +27,7 @@ final class HitungPeriode
 
         $jumlah = $periode->hasilMoora()->count();
         $this->notifikasi->kirimKeRole([UserRole::Pimpinan, UserRole::Admin], new SistemNotification(
-            judul: 'Peringkat MOORA siap ditinjau',
+            judul: 'Peringkat aset siap ditinjau',
             pesan: "{$jumlah} aset pada periode \"{$periode->nama}\" menunggu keputusan pimpinan.",
             url: route('peringkat.index', $periode),
             icon: 'chart-bar',

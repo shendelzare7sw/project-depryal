@@ -62,7 +62,7 @@ test('halaman periode menampilkan progres dan alasan Hitung MOORA dinonaktifkan'
     $periode = periodeDraft();
 
     $this->actingAs(userWithRole(UserRole::Operator))->get(route('periode.show', $periode))
-        ->assertOk()->assertSee('Hitung MOORA belum bisa dijalankan')->assertSee('9 nilai belum diisi')
+        ->assertOk()->assertSee('Hitung Peringkat belum bisa dijalankan')->assertSee('9 nilai belum diisi')
         ->assertSee(route('penilaian.edit', [$periode, $periode->aset->first()]));
 });
 
@@ -131,7 +131,7 @@ test('hitung MOORA dari halaman periode → dihitung, hasil tersimpan, pimpinan 
 
     expect($periode->refresh()->status)->toBe(StatusPeriode::Dihitung)
         ->and(HasilMoora::where('periode_id', $periode->id)->count())->toBe(3)
-        ->and($pimpinan->notifications()->first()->data['judul'])->toBe('Peringkat MOORA siap ditinjau');
+        ->and($pimpinan->notifications()->first()->data['judul'])->toBe('Peringkat aset siap ditinjau');
 });
 
 test('mengubah nilai setelah dihitung menghapus hasil & keputusan dan memberi peringatan', function () {
@@ -143,7 +143,7 @@ test('mengubah nilai setelah dihitung menghapus hasil & keputusan dan memberi pe
     Keputusan::factory()->create(['periode_id' => $periode->id, 'aset_id' => $periode->aset->first()->id]);
     $aset = $periode->aset->first();
 
-    $this->actingAs($operator)->get(route('penilaian.edit', [$periode, $aset]))->assertSee('menghapus hasil MOORA');
+    $this->actingAs($operator)->get(route('penilaian.edit', [$periode, $aset]))->assertSee('menghapus hasil perhitungan');
 
     $this->actingAs($operator)->put(route('penilaian.update', [$periode, $aset]), [
         'kriteria' => [$kriteria[0]->id => 5, $kriteria[1]->id => 5, $kriteria[2]->id => 1],

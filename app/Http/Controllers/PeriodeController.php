@@ -69,7 +69,7 @@ class PeriodeController extends Controller
     {
         $hitung->execute($periode, $request->user());
 
-        return to_route('peringkat.index', $periode)->with('success', 'Perhitungan MOORA selesai. Peringkat & rekomendasi diperbarui.');
+        return to_route('peringkat.index', $periode)->with('success', 'Perhitungan peringkat selesai. Peringkat & rekomendasi diperbarui.');
     }
 
     public function bukaKembali(ReopenPeriodeRequest $request, PeriodePenilaian $periode, ReopenPeriode $reopen): RedirectResponse

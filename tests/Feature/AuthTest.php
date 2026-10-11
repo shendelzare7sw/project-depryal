@@ -16,6 +16,7 @@ test('halaman masuk dapat ditampilkan', function () {
 
     $response->assertOk();
     $response->assertSee('SIKASET');
+    $response->assertSee('Penilaian Kelayakan Aset')->assertDontSee('Metode MOORA')->assertDontSee('Sistem Pendukung Keputusan');
 });
 
 test('pengguna dapat masuk menggunakan username', function () {

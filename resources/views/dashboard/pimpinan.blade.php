@@ -1,10 +1,10 @@
-<x-layouts.app title="Beranda" subtitle="Ringkasan keputusan kelayakan aset BMD">
+<x-layouts.app title="Beranda" subtitle="Ringkasan keputusan kelayakan aset daerah">
     @php
         $user = auth()->user();
         $bar = ['pertahankan' => 'bg-emerald-500', 'perbaiki' => 'bg-amber-400', 'hapus' => 'bg-rose-500'];
         $dihitung = $periode?->status->value === 'dihitung';
         $subjudul = ! $periode
-            ? 'Belum ada periode yang dihitung. Hasil MOORA akan muncul setelah operator menyelesaikan penilaian.'
+            ? 'Belum ada periode yang dihitung. Hasil penilaian akan muncul setelah operator menyelesaikan penilaian.'
             : ($dihitung
                 ? ($menunggu > 0 ? "{$menunggu} aset menunggu keputusan Anda pada periode \"{$periode->nama}\"." : 'Semua aset sudah diputuskan — periode siap difinalisasi.')
                 : "Periode terakhir \"{$periode->nama}\" sudah final.");
@@ -36,7 +36,7 @@
 
     @if (! $periode)
     <x-ui.card>
-        <x-ui.empty-state icon="chart-bar" title="Belum ada hasil penilaian" text="Anda akan mendapat notifikasi saat peringkat MOORA siap ditinjau." />
+        <x-ui.empty-state icon="chart-bar" title="Belum ada hasil penilaian" text="Anda akan mendapat notifikasi saat peringkat aset siap ditinjau." />
     </x-ui.card>
     @else
     <div class="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]">

@@ -103,7 +103,7 @@ final class PeriodeDetail
     }
 
     /**
-     * Alasan tombol "Hitung MOORA" dinonaktifkan (kosong = boleh dihitung).
+     * Alasan tombol "Hitung Peringkat" dinonaktifkan (kosong = boleh dihitung).
      *
      * @param  Collection<int, Kriteria>  $kriteria
      * @return list<string>

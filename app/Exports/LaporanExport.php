@@ -26,7 +26,7 @@ final class LaporanExport implements Export, WithMultipleSheets
      */
     public function sheets(): array
     {
-        $peringkat = new LaporanSheet('Peringkat', ['Peringkat', 'Kode Barang', 'NUP', 'Nama Barang', 'Kategori', 'Yi', 'Skor Relatif', 'Rekomendasi'],
+        $peringkat = new LaporanSheet('Peringkat', ['Peringkat', 'Kode Barang', 'NUP', 'Nama Barang', 'Kategori', 'Yi', 'Skor Kelayakan', 'Rekomendasi'],
             $this->data['baris']->map(fn (array $b) => [
                 $b['hasil']->ranking, $b['aset']->kode_barang, $b['aset']->nup, $b['aset']->nama_barang, $b['aset']->kategori?->nama,
                 round($b['hasil']->yi, 4), round($b['hasil']->skor_relatif, 2), $b['hasil']->rekomendasi->label(),

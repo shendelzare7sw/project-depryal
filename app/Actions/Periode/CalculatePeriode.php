@@ -19,7 +19,7 @@ use App\Support\Setting;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Action: Hitung MOORA untuk satu periode dan simpan hasil ke DB.
+ * Action: Hitung Peringkat untuk satu periode dan simpan hasil ke DB.
  *
  * Dilempar DomainException (pesan Indonesia) jika:
  *   - Periode sudah final
@@ -47,7 +47,7 @@ final class CalculatePeriode
         $kriteriaAktif = Kriteria::aktif()->get();
 
         if ($kriteriaAktif->count() < 2) {
-            throw new \DomainException('Minimal 2 kriteria aktif diperlukan untuk menghitung MOORA.');
+            throw new \DomainException('Minimal 2 kriteria aktif diperlukan untuk menghitung peringkat.');
         }
 
         // ── Validasi bobot = 1,00 (±0,0001) ──────────────────────────────────
@@ -63,7 +63,7 @@ final class CalculatePeriode
         $asetIds = $periode->aset()->pluck('aset.id')->all();
 
         if (count($asetIds) < 2) {
-            throw new \DomainException('Minimal 2 aset diperlukan dalam periode untuk menghitung MOORA.');
+            throw new \DomainException('Minimal 2 aset diperlukan dalam periode untuk menghitung peringkat.');
         }
 
         // ── Validasi nilai lengkap ────────────────────────────────────────────
@@ -106,7 +106,7 @@ final class CalculatePeriode
 
         $input = new MooraInput($criteriaMap, $matrix);
 
-        // ── Hitung MOORA ──────────────────────────────────────────────────────
+        // ── Hitung Peringkat ──────────────────────────────────────────────────────
         $result = $this->calculator->calculate($input);
 
         // ── Resolver rekomendasi ──────────────────────────────────────────────

@@ -22,7 +22,7 @@ final class SaveNilaiAset
 
     /**
      * Simpan nilai kriteria, deskripsi kondisi, dan foto satu aset dalam periode.
-     * Nilai kosong (null) menghapus nilai lama. Bila periode sudah dihitung, hasil MOORA & keputusan
+     * Nilai kosong (null) menghapus nilai lama. Bila periode sudah dihitung, hasil perhitungan & keputusan
      * dihapus (perlu hitung ulang). Status periode: draft ↔ dinilai sesuai kelengkapan.
      *
      * @param  array<int|string, mixed>  $nilai  [kriteria_id => nilai|null]

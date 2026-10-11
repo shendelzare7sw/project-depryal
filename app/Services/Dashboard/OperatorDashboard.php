@@ -68,7 +68,7 @@ final class OperatorDashboard
 
         return $aset
             ? ['label' => 'Lanjutkan Penilaian', 'href' => route('penilaian.edit', [$periode, $aset]), 'icon' => 'clipboard-document-check']
-            : ['label' => 'Hitung MOORA', 'href' => route('periode.show', $periode), 'icon' => 'calculator'];
+            : ['label' => 'Hitung Peringkat', 'href' => route('periode.show', $periode), 'icon' => 'calculator'];
     }
 
     /**
@@ -86,7 +86,7 @@ final class OperatorDashboard
             ['label' => 'Lengkapi data aset BMD', 'hint' => "{$totalAset} aset tercatat", 'done' => $totalAset >= 2, 'href' => route('aset.index')],
             ['label' => 'Atur kriteria & bobot 100%', 'hint' => "{$kriteriaAktif} kriteria · bobot {$totalBobot}%", 'done' => $kriteriaAktif >= 2 && abs($totalBobot - 100) < 0.0001, 'href' => route('kriteria.index')],
             ['label' => 'Buat periode & input nilai', 'hint' => $periode ? "{$progres['persen']}% nilai \"{$periode->nama}\"" : 'Belum ada periode aktif', 'done' => in_array($status, [StatusPeriode::Dinilai, StatusPeriode::Dihitung], true), 'href' => $periode ? route('periode.show', $periode) : route('periode.index')],
-            ['label' => 'Hitung MOORA', 'hint' => 'Peringkat & rekomendasi otomatis', 'done' => $status === StatusPeriode::Dihitung, 'href' => $periode ? route('periode.show', $periode) : null],
+            ['label' => 'Hitung Peringkat', 'hint' => 'Peringkat & rekomendasi otomatis', 'done' => $status === StatusPeriode::Dihitung, 'href' => $periode ? route('periode.show', $periode) : null],
             ['label' => 'Keputusan pimpinan & finalisasi', 'hint' => $adaFinal ? 'Sudah ada periode final' : 'Dilakukan oleh pimpinan', 'done' => $adaFinal && ! $periode, 'href' => route('hasil.index')],
         ];
     }

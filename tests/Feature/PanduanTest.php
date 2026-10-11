@@ -17,10 +17,10 @@ test('setiap menu di navigasi setiap peran menampilkan panduan singkat', functio
     expect($periode)->not->toBeNull();
 })->with([UserRole::Admin, UserRole::Operator, UserRole::Pimpinan]);
 
-test('halaman Hasil MOORA menjelaskan apa itu MOORA, skor relatif, dan rekomendasi', function () {
+test('halaman Peringkat Aset menjelaskan peringkat, skor kelayakan, dan rekomendasi tanpa istilah teknis', function () {
     ['periode' => $periode] = periodeGolden();
 
     $this->actingAs(userWithRole(UserRole::Pimpinan))->get(route('peringkat.index', $periode))
-        ->assertSee('Hasil MOORA (Peringkat Aset)')->assertSee('Metode penilaian yang membandingkan semua aset')
-        ->assertSee('Skor relatif (0–100)')->assertSee('Mulai Putuskan');
+        ->assertSee('Peringkat Aset')->assertSee('hasil membandingkan semua aset')
+        ->assertSee('Skor kelayakan (0–100)')->assertSee('Mulai Putuskan')->assertDontSee('Hasil MOORA');
 });

@@ -1,4 +1,4 @@
-<x-layouts.app :title="$aset->nama_barang" :subtitle="'Hasil MOORA · '.$periode->nama">
+<x-layouts.app :title="$aset->nama_barang" :subtitle="'Hasil Penilaian · '.$periode->nama">
     @php($bisaPutus = auth()->user()->isPimpinan() && $periode->status->value === 'dihitung')
 
     <section class="min-w-0 overflow-hidden rounded-2xl border border-zinc-200/80 bg-white shadow-sm shadow-zinc-900/[0.03]">
@@ -21,8 +21,8 @@
             </div>
         </div>
         <div class="grid grid-cols-2 border-t border-zinc-100 bg-zinc-50/60 lg:grid-cols-4">
-            <div class="border-r border-zinc-100 p-4"><p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">Skor relatif</p><p class="mt-0.5 text-xl font-extrabold tabular-nums text-zinc-900">{{ number_format($hasil->skor_relatif, 2, ',', '.') }}</p></div>
-            <div class="p-4 lg:border-r lg:border-zinc-100"><p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">Nilai optimasi (Yi)</p><p class="mt-0.5 font-mono text-xl font-extrabold tabular-nums text-zinc-900">{{ number_format($hasil->yi, 4, ',', '.') }}</p></div>
+            <div class="border-r border-zinc-100 p-4"><p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">Skor kelayakan</p><p class="mt-0.5 text-xl font-extrabold tabular-nums text-zinc-900">{{ number_format($hasil->skor_relatif, 2, ',', '.') }}</p></div>
+            <div class="p-4 lg:border-r lg:border-zinc-100"><p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">Peringkat</p><p class="mt-0.5 text-xl font-extrabold tabular-nums text-zinc-900">Ke-{{ $hasil->ranking }}</p></div>
             <div class="border-r border-t border-zinc-100 p-4 lg:border-t-0"><p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">Rekomendasi sistem</p><x-ui.badge-tindakan :tindakan="$hasil->rekomendasi" class="mt-1.5" /></div>
             <div class="border-t border-zinc-100 p-4 lg:border-t-0"><p class="text-[10px] font-bold uppercase tracking-wide text-zinc-500">Keputusan pimpinan</p>
                 @if ($keputusan)<x-ui.badge-tindakan :tindakan="$keputusan->tindakan" class="mt-1.5" />@else<x-ui.badge tone="ghost" class="mt-1.5">Belum diputuskan</x-ui.badge>@endif

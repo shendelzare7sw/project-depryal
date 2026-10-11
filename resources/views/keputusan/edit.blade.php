@@ -33,7 +33,6 @@
                         <p class="mt-0.5 truncate font-mono text-[11px] text-zinc-500">{{ $aset->kode_barang }} · NUP {{ $aset->nup }} · {{ $aset->kategori?->nama }}</p>
                         <div class="mt-2 flex flex-wrap items-center gap-1.5">
                             <x-ui.badge tone="primary">Skor {{ number_format($hasil->skor_relatif, 2, ',', '.') }}</x-ui.badge>
-                            <x-ui.badge tone="neutral">Yi {{ number_format($hasil->yi, 4, ',', '.') }}</x-ui.badge>
                             @if ($keputusan)<x-ui.badge tone="info">Sudah diputuskan</x-ui.badge>@endif
                         </div>
                     </div>

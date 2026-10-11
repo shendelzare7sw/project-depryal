@@ -12,7 +12,7 @@
         @if ($bisaBuat)
         <x-ui.card title="Buat laporan" icon="document-plus" subtitle="Hanya periode yang sudah dihitung / final">
             @if ($periode->isEmpty())
-            <x-ui.empty-state icon="calculator" title="Belum ada periode yang dihitung" text="Laporan tersedia setelah Hitung MOORA dijalankan." />
+            <x-ui.empty-state icon="calculator" title="Belum ada periode yang dihitung" text="Laporan tersedia setelah Hitung Peringkat dijalankan." />
             @else
             <form method="POST" action="{{ route('laporan.store') }}" x-data="{ busy: false }" @submit="busy = true" class="space-y-4">
                 @csrf

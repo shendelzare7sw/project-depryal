@@ -18,7 +18,7 @@ final class KelolaAsetPeriode
 {
     /**
      * Tambahkan aset aktif ke periode yang belum final. Aset yang sudah ada di periode diabaikan.
-     * Bila periode sudah dihitung, hasil MOORA & keputusan dihapus (perlu hitung ulang).
+     * Bila periode sudah dihitung, hasil perhitungan & keputusan dihapus (perlu hitung ulang).
      *
      * @param  list<int>  $asetIds
      * @return int jumlah aset yang benar-benar ditambahkan

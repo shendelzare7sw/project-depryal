@@ -9,7 +9,7 @@ use App\Services\Peringkat\RiwayatPenilaian;
 use Illuminate\View\View;
 
 /**
- * Tren peringkat: bandingkan hasil MOORA dua periode (default: dua periode terbaru yang sudah dihitung).
+ * Tren peringkat: bandingkan hasil perhitungan dua periode (default: dua periode terbaru yang sudah dihitung).
  */
 class PerbandinganPeriodeController extends Controller
 {

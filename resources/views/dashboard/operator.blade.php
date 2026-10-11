@@ -1,11 +1,11 @@
-<x-layouts.app title="Beranda" subtitle="Ringkasan kelayakan aset BMD Kecamatan Batuceper">
+<x-layouts.app title="Beranda" subtitle="Ringkasan kelayakan aset daerah Kecamatan Batuceper">
     @php
         $user = auth()->user();
         $selesai = collect($langkah)->where('done', true)->count();
     @endphp
 
     <x-ui.hero :eyebrow="'SIKASET · '.now()->translatedFormat('l, d F Y')" :title="'Halo, '.$user->name.'!'"
-        subtitle="Kelola data aset, kriteria, dan penilaian hingga peringkat MOORA siap diputuskan pimpinan.">
+        subtitle="Kelola data aset, kriteria, dan penilaian hingga peringkat aset siap diputuskan pimpinan.">
         <x-slot:actions>
             <x-ui.btn tone="amber" :icon="$aksiUtama['icon']" :href="$aksiUtama['href']">{{ $aksiUtama['label'] }}</x-ui.btn>
             <x-ui.btn tone="glass" icon="plus" :href="route('aset.create')">Tambah Aset</x-ui.btn>
@@ -19,7 +19,7 @@
                 <progress class="progress mt-3 h-2 w-full bg-white/20 [&::-webkit-progress-value]:bg-amber-300 [&::-moz-progress-bar]:bg-amber-300" value="{{ $progres['terisi'] }}" max="{{ max(1, $progres['diperlukan']) }}"></progress>
                 <p class="mt-2 truncate text-xs text-brand-50/90">{{ $progres['terisi'] }}/{{ $progres['diperlukan'] }} nilai · {{ $periode->nama }}</p>
                 @else
-                <p class="text-[11px] font-bold uppercase tracking-wide text-brand-100">Progres alur SPK</p>
+                <p class="text-[11px] font-bold uppercase tracking-wide text-brand-100">Progres penilaian</p>
                 <p class="mt-1 text-3xl font-extrabold !text-white">{{ $selesai }}<span class="text-base font-bold text-brand-100">/{{ count($langkah) }}</span></p>
                 <progress class="progress mt-3 h-2 w-full bg-white/20 [&::-webkit-progress-value]:bg-amber-300 [&::-moz-progress-bar]:bg-amber-300" value="{{ $selesai }}" max="{{ count($langkah) }}"></progress>
                 <p class="mt-2 text-xs text-brand-50/90">Belum ada periode aktif</p>

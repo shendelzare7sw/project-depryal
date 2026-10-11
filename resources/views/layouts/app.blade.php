@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="sikaset">
+{{-- Saat dialog SweetAlert2 terbuka: kunci gulir di <html> (bukan <body>) agar sidebar & topbar sticky tidak "terangkat" di desktop (lg:drawer-open membuat <html> overflow-y:auto). --}}
+<html lang="id" data-theme="sikaset" class="[&:has(body.swal2-shown:not(.swal2-toast-shown))]:!overflow-hidden">
 <head>
     <meta charset="UTF-8">
     <title>{{ $title ?? 'SIKASET' }} — SIKASET</title>
-    <meta name="description" content="Sistem Pendukung Keputusan Penilaian Kelayakan Aset Kecamatan Batuceper">
+    <meta name="description" content="SIKASET — Penilaian Kelayakan Aset Daerah Kecamatan Batuceper">
     <link rel="icon" type="image/jpeg" href="{{ asset('img/logo.jpeg') }}">
     @include('layouts.partials.assets')
 </head>
-<body class="min-h-screen bg-base-200 font-sans text-zinc-800 antialiased">
+<body class="min-h-screen bg-base-200 font-sans text-zinc-800 antialiased [&.swal2-shown]:!overflow-visible">
 @php($user = auth()->user())
 
 <div class="drawer lg:drawer-open">
@@ -44,7 +45,7 @@
 
         <footer class="hidden border-t border-zinc-200/80 bg-white px-8 py-4 text-xs text-zinc-400 lg:flex lg:items-center lg:justify-between">
             <span>© {{ date('Y') }} SIKASET · Pemerintah Kecamatan Batuceper, Kota Tangerang</span>
-            <span>SPK Kelayakan Aset BMD · Metode MOORA</span>
+            <span>Penilaian Kelayakan Aset Daerah</span>
         </footer>
 
         {{-- Bottom navigation (ponsel) --}}
@@ -77,7 +78,7 @@
                 <img src="{{ asset('img/logo.jpeg') }}" alt="Logo Kecamatan Batuceper" class="h-10 w-10 rounded-xl bg-white object-contain p-0.5">
                 <div class="min-w-0 flex-1">
                     <p class="text-base font-extrabold leading-tight tracking-tight text-white">SIKASET</p>
-                    <p class="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-amber-300/90">SPK Kelayakan Aset</p>
+                    <p class="truncate text-[10px] font-bold uppercase tracking-[0.14em] text-amber-300/90">Kelayakan Aset Daerah</p>
                 </div>
                 <label for="app-drawer" aria-label="Tutup menu" class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-white/60 hover:bg-white/10 lg:hidden">
                     <x-heroicon-o-x-mark class="h-5 w-5" />

@@ -20,7 +20,7 @@ class PeringkatController extends Controller
     }
 
     /**
-     * Menu "Hasil MOORA": buka periode terbaru yang sudah dihitung/final.
+     * Menu "Peringkat Aset": buka periode terbaru yang sudah dihitung/final.
      */
     public function redirectOrIndex(): View|RedirectResponse
     {

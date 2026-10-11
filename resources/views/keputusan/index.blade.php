@@ -1,15 +1,15 @@
-<x-layouts.app title="Keputusan" subtitle="Tetapkan tindakan untuk setiap aset hasil MOORA">
+<x-layouts.app title="Keputusan" subtitle="Tetapkan tindakan untuk setiap aset sesuai peringkat">
     @if (! $periode)
     {{-- Belum ada periode yang siap diputuskan --}}
     <x-ui.card>
         <x-ui.empty-state icon="check-badge" title="Belum ada aset yang menunggu keputusan"
-            :text="$terakhir ? 'Periode terakhir “'.$terakhir->nama.'” berstatus '.$terakhir->status->label().'. Keputusan baru dapat diberikan setelah Operator menjalankan Hitung MOORA.' : 'Operator belum membuat periode penilaian.'">
+            :text="$terakhir ? 'Periode terakhir “'.$terakhir->nama.'” berstatus '.$terakhir->status->label().'. Keputusan baru dapat diberikan setelah Operator menjalankan Hitung Peringkat.' : 'Operator belum membuat periode penilaian.'">
             @if ($terakhir && in_array($terakhir->status->value, ['final'], true))
             <x-ui.btn tone="white" icon="chart-bar" :href="route('peringkat.index', $terakhir)">Lihat Hasil Periode Final</x-ui.btn>
             @endif
         </x-ui.empty-state>
         <ol class="mx-auto grid max-w-3xl gap-2 pb-4 text-left sm:grid-cols-3">
-            @foreach ([['1', 'Operator', 'Mengisi data aset, kriteria, dan nilai setiap aset dalam periode.'], ['2', 'Operator', 'Menjalankan Hitung MOORA — Anda menerima notifikasi.'], ['3', 'Pimpinan', 'Menetapkan tindakan tiap aset di halaman ini, lalu finalisasi.']] as [$no, $siapa, $ket])
+            @foreach ([['1', 'Operator', 'Mengisi data aset, kriteria, dan nilai setiap aset dalam periode.'], ['2', 'Operator', 'Menjalankan Hitung Peringkat — Anda menerima notifikasi.'], ['3', 'Pimpinan', 'Menetapkan tindakan tiap aset di halaman ini, lalu finalisasi.']] as [$no, $siapa, $ket])
             <li class="flex gap-3 rounded-xl bg-zinc-50 p-3">
                 <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-700 text-xs font-extrabold text-white">{{ $no }}</span>
                 <span class="text-xs leading-5 text-zinc-600"><strong class="block text-zinc-900">{{ $siapa }}</strong>{{ $ket }}</span>

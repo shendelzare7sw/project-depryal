@@ -39,7 +39,7 @@
                 <x-heroicon-m-chevron-right class="mt-3 h-4 w-4 shrink-0 text-zinc-300" />
             </a>
             @empty
-            <x-ui.empty-state icon="bell-slash" title="Belum ada notifikasi" text="Kejadian penting seperti import data, perhitungan MOORA, dan finalisasi periode akan muncul di sini." />
+            <x-ui.empty-state icon="bell-slash" title="Belum ada notifikasi" text="Kejadian penting seperti import data, perhitungan peringkat, dan finalisasi periode akan muncul di sini." />
             @endforelse
         </div>
         <x-ui.muat-lagi :items="$notifikasi" :langkah="20" satu-daftar />

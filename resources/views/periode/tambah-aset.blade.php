@@ -12,7 +12,7 @@
             @if ($periode->status->value === 'dihitung')
             <div class="mx-4 mb-4 flex items-start gap-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs leading-5 text-amber-900 sm:mx-5">
                 <x-heroicon-o-exclamation-triangle class="h-5 w-5 shrink-0 text-amber-600" />
-                <p>Periode sudah dihitung. <strong>Menambah aset akan menghapus hasil MOORA dan keputusan pimpinan</strong> — perhitungan harus dijalankan ulang setelah nilai aset baru diisi.</p>
+                <p>Periode sudah dihitung. <strong>Menambah aset akan menghapus hasil perhitungan dan keputusan pimpinan</strong> — perhitungan harus dijalankan ulang setelah nilai aset baru diisi.</p>
             </div>
             @endif
             @error('aset_ids')

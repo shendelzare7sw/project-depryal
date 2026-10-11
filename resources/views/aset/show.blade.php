@@ -98,7 +98,7 @@
         </x-ui.card>
     </div>
 
-    <x-ui.card title="Riwayat penilaian" icon="clock" icon-tone="text-sky-600" subtitle="Hasil MOORA & keputusan pimpinan pada setiap periode" flush>
+    <x-ui.card title="Riwayat penilaian" icon="clock" icon-tone="text-sky-600" subtitle="Hasil penilaian & keputusan pimpinan pada setiap periode" flush>
         @forelse ($riwayat as $r)
         <div class="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-2 border-t border-zinc-100 p-4 first:border-t-0 sm:px-5 lg:grid-cols-[auto_minmax(0,1fr)_16rem_22rem]">
             <x-ui.rank :ranking="$r['hasil']->ranking" />
@@ -114,7 +114,7 @@
             </div>
         </div>
         @empty
-        <x-ui.empty-state icon="clock" title="Belum ada riwayat" text="Aset ini belum pernah masuk periode yang sudah dihitung MOORA." />
+        <x-ui.empty-state icon="clock" title="Belum ada riwayat" text="Aset ini belum pernah masuk periode yang sudah dihitung peringkat." />
         @endforelse
     </x-ui.card>
 </x-layouts.app>

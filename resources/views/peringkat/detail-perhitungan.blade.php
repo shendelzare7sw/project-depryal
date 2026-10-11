@@ -1,4 +1,4 @@
-<x-layouts.app title="Detail Perhitungan MOORA" :subtitle="$periode->nama">
+<x-layouts.app title="Detail Perhitungan (Metode MOORA)" :subtitle="$periode->nama">
     @php
         $f4 = fn ($v) => number_format((float) $v, 4, ',', '.');
         $ambang = $periode->snapshot_ambang ?? [];

@@ -4,7 +4,7 @@
     <img src="{{ asset('img/logo.jpeg') }}" alt="Logo Kecamatan Batuceper" class="h-12 w-12 rounded-xl bg-white object-contain p-0.5 ring-1 ring-zinc-200">
     <div>
         <p class="text-lg font-extrabold tracking-tight text-zinc-900">SIKASET</p>
-        <p class="text-xs text-zinc-500">SPK Kelayakan Aset BMD · Kec. Batuceper</p>
+        <p class="text-xs text-zinc-500">Penilaian Kelayakan Aset Daerah · Kec. Batuceper</p>
     </div>
 </div>
 

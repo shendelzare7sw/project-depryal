@@ -36,7 +36,7 @@ test('alur lengkap: import → periode → nilai → hitung → keputusan → fi
     // 2. Operator membuat periode untuk semua aset aktif.
     $this->actingAs($operator)->post(route('periode.store'), ['nama' => 'Periode Uji', 'tanggal_mulai' => '2026-10-01', 'cakupan' => 'semua']);
     $periode = PeriodePenilaian::sole();
-    $this->actingAs($operator)->get(route('periode.show', $periode))->assertSee('Hitung MOORA belum bisa dijalankan');
+    $this->actingAs($operator)->get(route('periode.show', $periode))->assertSee('Hitung Peringkat belum bisa dijalankan');
 
     // 3. Operator mengisi nilai tiap aset dengan "Simpan & Lanjut"; status → dinilai.
     $nilai = [[5, 4, 1], [4, 3, 2], [3, 5, 3], [2, 2, 5]];
@@ -51,7 +51,7 @@ test('alur lengkap: import → periode → nilai → hitung → keputusan → fi
     // 4. Operator menjalankan Hitung MOORA → pimpinan mendapat notifikasi.
     $this->actingAs($operator)->post(route('periode.hitung', $periode))->assertRedirect(route('peringkat.index', $periode));
     $notif = $pimpinan->notifications()->first();
-    expect($notif->data['judul'])->toBe('Peringkat MOORA siap ditinjau');
+    expect($notif->data['judul'])->toBe('Peringkat aset siap ditinjau');
 
     // 5. Pimpinan membuka notifikasi → peringkat; menu Keputusan berisi 4 aset menunggu.
     $this->actingAs($pimpinan)->get(route('notifikasi.baca', $notif->id))->assertRedirect(route('peringkat.index', $periode));

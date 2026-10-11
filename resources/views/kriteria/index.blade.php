@@ -1,4 +1,4 @@
-<x-layouts.app title="Kriteria Penilaian" subtitle="Bobot & rubrik skala kriteria metode MOORA">
+<x-layouts.app title="Kriteria Penilaian" subtitle="Bobot & skala penilaian tiap kriteria">
     @php
         $operator = auth()->user()->isOperator();
         $pas = abs($totalBobot - 100) < 0.0001;
@@ -14,7 +14,7 @@
                 </span>
                 <div class="min-w-0">
                     <p class="text-2xl font-extrabold tabular-nums text-zinc-900">{{ $totalBobot }}%</p>
-                    <p @class(['text-xs font-semibold', 'text-emerald-700' => $pas, 'text-rose-700' => ! $pas])>{{ $pas ? 'Total bobot sudah 100% — siap dihitung' : 'Total bobot harus tepat 100% sebelum perhitungan MOORA' }}</p>
+                    <p @class(['text-xs font-semibold', 'text-emerald-700' => $pas, 'text-rose-700' => ! $pas])>{{ $pas ? 'Total bobot sudah 100% — siap dihitung' : 'Total bobot harus tepat 100% sebelum perhitungan peringkat' }}</p>
                 </div>
             </div>
             <div class="min-w-0 flex-1">

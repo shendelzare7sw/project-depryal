@@ -11,8 +11,8 @@
             $stats[] = ['label' => 'Rekomendasi '.$t->label(), 'value' => $ringkasan[$t->value], 'icon' => $t->icon(), 'tone' => $tone[$t->value],
                 'meta' => $total ? round($ringkasan[$t->value] / $total * 100).'% dari aset' : null];
         }
-        $subjudul = $periode->isFinal() ? 'Periode final — keputusan terkunci dan status aset sudah diperbarui.' : 'Peringkat dari skor relatif MOORA (0–100). Rekomendasi sistem hanya alat bantu; keputusan akhir di tangan pimpinan.';
-        $eyebrow = 'Hasil MOORA · '.$periode->status->label().($periode->dihitung_pada ? ' · dihitung '.$periode->dihitung_pada->translatedFormat('d M Y H:i') : '');
+        $subjudul = $periode->isFinal() ? 'Periode final — keputusan terkunci dan status aset sudah diperbarui.' : 'Peringkat dari skor kelayakan (0–100). Rekomendasi sistem hanya alat bantu; keputusan akhir di tangan pimpinan.';
+        $eyebrow = 'Hasil Penilaian · '.$periode->status->label().($periode->dihitung_pada ? ' · dihitung '.$periode->dihitung_pada->translatedFormat('d M Y H:i') : '');
     @endphp
 
     <x-ui.hero :eyebrow="$eyebrow" :title="$periode->nama" :subtitle="$subjudul">
@@ -46,7 +46,7 @@
 
     @if (! $adaHasil)
     <x-ui.card>
-        <x-ui.empty-state icon="calculator" title="Periode belum dihitung" text="Peringkat tersedia setelah semua nilai lengkap dan Operator menjalankan Hitung MOORA.">
+        <x-ui.empty-state icon="calculator" title="Periode belum dihitung" text="Peringkat tersedia setelah semua nilai lengkap dan Operator menjalankan Hitung Peringkat.">
             <x-ui.btn tone="primary" icon="calendar-days" :href="route('periode.show', $periode)">Lihat Periode</x-ui.btn>
         </x-ui.empty-state>
     </x-ui.card>
@@ -59,7 +59,7 @@
                 <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600"><x-heroicon-o-trophy class="h-5 w-5" /></span>
                 <div class="min-w-0">
                     <h2 class="text-base font-extrabold text-zinc-900">Daftar peringkat</h2>
-                    <p class="mt-0.5 text-xs text-zinc-500">{{ $baris->count() }} dari {{ $total }} aset · urut skor relatif tertinggi</p>
+                    <p class="mt-0.5 text-xs text-zinc-500">{{ $baris->count() }} dari {{ $total }} aset · urut skor kelayakan tertinggi</p>
                 </div>
             </div>
             <form method="GET" class="mt-4 grid grid-cols-2 gap-2 xl:grid-cols-[minmax(220px,1fr)_minmax(170px,0.35fr)_minmax(170px,0.35fr)_auto]">
@@ -119,9 +119,9 @@
         @if ($baris->isNotEmpty())
         <div class="hidden overflow-x-auto lg:block">
             <table class="w-full min-w-[1000px] table-fixed text-left text-sm">
-                <colgroup><col class="w-20"><col><col class="w-56"><col class="w-28"><col class="w-36"><col class="w-36"><col class="{{ $bisaPutus ? 'w-28' : 'w-16' }}"></colgroup>
+                <colgroup><col class="w-20"><col><col class="w-56"><col class="w-36"><col class="w-36"><col class="{{ $bisaPutus ? 'w-28' : 'w-16' }}"></colgroup>
                 <thead class="bg-zinc-50 text-[10px] font-bold uppercase tracking-wide text-zinc-500">
-                    <tr><th class="px-3 py-3 text-center">Peringkat</th><th class="px-3 py-3">Aset</th><th class="px-3 py-3">Skor relatif</th><th class="px-3 py-3 text-right">Yi</th><th class="px-3 py-3">Rekomendasi</th><th class="px-3 py-3">Keputusan</th><th class="px-3 py-3 text-right">Aksi</th></tr>
+                    <tr><th class="px-3 py-3 text-center">Peringkat</th><th class="px-3 py-3">Aset</th><th class="px-3 py-3">Skor kelayakan</th><th class="px-3 py-3">Rekomendasi</th><th class="px-3 py-3">Keputusan</th><th class="px-3 py-3 text-right">Aksi</th></tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-100">
                     @foreach ($baris as $b)
@@ -136,7 +136,6 @@
                             @endif
                         </td>
                         <td class="px-3 py-3"><x-ui.skor :value="$b['hasil']->skor_relatif" :tindakan="$b['hasil']->rekomendasi" /></td>
-                        <td class="whitespace-nowrap px-3 py-3 text-right font-mono text-xs tabular-nums text-zinc-700">{{ number_format($b['hasil']->yi, 4, ',', '.') }}</td>
                         <td class="px-3 py-3"><x-ui.badge-tindakan :tindakan="$b['hasil']->rekomendasi" /></td>
                         <td class="px-3 py-3">
                             @if ($b['keputusan'])

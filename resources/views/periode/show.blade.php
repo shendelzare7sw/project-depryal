@@ -8,8 +8,8 @@
         $filterAktif = request('status');
         $pesan = [
             'draft' => 'Isi nilai semua kriteria untuk setiap aset. Status otomatis menjadi Dinilai saat semua lengkap.',
-            'dinilai' => 'Semua nilai lengkap. Jalankan Hitung MOORA untuk menghasilkan peringkat & rekomendasi.',
-            'dihitung' => 'Hasil MOORA tersedia. Pimpinan dapat meninjau peringkat dan menetapkan tindakan.',
+            'dinilai' => 'Semua nilai lengkap. Jalankan Hitung Peringkat untuk menghasilkan peringkat & rekomendasi.',
+            'dihitung' => 'Hasil perhitungan tersedia. Pimpinan dapat meninjau peringkat dan menetapkan tindakan.',
             'final' => 'Periode final — seluruh data terkunci.',
         ][$status];
         $rentang = $periode->tanggal_mulai?->translatedFormat('d M Y').($periode->tanggal_selesai ? ' – '.$periode->tanggal_selesai->translatedFormat('d M Y') : '');
@@ -22,13 +22,13 @@
             <x-ui.badge :tone="$periode->status->color()" dot class="bg-white">{{ $periode->status->label() }}</x-ui.badge>
             @if ($operator && ! $periode->isFinal())
                 @if ($bisaHitung)
-                <x-confirm-form :action="route('periode.hitung', $periode)" title="Hitung MOORA sekarang?"
+                <x-confirm-form :action="route('periode.hitung', $periode)" title="Hitung Peringkat sekarang?"
                     text="{{ $sudahHitung ? 'Hasil & keputusan sebelumnya akan diganti dengan hasil perhitungan baru.' : 'Peringkat dan rekomendasi akan dibuat untuk semua aset dalam periode.' }}"
                     confirm="Ya, hitung" icon="question">
-                    <x-ui.btn type="submit" tone="amber" icon="calculator">{{ $sudahHitung ? 'Hitung Ulang MOORA' : 'Hitung MOORA' }}</x-ui.btn>
+                    <x-ui.btn type="submit" tone="amber" icon="calculator">{{ $sudahHitung ? 'Hitung Ulang Peringkat' : 'Hitung Peringkat' }}</x-ui.btn>
                 </x-confirm-form>
                 @else
-                <x-ui.btn tone="glass" icon="calculator" disabled title="{{ implode(' ', $hambatan) }}">Hitung MOORA</x-ui.btn>
+                <x-ui.btn tone="glass" icon="calculator" disabled title="{{ implode(' ', $hambatan) }}">Hitung Peringkat</x-ui.btn>
                 @endif
                 <x-ui.btn tone="glass" icon="pencil-square" :href="route('periode.edit', $periode)">Ubah</x-ui.btn>
             @endif
@@ -55,14 +55,14 @@
     @if ($operator && ! $bisaHitung && ! $periode->isFinal())
     <div class="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
         <x-heroicon-o-information-circle class="h-5 w-5 shrink-0 text-amber-600" />
-        <div><p class="font-bold">Hitung MOORA belum bisa dijalankan:</p><ul class="mt-1 list-disc space-y-0.5 pl-4 text-xs">@foreach ($hambatan as $h)<li>{{ $h }}</li>@endforeach</ul></div>
+        <div><p class="font-bold">Hitung Peringkat belum bisa dijalankan:</p><ul class="mt-1 list-disc space-y-0.5 pl-4 text-xs">@foreach ($hambatan as $h)<li>{{ $h }}</li>@endforeach</ul></div>
     </div>
     @endif
 
     @if ($status === 'dihitung' && $operator)
     <div class="flex items-start gap-3 rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900">
         <x-heroicon-o-exclamation-triangle class="h-5 w-5 shrink-0 text-sky-600" />
-        <p>Periode sudah dihitung. <strong>Mengubah nilai akan menghapus hasil MOORA dan keputusan pimpinan</strong> pada periode ini — perhitungan harus dijalankan ulang.</p>
+        <p>Periode sudah dihitung. <strong>Mengubah nilai akan menghapus hasil perhitungan dan keputusan pimpinan</strong> pada periode ini — perhitungan harus dijalankan ulang.</p>
     </div>
     @endif
 

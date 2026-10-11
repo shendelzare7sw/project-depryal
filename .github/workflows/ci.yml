@@ -41,6 +41,8 @@ jobs:
       - name: Pest (test otomatis)
         shell: bash
         run: |
+          # GitHub menjalankan bash dengan -e -o pipefail; matikan -e agar ringkasan kegagalan sempat ditulis.
+          set +e
           php artisan test --compact 2>&1 | tee pest.log
           status=${PIPESTATUS[0]}
           if [ "$status" -ne 0 ]; then

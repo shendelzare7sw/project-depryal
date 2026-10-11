@@ -66,6 +66,7 @@ test('alur lengkap: import → periode → nilai → hitung → keputusan → fi
         ])->assertSessionHasNoErrors();
     }
 
+    $this->travel(1)->seconds(); // notifikasi berikutnya harus lebih baru dari sebelumnya (urutan created_at)
     // 7. Pimpinan memfinalisasi → status aset berubah, operator diberi tahu.
     $this->actingAs($pimpinan)->post(route('periode.finalisasi', $periode))->assertSessionHas('success');
     expect($periode->refresh()->status)->toBe(StatusPeriode::Final)
@@ -81,6 +82,7 @@ test('alur lengkap: import → periode → nilai → hitung → keputusan → fi
     expect($modul)->toContain('aset', 'nilai', 'keputusan', 'periode');
     $this->actingAs($admin)->get(route('audit-log.index', ['modul' => 'keputusan']))->assertOk()->assertSee('Keputusan ditambahkan');
 
+    $this->travel(1)->seconds();
     // 10. Operator membuka kembali periode final dengan alasan → pimpinan diberi tahu.
     $this->actingAs($operator)->post(route('periode.buka-kembali', $periode), ['alasan' => 'Koreksi nilai Gedung Uji 1.'])->assertSessionHas('success');
     expect($periode->refresh()->status)->toBe(StatusPeriode::Dihitung)
